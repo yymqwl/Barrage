@@ -1,9 +1,9 @@
 {
     "name": "GameFramework",
     "references": [
-        "GUID:a60c1dae9bbdcce4f83c20c5c457aa3d",
-        "GUID:37201525a95fbc3449efe0406b132733",
-        "GUID:4f50719527be7184f881a48f1cc581d2"
+        "GUID:09ee9c94986539c4f8efa5532707a8f2",
+        "GUID:a7cb64fa67644904fb71613141114884",
+        "GUID:e0d45f06aad334941bf5a4db482315d8"
     ],
     "optionalUnityReferences": [],
     "includePlatforms": [],
@@ -14,8 +14,6 @@
     "overrideReferences": false,
     "precompiledReferences": [],
     "autoReferenced": true,
-    "defineConstraints": [
-        "!"
-    ],
+    "defineConstraints": [],
     "versionDefines": []
 }

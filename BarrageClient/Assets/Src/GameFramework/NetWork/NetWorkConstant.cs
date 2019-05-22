@@ -12,7 +12,7 @@ namespace GameFramework
         public const int CircularBuffer_ChunkSize = 1024 * 8;
         public const string Str_Msg = "Message";
 
-        public const int Kcp_Delay_Time_Connected = 300;//300 ms
+        public const int Kcp_Delay_Time_Connected = 200;//200 ms
         public const int Kcp_Connecting_Time = 10*1000;//10S
         public const uint KService_IdStart = 1000;
         public const uint KService_CacheLen = 1024*8;

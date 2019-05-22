@@ -7,11 +7,8 @@ namespace GameFramework
     {
         private readonly Dictionary<Type, Queue<T>> m_Dict = new Dictionary<Type, Queue<T>>();
 
-        //private readonly Action<T> m_Create_Factory;
         public CObjectPool()
         {
-            //m_Create_Factory = create_factory;
-
         }
         public T Fetch(Type type)
         {
@@ -30,11 +27,6 @@ namespace GameFramework
             {
                 obj = (T)Activator.CreateInstance(type);
             }
-            /*
-            if(m_Create_Factory!=null)
-            {
-                m_Create_Factory(obj);
-            }*/
 
             return obj;
         }

@@ -13,17 +13,17 @@ namespace GameFramework
         // 线程同步队列,发送接收socket回调都放到该队列,由poll线程统一执行
         private readonly ConcurrentQueue<Action> m_Queue = new ConcurrentQueue<Action>();
 
-        private Action a;
+        private Action m_Act;
 
         public void Update()
         {
             while (true)
             {
-                if (!this.m_Queue.TryDequeue(out a))
+                if (!this.m_Queue.TryDequeue(out m_Act))
                 {
                     return;
                 }
-                a();
+                m_Act();
             }
         }
 

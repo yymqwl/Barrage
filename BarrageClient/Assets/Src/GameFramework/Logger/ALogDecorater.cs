@@ -2,13 +2,12 @@
 {
 	public abstract class ALogDecorater
 	{
-		protected const string SEP = " ";
-		private int level;
-		protected readonly ALogDecorater decorater;
+		private int m_Level;
+		protected readonly ALogDecorater m_Decorater;
 
 		protected ALogDecorater(ALogDecorater decorater = null)
 		{
-			this.decorater = decorater;
+			m_Decorater = decorater;
 			this.Level = 0;
 		}
 
@@ -16,25 +15,25 @@
 		{
 			get
 			{
-				return this.level;
+				return m_Level;
 			}
 			set
 			{
-				this.level = value;
-				if (this.decorater != null)
+				m_Level = value;
+				if (m_Decorater != null)
 				{
-					this.decorater.Level = value + 1;
+					m_Decorater.Level = value + 1;
 				}
 			}
 		}
 
 		public virtual string Decorate(string message)
 		{
-			if (this.decorater == null)
+			if (m_Decorater == null)
 			{
 				return message;
 			}
-			return this.decorater.Decorate(message);
+			return m_Decorater.Decorate(message);
 		}
 	}
 }

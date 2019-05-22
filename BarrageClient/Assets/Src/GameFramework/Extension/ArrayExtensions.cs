@@ -22,8 +22,15 @@ namespace GameFramework
 
 			return source[source.Length - 1];
 		}
+        public static void Apply<T>(this T[] list, System.Func<T, T> fn)
+        {
+            for (var i = 0; i < list.Length; i++)
+            {
+                list[i] = fn(list[i]);
+            }
+        }
 
 
 
-	}
+    }
 }

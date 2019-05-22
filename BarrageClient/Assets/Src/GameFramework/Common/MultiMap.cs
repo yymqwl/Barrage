@@ -10,7 +10,9 @@ namespace GameFramework
 
         // 重用list
         private readonly Queue<List<K>> m_Queue = new Queue<List<K>>();
-
+        /// <summary>
+        /// 膨胀值
+        /// </summary>
         private const int IExpolde = 100;
 
         public SortedDictionary<T, List<K>> GetDictionary()

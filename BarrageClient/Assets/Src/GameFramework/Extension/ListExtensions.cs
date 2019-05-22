@@ -5,32 +5,63 @@ namespace GameFramework
 {
 	public static class ListExtensions
 	{
-        /*
-		public static T PickRandom<T>(this IList<T> source)
-		{
-			int sourceCount = source.Count;
+        public static void Map<T>(this IList<T> list, System.Action<T> fn)
+        {
+            for (var i = 0; i < list.Count; i++)
+            {
+                fn(list[i]);
+            }
+        }
 
-			if (sourceCount == 0)
-				return default(T);
+        public static void Map<T>(this T[] list, System.Action<T> fn)
+        {
+            for (var i = 0; i < list.Length; i++)
+            {
+                fn(list[i]);
+            }
+        }
 
-			int i = Random.Range(0, sourceCount);
-			return source[i];
-		}
+        public static void Apply<T>(this IList<T> list, System.Func<T, T> fn)
+        {
+            for (var i = 0; i < list.Count; i++)
+            {
+                list[i] = fn(list[i]);
+            }
+        }
+
+        /// <summary>
+        /// Remove and return a element in the list by index. Out of range indices are wrapped into range.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T"/>
+        /// </returns>
+        public static T Pop<T>(this IList<T> list, int index)
+        {
+            while (index > list.Count)
+                index -= list.Count;
+            while (index < 0)
+                index += list.Count;
+            var o = list[index];
+            list.RemoveAt(index);
+            return o;
+        }
 
 
-
-		public static T PopRandom<T>(this IList<T> source)
-		{
-			if (source.Count == 0)
-				return default(T);
-
-			int i = Random.Range(0, source.Count);
-			T value = source[i];
-			source.RemoveAt(i);
-			return value;
-		}*/
-
-		public static T First<T>(this IList<T> source)
+        /// <summary>
+        /// Return an element from a list by index. Out of range indices are wrapped into range.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T"/>
+        /// </returns>
+        public static T Get<T>(this IList<T> list, int index)
+        {
+            while (index > list.Count)
+                index -= list.Count;
+            while (index < 0)
+                index += list.Count;
+            return list[index];
+        }
+        public static T First<T>(this IList<T> source)
 		{
 			if (source.Count == 0)
 				return default(T);
@@ -81,23 +112,7 @@ namespace GameFramework
 
 			return newList;
 		}
-        /*
-		public static void Shuffle<T>(this IList<T> list)
-		{
-			int index = list.Count;
 
-			int newPos;
-			T temp;
-
-			while (index > 1)
-			{
-				index--;
-				newPos = Random.Range(0, index + 1);
-				temp = list[newPos];
-				list[newPos] = list[index];
-				list[index] = temp;
-			}
-		}*/
 
 		public static void SwitchPlaces<T>(this IList<T> list, int indexOne, int indexTwo)
 		{

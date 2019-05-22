@@ -17,9 +17,9 @@ namespace GameFramework
 
 		public override string Decorate(string message)
 		{
-			if (this.decorater != null)
+			if (this.m_Decorater != null)
 			{
-				message = this.decorater.Decorate(message);
+				message = this.m_Decorater.Decorate(message);
 			}
 
 			if (!this.FileLineNumber && !this.FileName)

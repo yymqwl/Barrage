@@ -48,7 +48,7 @@ namespace GameFramework
             }
         }
 
-        // accept
+        // Accept
         public KChannel(uint localConn, uint remoteConn, Socket m_Socket, IPEndPoint m_RemoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
         {
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
@@ -70,11 +70,11 @@ namespace GameFramework
             this.Accept();
         }
 
-        // connect
+        // Connect
         public KChannel(uint localConn, Socket m_Socket, IPEndPoint m_RemoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
         {
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
-
+            m_IsConnected = false;
             this.LocalConn = localConn;
             this.m_Socket = m_Socket;
             this.m_RemoteEndPoint = m_RemoteEndPoint;
@@ -185,7 +185,7 @@ namespace GameFramework
                 this.m_Socket.SendTo(buffer, 0, 9, SocketFlags.None, m_RemoteEndPoint);
 
                 // 200毫秒后再次update发送connect请求
-                this.GetService().AddToUpdateNextTime(timeNow + 200, this.Id);
+                this.GetService().AddToUpdateNextTime(timeNow + NetWorkConstant.Kcp_Delay_Time_Connected, this.Id);
             }
             catch (Exception e)
             {
@@ -199,6 +199,10 @@ namespace GameFramework
         /// </summary>
         private void Connect()
         {
+            if(IsDisposed)
+            {
+                return;
+            }
             try
             {
                 uint timeNow = this.GetService().TimeNow;
