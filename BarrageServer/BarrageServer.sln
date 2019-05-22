@@ -1,0 +1,62 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarrageServer", "BarrageServer\BarrageServer.csproj", "{DA5031E0-0100-4B40-96C9-068803DC10D5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThirdParty", "ThirdParty", "{43E2A713-9F7C-4990-BFC2-91248408A673}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KcpLib", "ThirdParty\KcpLib\KcpLib.csproj", "{69A72B09-E3E7-4C6C-9347-268A02D6EB18}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "protobuf-net", "ThirdParty\protobuf-net\protobuf-net.csproj", "{6CDA27FB-2186-4435-A313-F1FB1BD9C298}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Protobuf", "ThirdParty\Google.Protobuf\Google.Protobuf.csproj", "{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFramework", "GameFramework\GameFramework.csproj", "{C530EFC8-0691-487C-921B-B90E7523D183}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMain", "GameMain\GameMain.csproj", "{C7643C95-66F2-40F6-AE97-DF170051EA2C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA5031E0-0100-4B40-96C9-068803DC10D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5031E0-0100-4B40-96C9-068803DC10D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5031E0-0100-4B40-96C9-068803DC10D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5031E0-0100-4B40-96C9-068803DC10D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69A72B09-E3E7-4C6C-9347-268A02D6EB18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69A72B09-E3E7-4C6C-9347-268A02D6EB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69A72B09-E3E7-4C6C-9347-268A02D6EB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69A72B09-E3E7-4C6C-9347-268A02D6EB18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CDA27FB-2186-4435-A313-F1FB1BD9C298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CDA27FB-2186-4435-A313-F1FB1BD9C298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CDA27FB-2186-4435-A313-F1FB1BD9C298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CDA27FB-2186-4435-A313-F1FB1BD9C298}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C530EFC8-0691-487C-921B-B90E7523D183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C530EFC8-0691-487C-921B-B90E7523D183}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C530EFC8-0691-487C-921B-B90E7523D183}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C530EFC8-0691-487C-921B-B90E7523D183}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7643C95-66F2-40F6-AE97-DF170051EA2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7643C95-66F2-40F6-AE97-DF170051EA2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7643C95-66F2-40F6-AE97-DF170051EA2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7643C95-66F2-40F6-AE97-DF170051EA2C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{69A72B09-E3E7-4C6C-9347-268A02D6EB18} = {43E2A713-9F7C-4990-BFC2-91248408A673}
+		{6CDA27FB-2186-4435-A313-F1FB1BD9C298} = {43E2A713-9F7C-4990-BFC2-91248408A673}
+		{8EC95EC5-3FD8-4D6E-9145-961C241D8A98} = {43E2A713-9F7C-4990-BFC2-91248408A673}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {18ABBC05-1BFA-4D5E-933A-5620AE8B1911}
+	EndGlobalSection
+EndGlobal

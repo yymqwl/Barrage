@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\BarrageClient\Assets\ThirdParty\KcpLib\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\BarrageClient\Assets\Plugins\x86_64\kcp.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+</Project>
