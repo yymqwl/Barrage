@@ -9,5 +9,6 @@ namespace GameMain
         IGameModuleManager GameModuleManager { get; }
         void Main(string[] args);
 
+        bool IsLoop { get; set; }
     }
 }

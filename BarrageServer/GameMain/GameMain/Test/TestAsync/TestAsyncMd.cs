@@ -11,7 +11,7 @@ namespace GameMain
     {
         public override bool Init()
         {
-          
+            Log.Debug($"{ TimeHelper.ClientNowSeconds()}");
             return base.Init();
         }
         public override void Update(float elapseSeconds, float realElapseSeconds)
