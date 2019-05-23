@@ -22,8 +22,8 @@
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        public abstract void Update(float elapseSeconds, float realElapseSeconds);
-
+        //public abstract void Update(float elapseSeconds, float realElapseSeconds);
+        public abstract void Update();
         public virtual bool BeforeInit() { return true; }
         public virtual bool Init() { return true; }
 

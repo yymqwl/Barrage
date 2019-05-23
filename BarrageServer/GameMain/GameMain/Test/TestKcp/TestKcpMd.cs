@@ -19,7 +19,7 @@ namespace GameMain
         {
             Log.Debug($"{ac.Id}:Accept");
         }
-        public override void Update(float elapseSeconds, float realElapseSeconds)
+        public override void Update()
         {
             KService.Instance.Update();
         }

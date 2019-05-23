@@ -6,6 +6,6 @@ namespace GameMain
 {
     public class ServerTimer : AGameTimer
     {
-        //public static ServerTimer Instance 
+        public static ServerTimer Instance { get; } = new ServerTimer();
     }
 }

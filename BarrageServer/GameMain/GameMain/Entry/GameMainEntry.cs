@@ -19,6 +19,11 @@ namespace GameMain
         {
 
         }
+        protected virtual void ShutDown()
+        {
+
+        }
+
         public virtual void Main(string[] args)
         {
 
@@ -29,17 +34,14 @@ namespace GameMain
             {
 
                 Init();
-                //m_Cur_Dt = DateTime.Now;
-                //m_Last_Dt = DateTime.Now;
+                ServerTimer.Instance.Start();
                 while (m_IsLoop)
                 {
                     try
                     {
                         Thread.Sleep(GameConstant.TThreadInternal);
-                        /*m_Cur_Dt = DateTime.Now;
-                        m_Cur_Ts = m_Cur_Dt - m_Last_Dt;
-                        */
-                        //m_GameModuleManager.Update(m_Cur_Ts.TotalSeconds, m_Cur_Ts.TotalSeconds);
+                        ServerTimer.Instance.Update();
+                        m_GameModuleManager.Update();
                         OneThreadSynchronizationContext.Instance.Update();
                     }
                     catch (Exception e)
@@ -47,8 +49,7 @@ namespace GameMain
                         Log.Error(e);
                     }
                 }
-
-
+                ShutDown();
             }
             catch (Exception e)
             {

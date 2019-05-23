@@ -10,7 +10,7 @@ namespace GameMain
     {
         string GameModuleVersion { get; }
         LinkedList<GameFrameworkModule> GameFrameworkModules { get; }
-        void Update(float elapseSeconds, float realElapseSeconds);
+        void Update();
         void Init();
         void Shutdown();
         T GetModule<T>() where T : class;

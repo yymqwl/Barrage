@@ -11,9 +11,9 @@ namespace GameMain
     /// </summary>
     public class GameModuleManager : IGameModuleManager
     {
-        public  string GameModuleVersion => "1.1.0";
-        protected  LinkedList<GameFrameworkModule> m_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
-        public  LinkedList<GameFrameworkModule> GameFrameworkModules
+        public string GameModuleVersion => "1.1.0";
+        protected LinkedList<GameFrameworkModule> m_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
+        public LinkedList<GameFrameworkModule> GameFrameworkModules
         {
             get
             {
@@ -27,14 +27,14 @@ namespace GameMain
         /// </summary>
         /// <param name="elapseSeconds">逻辑流逝时间，以秒为单位。</param>
         /// <param name="realElapseSeconds">真实流逝时间，以秒为单位。</param>
-        public  void Update(float elapseSeconds, float realElapseSeconds)
+        public void Update()
         {
             foreach (GameFrameworkModule module in m_GameFrameworkModules)
             {
-                module.Update(elapseSeconds, realElapseSeconds);
+                module.Update();
             }
         }
-        public  void Init()
+        public void Init()
         {
             for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
@@ -53,7 +53,7 @@ namespace GameMain
 
         }
 
-        public  void Shutdown()
+        public void Shutdown()
         {
             for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
@@ -75,7 +75,7 @@ namespace GameMain
         /// <summary>
         /// 获取游戏框架模块。
         /// </summary>
-        public  T GetModule<T>() where T : class
+        public T GetModule<T>() where T : class
         {
 
             Type interfaceType = typeof(T);
@@ -84,7 +84,7 @@ namespace GameMain
         /// <summary>
         /// 获取游戏框架模块。
         /// </summary>
-        public  GameFrameworkModule GetModule(Type moduleType)
+        public GameFrameworkModule GetModule(Type moduleType)
         {
             foreach (GameFrameworkModule module in m_GameFrameworkModules)
             {
@@ -101,7 +101,7 @@ namespace GameMain
         /// </summary>
         /// <param name="moduleType">要创建的游戏框架模块类型。</param>
         /// <returns>要创建的游戏框架模块。</returns>
-        private  GameFrameworkModule CreateModule(Type moduleType)
+        private GameFrameworkModule CreateModule(Type moduleType)
         {
             GameFrameworkModule module = (GameFrameworkModule)Activator.CreateInstance(moduleType);
             if (module == null)
@@ -131,7 +131,7 @@ namespace GameMain
 
             return module;
         }
-        public  void CreateModules(Assembly assembly)
+        public void CreateModules(Assembly assembly)
         {
             foreach (Type type in assembly.GetTypes())
             {

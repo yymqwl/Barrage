@@ -8,11 +8,16 @@ namespace GameMain
     {
         protected override void Init()
         {
-
             m_GameModuleManager = new GameModuleManager();
             m_GameModuleManager.CreateModules(typeof(TestGameEntry).Assembly);
+
             m_GameModuleManager.Init();
 
+        }
+        protected override void ShutDown()
+        {
+            m_GameModuleManager.Shutdown();
+            base.ShutDown();
         }
 
     }

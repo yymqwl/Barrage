@@ -29,6 +29,7 @@ namespace GameMain
             m_Cur_DateTime = DateTime.UtcNow;
             m_Last_DateTime = DateTime.UtcNow;
             m_Delta_TimeSpan = new TimeSpan(0);
+            m_TimeScale = 1;
 
             return true;
         }

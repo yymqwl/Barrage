@@ -13,7 +13,7 @@ namespace GameMain
             Log.Debug("TestProtobufMd");
             return base.Init();
         }
-        public override void Update(float elapseSeconds, float realElapseSeconds)
+        public override void Update()
         {
 
         }

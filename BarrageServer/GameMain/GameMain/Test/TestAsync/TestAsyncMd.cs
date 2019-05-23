@@ -14,8 +14,9 @@ namespace GameMain
             Log.Debug($"{ TimeHelper.ClientNowSeconds()}");
             return base.Init();
         }
-        public override void Update(float elapseSeconds, float realElapseSeconds)
+        public override void Update()
         {
+            //Log.Debug($"{ ServerTimer.Instance.DeltaTime}");
         }
     }
 }
