@@ -262,3 +262,10 @@ __pycache__/
 BarrageClient/Temp/
 BarrageClient/Library/
 BarrageClient/ProjectSettings/
+BarrageClient/Assembly-CSharp.csproj
+BarrageClient/GameFramework.csproj
+BarrageClient/Google.Protobuf.csproj
+BarrageClient/KcpLib.csproj
+BarrageClient/protobuf-net.csproj
+BarrageClient/BarrageClient.sln
+
