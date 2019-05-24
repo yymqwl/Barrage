@@ -30,7 +30,14 @@ namespace GameMain
                     {
                         console_Command.Params.Add(str_lines[i]);
                     }
-                    Log.Debug($"{console_Command.Params.Count}");
+                    //Log.Debug($"{console_Command.Params.Count}");
+                    switch(console_Command.CommandType)
+                    {
+                        case "quit":
+                            TestGameEntry.Instance.IsLoop = false;
+                            break;
+                        default: break;
+                    }
                 }
             });
             return base.Init();

@@ -70,7 +70,7 @@ namespace GameFramework
             this.m_ReadCallback.Invoke(memoryStream);
         }
 
-        protected void OnError(int e)
+        public void OnError(int e)
         {
             this.Error = e;
             this.m_ErrorCallback?.Invoke(this, e);

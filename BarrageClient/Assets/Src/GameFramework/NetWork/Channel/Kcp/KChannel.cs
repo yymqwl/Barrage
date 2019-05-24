@@ -28,7 +28,7 @@ namespace GameFramework
 
         private readonly Queue<WaitSendBuffer> m_SendBuffer = new Queue<WaitSendBuffer>();
 
-        private bool m_IsConnected;
+        private bool m_IsConnected = false;
 
         private readonly IPEndPoint m_RemoteEndPoint;
 
@@ -37,6 +37,7 @@ namespace GameFramework
         private readonly uint m_CreateTime;
 
         public uint RemoteConn { get; private set; }
+        public bool IsConnected { get { return m_IsConnected; } }
 
         private readonly MemoryStream m_MemoryStream;
 
@@ -44,7 +45,7 @@ namespace GameFramework
         {
             get
             {
-                return (m_Socket != null);
+                return (m_Socket == null);
             }
         }
 
@@ -74,7 +75,6 @@ namespace GameFramework
         public KChannel(uint localConn, Socket m_Socket, IPEndPoint m_RemoteEndPoint, KService kService) : base(kService, ChannelType.Connect)
         {
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
-            m_IsConnected = false;
             this.LocalConn = localConn;
             this.m_Socket = m_Socket;
             this.m_RemoteEndPoint = m_RemoteEndPoint;
@@ -104,20 +104,7 @@ namespace GameFramework
 
             base.Dispose();
 
-            try
-            {
-                if (this.Error == ErrorCode.ERR_Success)
-                {
-                    for (int i = 0; i < 4; i++)
-                    {
-                        this.Disconnect();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
+            this.Disconnect();
 
             if (this.m_Kcp != IntPtr.Zero)
             {
@@ -136,10 +123,7 @@ namespace GameFramework
             }
         }
 
-        public void Disconnect(int error)
-        {
-            this.OnError(error);
-        }
+
 
         private KService GetService()
         {
@@ -185,7 +169,7 @@ namespace GameFramework
                 this.m_Socket.SendTo(buffer, 0, 9, SocketFlags.None, m_RemoteEndPoint);
 
                 // 200毫秒后再次update发送connect请求
-                this.GetService().AddToUpdateNextTime(timeNow + NetWorkConstant.Kcp_Delay_Time_Connected, this.Id);
+                this.GetService().AddToUpdateNextTime(timeNow + NetWorkConstant.Kcp_Delay_Time_Connect, this.Id);
             }
             catch (Exception e)
             {
@@ -197,7 +181,7 @@ namespace GameFramework
         /// <summary>
         /// 发送请求连接消息
         /// </summary>
-        private void Connect()
+        public void Connect()
         {
             if(IsDisposed)
             {
@@ -215,7 +199,7 @@ namespace GameFramework
                 this.m_Socket.SendTo(buffer, 0, 5, SocketFlags.None, m_RemoteEndPoint);
 
                 // 200毫秒后再次update发送connect请求
-                this.GetService().AddToUpdateNextTime(timeNow + NetWorkConstant.Kcp_Delay_Time_Connected, this.Id);
+                this.GetService().AddToUpdateNextTime(timeNow + NetWorkConstant.Kcp_Delay_Time_Connect, this.Id);
             }
             catch (Exception e)
             {
@@ -224,8 +208,13 @@ namespace GameFramework
             }
         }
 
-        private void Disconnect()
+        public void Disconnect()
         {
+            if(!m_IsConnected)
+            {
+                return;
+            }
+            m_IsConnected = false;
             if (this.m_Socket == null)
             {
                 return;
@@ -258,14 +247,15 @@ namespace GameFramework
             // 如果还没连接上，发送连接请求
             if (!this.m_IsConnected)
             {
-                // 10秒没连接上则报错
+                // 10秒没连接上直接从Service删除刷新
                 if (timeNow - this.m_CreateTime > NetWorkConstant.Kcp_Connecting_Time)
                 {
+                    GetService().RemoveWaitConnectChannels(RemoteConn);
                     this.OnError(ErrorCode.ERR_KcpCantConnect);
                     return;
                 }
 
-                if (timeNow - this.m_LastRecvTime < NetWorkConstant.Kcp_Delay_Time_Connected)
+                if (timeNow - this.m_LastRecvTime < NetWorkConstant.Kcp_Delay_Time_Connect)
                 {
                     return;
                 }
@@ -282,6 +272,15 @@ namespace GameFramework
 
                 return;
             }
+
+            ///检查超时处理
+            ///10S未连接直接删除刷新
+            if (timeNow - this.m_LastRecvTime > NetWorkConstant.KcpIdleSessionTimeOut)
+            {
+                OutOfTime();
+                return;
+            }
+
 
             try
             {
@@ -300,6 +299,15 @@ namespace GameFramework
                 uint nextUpdateTime = Kcp.KcpCheck(this.m_Kcp, timeNow);
                 this.GetService().AddToUpdateNextTime(nextUpdateTime, this.Id);
             }
+        }
+
+        /// <summary>
+        /// 超时直接释放
+        /// </summary>
+        private void OutOfTime()
+        {
+            m_IsConnected = false;
+            //Dispose();
         }
 
         private void HandleSend()
@@ -323,7 +331,6 @@ namespace GameFramework
                 return;
             }
 
-            this.m_IsConnected = true;
 
             Kcp.KcpInput(this.m_Kcp, date, offset, length);
             this.GetService().AddToUpdateNextTime(0, this.Id);
@@ -396,19 +403,11 @@ namespace GameFramework
             }
         }
 
-#if !ENABLE_IL2CPP
-        private kcp_output kcpOutput;
-#endif
-
+        private kcp_output m_kcpOutput;
         public void SetOutput()
         {
-#if ENABLE_IL2CPP
-			m_Kcp.KcpSetoutput(this.m_Kcp, KcpOutput);
-#else
-            // 跟上一行一样写法，pc跟linux会出错, 防止委托被GC
-            kcpOutput = KcpOutput;
-            Kcp.KcpSetoutput(this.m_Kcp, kcpOutput);
-#endif
+            m_kcpOutput = KcpOutput;
+            Kcp.KcpSetoutput(this.m_Kcp,m_kcpOutput);
         }
 
 
@@ -447,7 +446,7 @@ namespace GameFramework
             if (this.m_Kcp != IntPtr.Zero)
             {
                 // 检查等待发送的消息，如果超出两倍窗口大小，应该断开连接
-                if (Kcp.KcpWaitsnd(this.m_Kcp) > 256 * 2)
+                if (Kcp.KcpWaitsnd(this.m_Kcp) > NetWorkConstant.Kcp_WndSize * 2)
                 {
                     this.OnError(ErrorCode.ERR_KcpWaitSendSizeTooLarge);
                     return;

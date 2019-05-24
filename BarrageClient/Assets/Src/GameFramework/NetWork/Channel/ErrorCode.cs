@@ -18,10 +18,8 @@
         public const int ERR_NotFoundUnit = 100104;
         public const int ERR_ConnectGateKeyError = 100105;
 
-        public const int ERR_RpcFail = 102001;
-        public const int ERR_SocketDisconnected = 102002;
-        public const int ERR_ReloadFail = 102003;
-        public const int ERR_ActorLocationNotFound = 102004;
+
+        //public const int ERR_K = 102000;
         public const int ERR_KcpCantConnect = 102005;
         public const int ERR_KcpChannelTimeout = 102006;
         public const int ERR_KcpRemoteDisconnect = 102007;

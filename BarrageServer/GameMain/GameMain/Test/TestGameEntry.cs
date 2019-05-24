@@ -6,6 +6,8 @@ namespace GameMain
 {
     public class TestGameEntry : GameMainEntry
     {
+
+        public static TestGameEntry Instance { get; } = new TestGameEntry();
         protected override void Init()
         {
             m_GameModuleManager = new GameModuleManager();

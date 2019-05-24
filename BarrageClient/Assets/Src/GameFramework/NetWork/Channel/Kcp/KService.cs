@@ -195,6 +195,7 @@ namespace GameFramework
                         remoteConn = BitConverter.ToUInt32(this.m_Cache, 1);
                         localConn = BitConverter.ToUInt32(this.m_Cache, 5);
 
+                        RemoveWaitConnectChannels(remoteConn);
                         // 处理chanel
                         kChannel = this.GetKChannel(localConn);
                         if (kChannel != null)
@@ -202,7 +203,8 @@ namespace GameFramework
                             // 校验remoteConn，防止第三方攻击
                             if (kChannel.RemoteConn == remoteConn)
                             {
-                                kChannel.Disconnect(ErrorCode.ERR_PeerDisconnect);
+                                kChannel.Disconnect();
+                                kChannel.OnError(ErrorCode.ERR_PeerDisconnect);
                             }
                         }
                         break;
@@ -216,7 +218,7 @@ namespace GameFramework
                         remoteConn = BitConverter.ToUInt32(this.m_Cache, 1);
                         localConn = BitConverter.ToUInt32(this.m_Cache, 5);
 
-                        this.m_WaitConnectChannels.Remove(remoteConn);
+                        RemoveWaitConnectChannels(remoteConn);
 
                         kChannel = this.GetKChannel(localConn);
                         if (kChannel != null)
@@ -231,6 +233,12 @@ namespace GameFramework
                 }
             }
         }
+        
+        public void RemoveWaitConnectChannels(uint con)
+        {
+            this.m_WaitConnectChannels.Remove(con);
+        }
+
 
         public KChannel GetKChannel(long id)
         {
@@ -254,12 +262,15 @@ namespace GameFramework
             return channel;
         }
 
+        
         public static void Output(IntPtr bytes, int count, IntPtr user)
         {
+            
             if (Instance == null)
             {
                 return;
             }
+
             AChannel aChannel = Instance.GetChannel((uint)user);
             if (aChannel == null)
             {
@@ -273,7 +284,7 @@ namespace GameFramework
 
         public override AChannel ConnectChannel(IPEndPoint remoteEndPoint)
         {
-            uint localConn = (uint)RandomHelper.RandomNumber(1000, int.MaxValue);
+            uint localConn = (uint)RandomHelper.RandomNumber(1000, int.MaxValue);//++this.m_IdGenerater;
             KChannel oldChannel;
             if (this.m_LocalConnChannels.TryGetValue(localConn, out oldChannel))
             {
@@ -303,6 +314,7 @@ namespace GameFramework
             {
                 return;
             }
+            OnDisConnect(channel);
             this.m_RemovedChannels.Enqueue(id);
 
             // 删除channel时检查等待连接状态的字典是否要清除

@@ -7,12 +7,7 @@ namespace BarrageServer
 
         static void Main(string[] args)
         {
-            TestGameEntry testGameEntry = new TestGameEntry();
-
-
-            testGameEntry.Main(args);
-            Console.Read();
-  
+            TestGameEntry.Instance.Main(args);
         }
     }
 }

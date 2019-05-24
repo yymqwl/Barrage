@@ -14,6 +14,7 @@ namespace GameFramework
     {
         public abstract AChannel GetChannel(long id);
 
+        ///接收Channel
         private Action<AChannel> m_AcceptCallback;
 
         public event Action<AChannel> AcceptCallback
@@ -28,6 +29,22 @@ namespace GameFramework
             }
         }
 
+        private Action<AChannel> m_RemoveCallback;
+        public event Action<AChannel> RemoveCallback
+        {
+            add
+            {
+                this.m_RemoveCallback += value;
+            }
+            remove
+            {
+                this.m_RemoveCallback -= value;
+            }
+        }
+        protected void OnDisConnect(AChannel channel)
+        {
+            m_RemoveCallback.InvokeGracefully(channel);
+        }
         protected void OnAccept(AChannel channel)
         {
             this.m_AcceptCallback.Invoke(channel);
