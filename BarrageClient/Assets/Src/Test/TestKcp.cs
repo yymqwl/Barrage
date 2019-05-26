@@ -16,8 +16,10 @@ public class TestKcp : MonoBehaviour
         m_KService = new KService();
         m_KService.RemoveCallback += KService_DisConnectCallback;
 
+        /*
         m_kChannel = (KChannel)m_KService.ConnectChannel(NetHelper.ToIPEndPoint("127.0.0.1", 2000));
         Log.Debug($"{TimeHelper.ClientNowSeconds()}");
+        */
     }
 
     private void KService_DisConnectCallback(AChannel ac)
@@ -40,9 +42,9 @@ public class TestKcp : MonoBehaviour
         GUILayout.BeginVertical();
         if(GUILayout.Button("Connect", GUILayout.Width(200)))
         {
-            m_kChannel.Connect();
+            //m_kChannel.Connect();
 
-            //m_kChannel = (KChannel)m_KService.ConnectChannel(NetHelper.ToIPEndPoint("127.0.0.1", 2000));
+            m_kChannel = (KChannel)m_KService.ConnectChannel(NetHelper.ToIPEndPoint("127.0.0.1", 2000));
         }
         if (GUILayout.Button("DisConnect", GUILayout.Width(200)))
         {
@@ -54,6 +56,7 @@ public class TestKcp : MonoBehaviour
             {
                 var word_byts = Encoding.UTF8.GetBytes("Hello Udp!");
                 mem.Write(word_byts, 0, word_byts.Length);
+                mem.Position = 0;
                 m_kChannel.Send(mem);
             }
                 

@@ -11,11 +11,24 @@ namespace GameFramework
         Accept,
     }
 
-   
+    /// <summary>
+    /// Accept 有未连接,连接中,已经连接3种状态。生命周期连接中-》已连接-》未连接
+    /// Connect 生命周期。连接中->连接->未连接->连接中
+    /// </summary>
+    public enum ChannelState
+    {
+        EDisConnected,//未连接
+        EConnecting,//连接中
+        EConnected,//已连接
+    }
+
+
     public abstract class AChannel : CObject
     {
         public long Id { get; set; }
         public ChannelType ChannelType { get; }
+
+        public virtual ChannelState ChannelState { get;  }
 
         private AService m_Service;
 
@@ -67,7 +80,7 @@ namespace GameFramework
 
         protected void OnRead(MemoryStream memoryStream)
         {
-            this.m_ReadCallback.Invoke(memoryStream);
+            m_ReadCallback.InvokeGracefully(memoryStream);
         }
 
         public void OnError(int e)

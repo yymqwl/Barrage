@@ -162,6 +162,7 @@ namespace GameFramework
                             break;
                         }
 
+
                         localConn = ++this.m_IdGenerater;
                         kChannel = new KChannel(localConn, remoteConn, this.m_Socket, acceptIpEndPoint, this);
                         this.m_LocalConnChannels[kChannel.LocalConn] = kChannel;
@@ -195,7 +196,6 @@ namespace GameFramework
                         remoteConn = BitConverter.ToUInt32(this.m_Cache, 1);
                         localConn = BitConverter.ToUInt32(this.m_Cache, 5);
 
-                        RemoveWaitConnectChannels(remoteConn);
                         // 处理chanel
                         kChannel = this.GetKChannel(localConn);
                         if (kChannel != null)
@@ -217,11 +217,9 @@ namespace GameFramework
                         // 处理chanel
                         remoteConn = BitConverter.ToUInt32(this.m_Cache, 1);
                         localConn = BitConverter.ToUInt32(this.m_Cache, 5);
-
                         RemoveWaitConnectChannels(remoteConn);
-
                         kChannel = this.GetKChannel(localConn);
-                        if (kChannel != null)
+                        if (kChannel != null)//如果没有找到不回复,让客户端自己超时
                         {
                             // 校验remoteConn，防止第三方攻击
                             if (kChannel.RemoteConn == remoteConn)
@@ -284,7 +282,7 @@ namespace GameFramework
 
         public override AChannel ConnectChannel(IPEndPoint remoteEndPoint)
         {
-            uint localConn = (uint)RandomHelper.RandomNumber(1000, int.MaxValue);//++this.m_IdGenerater;
+            uint localConn = ++this.m_IdGenerater;//++this.m_IdGenerater;(uint)RandomHelper.RandomNumber(1000, int.MaxValue);
             KChannel oldChannel;
             if (this.m_LocalConnChannels.TryGetValue(localConn, out oldChannel))
             {

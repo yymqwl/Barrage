@@ -21,7 +21,7 @@ namespace GameMain
 
         private void Service_DisConnectCallback(AChannel ac)
         {
-            ac.ReadCallback += Ac_ReadCallback;
+          
             Log.Debug($"{ac.Id}:disconnect");
         }
 
@@ -32,6 +32,7 @@ namespace GameMain
 
         public void Accept(AChannel  ac)
         {
+            ac.ReadCallback += Ac_ReadCallback;
             Log.Debug($"{ac.Id}:Accept");
         }
         public override void Update()

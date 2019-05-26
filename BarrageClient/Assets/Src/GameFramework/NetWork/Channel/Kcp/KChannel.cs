@@ -28,7 +28,6 @@ namespace GameFramework
 
         private readonly Queue<WaitSendBuffer> m_SendBuffer = new Queue<WaitSendBuffer>();
 
-        private bool m_IsConnected = false;
 
         private readonly IPEndPoint m_RemoteEndPoint;
 
@@ -36,8 +35,12 @@ namespace GameFramework
 
         private readonly uint m_CreateTime;
 
+        private ChannelState m_ChannelState = ChannelState.EConnecting;
         public uint RemoteConn { get; private set; }
-        public bool IsConnected { get { return m_IsConnected; } }
+
+
+        public override ChannelState ChannelState => m_ChannelState;
+        public bool IsConnected { get { return ChannelState == ChannelState.EConnected; } }
 
         private readonly MemoryStream m_MemoryStream;
 
@@ -59,7 +62,8 @@ namespace GameFramework
             this.m_RemoteEndPoint = m_RemoteEndPoint;
             this.m_Socket = m_Socket;
             this.m_Kcp = Kcp.KcpCreate(this.RemoteConn, new IntPtr(this.LocalConn));
-            
+
+           
             ///Kcp 参数
             SetOutput();
             Kcp.KcpNodelay(this.m_Kcp, 1, 10, 1, 1);
@@ -132,7 +136,7 @@ namespace GameFramework
 
         public void HandleConnnect(uint remoteConn)
         {
-            if (this.m_IsConnected)
+            if (this.IsConnected)
             {
                 return;
             }
@@ -145,13 +149,14 @@ namespace GameFramework
             Kcp.KcpWndsize(this.m_Kcp, 256, 256);
             Kcp.KcpSetmtu(this.m_Kcp, 470);
 
-            this.m_IsConnected = true;
+            m_ChannelState = ChannelState.EConnected;
             this.m_LastRecvTime = this.GetService().TimeNow;
+            GetService().RemoveWaitConnectChannels(RemoteConn);
 
             HandleSend();
         }
 
-        public void Accept()
+        private void Accept()
         {
             if (this.m_Socket == null)
             {
@@ -181,7 +186,7 @@ namespace GameFramework
         /// <summary>
         /// 发送请求连接消息
         /// </summary>
-        public void Connect()
+        private void Connect()
         {
             if(IsDisposed)
             {
@@ -210,11 +215,11 @@ namespace GameFramework
 
         public void Disconnect()
         {
-            if(!m_IsConnected)
+            if(!IsConnected)
             {
                 return;
             }
-            m_IsConnected = false;
+            m_ChannelState = ChannelState.EDisConnected;
             if (this.m_Socket == null)
             {
                 return;
@@ -244,13 +249,12 @@ namespace GameFramework
 
             uint timeNow = this.GetService().TimeNow;
 
-            // 如果还没连接上，发送连接请求
-            if (!this.m_IsConnected)
+            if(m_ChannelState == ChannelState.EConnecting)
             {
                 // 10秒没连接上直接从Service删除刷新
                 if (timeNow - this.m_CreateTime > NetWorkConstant.Kcp_Connecting_Time)
                 {
-                    GetService().RemoveWaitConnectChannels(RemoteConn);
+                    OutOfTime();
                     this.OnError(ErrorCode.ERR_KcpCantConnect);
                     return;
                 }
@@ -259,7 +263,6 @@ namespace GameFramework
                 {
                     return;
                 }
-
                 switch (ChannelType)
                 {
                     case ChannelType.Accept:
@@ -269,7 +272,6 @@ namespace GameFramework
                         this.Connect();
                         break;
                 }
-
                 return;
             }
 
@@ -299,6 +301,8 @@ namespace GameFramework
                 uint nextUpdateTime = Kcp.KcpCheck(this.m_Kcp, timeNow);
                 this.GetService().AddToUpdateNextTime(nextUpdateTime, this.Id);
             }
+
+
         }
 
         /// <summary>
@@ -306,7 +310,7 @@ namespace GameFramework
         /// </summary>
         private void OutOfTime()
         {
-            m_IsConnected = false;
+            //m_ChannelState = ChannelState.EDisConnected;
             //Dispose();
         }
 
@@ -432,7 +436,7 @@ namespace GameFramework
 
         private void Send(byte[] buffer, int index, int length)
         {
-            if (m_IsConnected)
+            if (IsConnected)
             {
                 this.KcpSend(buffer, length);
                 return;
@@ -455,7 +459,7 @@ namespace GameFramework
 
             ushort size = (ushort)(stream.Length - stream.Position);
             byte[] bytes;
-            if (this.m_IsConnected)
+            if (this.IsConnected)
             {
                 bytes = stream.GetBuffer();
             }
