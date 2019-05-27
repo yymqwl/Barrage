@@ -16,7 +16,7 @@ namespace GameFramework
 
         private bool m_IsSending;
 
-        private bool m_IsConnected;
+        //private bool m_IsConnected;
 
         private readonly MemoryStream m_MemoryStream;
 
@@ -33,7 +33,8 @@ namespace GameFramework
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
             this.m_RecvStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
-            m_IsConnected = true;
+            m_ChannelState = ChannelState.EConnected;
+            //m_IsConnected = true;
         }
 
         public WChannel(WebSocket m_WebSocket, AService service) : base(service, ChannelType.Connect)
@@ -43,7 +44,7 @@ namespace GameFramework
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
             this.m_RecvStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
 
-            m_IsConnected = false;
+            //m_IsConnected = false;
         }
 
         public override void Dispose()
@@ -72,7 +73,7 @@ namespace GameFramework
             }
         }
 
-        public override void Start()
+        /*protected  void Start()
         {
             if (!this.m_IsConnected)
             {
@@ -81,7 +82,7 @@ namespace GameFramework
 
             this.StartRecv();
             this.StartSend();
-        }
+        }*/
 
         private WService GetService()
         {
@@ -93,8 +94,11 @@ namespace GameFramework
             try
             {
                 await ((ClientWebSocket)this.m_WebSocket).ConnectAsync(new Uri(url), m_CancellationTokenSource.Token);
-                m_IsConnected = true;
-                this.Start();
+                m_ChannelState = ChannelState.EConnected;
+                //m_IsConnected = true;
+                //this.Start();
+                this.StartRecv();
+                this.StartSend();
             }
             catch (Exception e)
             {
@@ -109,7 +113,7 @@ namespace GameFramework
             Array.Copy(stream.GetBuffer(), bytes, bytes.Length);
             this.m_Queue.Enqueue(bytes);
 
-            if (this.m_IsConnected)
+            if (this.IsConnected)
             {
                 this.StartSend();
             }
@@ -214,7 +218,7 @@ namespace GameFramework
                     }
 
                     this.m_RecvStream.SetLength(receiveResult.Count);
-                    this.OnRead(this.m_RecvStream);
+                    this.OnRead(this,this.m_RecvStream);
                 }
             }
             catch (Exception e)
@@ -222,6 +226,12 @@ namespace GameFramework
                 Log.Error(e);
                 this.OnError(ErrorCode.ERR_WebsocketRecvError);
             }
+        }
+
+        public override void DisConnect()
+        {
+            m_ChannelState = ChannelState.EDisConnected;
+            GetService().OnDisConnected(this);
         }
     }
 }

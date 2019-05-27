@@ -13,7 +13,7 @@ namespace GameFramework
         public const string Str_Msg = "Message";
 
         //public const int Kcp_Delay_Time_Accept = 200;//200 ms
-        public const int Kcp_Delay_Time_Connect = 300;//200 ms
+        public const int Kcp_Delay_Time_Connect = 200;//200 ms
         public const int Kcp_Connecting_Time = 10*1000;//10S
         public const uint KService_IdStart = 1000;
         public const uint KService_CacheLen = 1024*8;
@@ -22,5 +22,11 @@ namespace GameFramework
 
 
         public const int Kcp_WndSize = 256;
+
+        ///
+        public const int Tcp_ListenLen = 1000;
+        public const int Tcp_PackSize = 1024 * 8;
+        public const float Tcp_CheckIdleInternal = 1;
+        public const uint Tcp_TimeOut = 1000*10;//10
     }
 }

@@ -29,26 +29,39 @@ namespace GameFramework
             }
         }
 
-        private Action<AChannel> m_RemoveCallback;
-        public event Action<AChannel> RemoveCallback
+        ///Service 开始时间
+        public long m_StartTime;
+        //当前时间
+        public uint TimeNow { get;  set; }
+
+
+        private Action<AChannel> m_DisConnectedCallback;
+        public event Action<AChannel> DisConnectedCallback
         {
             add
             {
-                this.m_RemoveCallback += value;
+                this.m_DisConnectedCallback += value;
             }
             remove
             {
-                this.m_RemoveCallback -= value;
+                this.m_DisConnectedCallback -= value;
             }
         }
-        protected void OnDisConnect(AChannel channel)
+        public AService()
         {
-            m_RemoveCallback.InvokeGracefully(channel);
+            this.m_StartTime = TimeHelper.ClientNow();
+            this.TimeNow = (uint)TimeHelper.ClientNow();
+        }
+        public void OnDisConnected(AChannel channel)
+        {
+            m_DisConnectedCallback.InvokeGracefully(channel);
+            Remove(channel.Id);
         }
         protected void OnAccept(AChannel channel)
         {
             this.m_AcceptCallback.Invoke(channel);
         }
+
 
         public abstract AChannel ConnectChannel(IPEndPoint ipEndPoint);
 
@@ -56,6 +69,9 @@ namespace GameFramework
 
         public abstract void Remove(long channelId);
 
-        public abstract void Update();
+        public virtual void Update()
+        {
+            this.TimeNow = (uint)(TimeHelper.ClientNow() - this.m_StartTime);
+        }
     }
 }

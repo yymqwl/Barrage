@@ -25,9 +25,6 @@ namespace GameFramework
         private uint m_IdGenerater = NetWorkConstant.KService_IdStart;//1000;
 
         // KService创建的时间
-        public long m_StartTime;
-        // 当前时间 - KService创建的时间
-        public uint TimeNow { get; private set; }
 
         private Socket m_Socket;
 
@@ -56,12 +53,10 @@ namespace GameFramework
 
         private EndPoint ipEndPoint = new IPEndPoint(IPAddress.Any, 0);
 
-        public KService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
+        public KService(IPEndPoint ipEndPoint, Action<AChannel> acceptCallback):base()
         {
             this.AcceptCallback += acceptCallback;
 
-            this.m_StartTime = TimeHelper.ClientNow();
-            this.TimeNow = (uint)(TimeHelper.ClientNow() - this.m_StartTime);
             this.m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             //this.m_Socket.Blocking = false;
             this.m_Socket.Bind(ipEndPoint);
@@ -77,10 +72,8 @@ namespace GameFramework
             Instance = this;
         }
 
-        public KService()
+        public KService(): base()
         {
-            this.m_StartTime = TimeHelper.ClientNow();
-            this.TimeNow = (uint)(TimeHelper.ClientNow() - this.m_StartTime);
             this.m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             //this.m_Socket.Blocking = false;
             this.m_Socket.Bind(new IPEndPoint(IPAddress.Any, 0));
@@ -203,8 +196,8 @@ namespace GameFramework
                             // 校验remoteConn，防止第三方攻击
                             if (kChannel.RemoteConn == remoteConn)
                             {
-                                kChannel.Disconnect();
                                 kChannel.OnError(ErrorCode.ERR_PeerDisconnect);
+                                kChannel.DisConnect();
                             }
                         }
                         break;
@@ -312,7 +305,6 @@ namespace GameFramework
             {
                 return;
             }
-            OnDisConnect(channel);
             this.m_RemovedChannels.Enqueue(id);
 
             // 删除channel时检查等待连接状态的字典是否要清除
@@ -373,7 +365,7 @@ namespace GameFramework
 
         public override void Update()
         {
-            this.TimeNow = (uint)(TimeHelper.ClientNow() - this.m_StartTime);
+            base.Update();
 
             this.Recv();
 

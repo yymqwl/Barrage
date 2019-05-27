@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using GameFramework;
 
-namespace GameMain
+namespace GameFramework
 {
     public abstract class AGameTimer
     {

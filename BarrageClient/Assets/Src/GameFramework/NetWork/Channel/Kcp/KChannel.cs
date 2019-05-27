@@ -31,26 +31,15 @@ namespace GameFramework
 
         private readonly IPEndPoint m_RemoteEndPoint;
 
-        private uint m_LastRecvTime;
+        //private uint m_LastRecvTime;
 
-        private readonly uint m_CreateTime;
+        //private readonly uint m_CreateTime;
 
-        private ChannelState m_ChannelState = ChannelState.EConnecting;
         public uint RemoteConn { get; private set; }
-
-
-        public override ChannelState ChannelState => m_ChannelState;
-        public bool IsConnected { get { return ChannelState == ChannelState.EConnected; } }
 
         private readonly MemoryStream m_MemoryStream;
 
-        public override bool IsDisposed
-        {
-            get
-            {
-                return (m_Socket == null);
-            }
-        }
+
 
         // Accept
         public KChannel(uint localConn, uint remoteConn, Socket m_Socket, IPEndPoint m_RemoteEndPoint, KService kService) : base(kService, ChannelType.Accept)
@@ -70,8 +59,9 @@ namespace GameFramework
             Kcp.KcpWndsize(this.m_Kcp, 256, 256);
             Kcp.KcpSetmtu(this.m_Kcp, 470);
             ///
-            this.m_LastRecvTime = kService.TimeNow;
-            this.m_CreateTime = kService.TimeNow;
+
+            
+
             this.Accept();
         }
 
@@ -82,8 +72,8 @@ namespace GameFramework
             this.LocalConn = localConn;
             this.m_Socket = m_Socket;
             this.m_RemoteEndPoint = m_RemoteEndPoint;
-            this.m_LastRecvTime = kService.TimeNow;
-            this.m_CreateTime = kService.TimeNow;
+
+
             this.Connect();
         }
 
@@ -108,7 +98,6 @@ namespace GameFramework
 
             base.Dispose();
 
-            this.Disconnect();
 
             if (this.m_Kcp != IntPtr.Zero)
             {
@@ -156,7 +145,7 @@ namespace GameFramework
             HandleSend();
         }
 
-        private void Accept()
+        protected override void Accept()
         {
             if (this.m_Socket == null)
             {
@@ -186,7 +175,7 @@ namespace GameFramework
         /// <summary>
         /// 发送请求连接消息
         /// </summary>
-        private void Connect()
+        protected override void Connect()
         {
             if(IsDisposed)
             {
@@ -213,9 +202,9 @@ namespace GameFramework
             }
         }
 
-        public void Disconnect()
+        public override  void DisConnect()
         {
-            if(!IsConnected)
+            if(m_ChannelState == ChannelState.EDisConnected)//已断开不作处理
             {
                 return;
             }
@@ -238,6 +227,9 @@ namespace GameFramework
                 Log.Error(e);
                 this.OnError(ErrorCode.ERR_SocketCantSend);
             }
+
+            GetService().OnDisConnected(this);
+
         }
 
         public void Update()
@@ -254,7 +246,7 @@ namespace GameFramework
                 // 10秒没连接上直接从Service删除刷新
                 if (timeNow - this.m_CreateTime > NetWorkConstant.Kcp_Connecting_Time)
                 {
-                    OutOfTime();
+                    TimeOut();
                     this.OnError(ErrorCode.ERR_KcpCantConnect);
                     return;
                 }
@@ -279,7 +271,7 @@ namespace GameFramework
             ///10S未连接直接删除刷新
             if (timeNow - this.m_LastRecvTime > NetWorkConstant.KcpIdleSessionTimeOut)
             {
-                OutOfTime();
+                TimeOut();
                 return;
             }
 
@@ -308,10 +300,9 @@ namespace GameFramework
         /// <summary>
         /// 超时直接释放
         /// </summary>
-        private void OutOfTime()
+        private void TimeOut()
         {
-            //m_ChannelState = ChannelState.EDisConnected;
-            //Dispose();
+            DisConnect();
         }
 
         private void HandleSend()
@@ -370,14 +361,12 @@ namespace GameFramework
                 }
 
                 this.m_LastRecvTime = this.GetService().TimeNow;
+                m_ChannelState = ChannelState.EConnected;
 
-                this.OnRead(this.m_MemoryStream);
+                this.OnRead(this,this.m_MemoryStream);
             }
         }
 
-        public override void Start()
-        {
-        }
 
         public void Output(IntPtr bytes, int count)
         {

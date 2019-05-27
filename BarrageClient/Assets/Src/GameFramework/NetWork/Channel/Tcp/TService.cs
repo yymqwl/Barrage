@@ -18,14 +18,19 @@ namespace GameFramework
 
         public HashSet<long> m_NeedStartSendChannel = new HashSet<long>();
 
+        public HashSet<TChannel> m_OutTimeChannel = new HashSet<TChannel>();
         public int PacketSizeLength { get; }
 
+
+        UpdateTime m_UpdateTime;
         /// <summary>
         /// 即可做client也可做server
         /// </summary>
-        public TService(int packetSizeLength, IPEndPoint ipEndPoint, Action<AChannel> acceptCallback)
+        public TService(int packetSizeLength, IPEndPoint ipEndPoint, Action<AChannel> acceptCallback) : base()
         {
             this.PacketSizeLength = packetSizeLength;
+            m_UpdateTime = new UpdateTime(NetWorkConstant.Tcp_CheckIdleInternal);
+            m_UpdateTime.Evt_Act += CheckTimeOut;
             this.AcceptCallback += acceptCallback;
 
             this.m_Acceptor = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -33,14 +38,16 @@ namespace GameFramework
             this.m_InnArgs.Completed += this.OnComplete;
 
             this.m_Acceptor.Bind(ipEndPoint);
-            this.m_Acceptor.Listen(1000);
-
+            this.m_Acceptor.Listen(NetWorkConstant.Tcp_ListenLen);
+            
             this.AcceptAsync();
         }
 
         public TService(int packetSizeLength)
         {
             this.PacketSizeLength = packetSizeLength;
+            m_UpdateTime = new UpdateTime(NetWorkConstant.Tcp_CheckIdleInternal);
+            m_UpdateTime.Evt_Act += CheckTimeOut;
         }
 
         public override void Dispose()
@@ -56,6 +63,7 @@ namespace GameFramework
             this.m_Acceptor?.Close();
             this.m_Acceptor = null;
             this.m_InnArgs.Dispose();
+            m_UpdateTime.Dispose();
         }
 
         private void OnComplete(object sender, SocketAsyncEventArgs e)
@@ -157,6 +165,8 @@ namespace GameFramework
 
         public override void Update()
         {
+            base.Update();
+
             foreach (long id in this.m_NeedStartSendChannel)
             {
                 TChannel channel;
@@ -181,6 +191,25 @@ namespace GameFramework
             }
 
             this.m_NeedStartSendChannel.Clear();
+            
+            m_UpdateTime.Update(ClientTimer.Instance.DeltaTime);
+
+        }
+        public void CheckTimeOut()
+        {
+            m_OutTimeChannel.Clear();
+            m_IdChannels.Dict_Foreach((long id,TChannel tc)=>
+            {
+                if(TimeNow- tc.LastRecvTime >= NetWorkConstant.Tcp_TimeOut)
+                {
+                    m_OutTimeChannel.Add(tc);
+                }
+            });
+            foreach (TChannel tc in m_OutTimeChannel)
+            {
+                tc.DisConnect();
+            }
+            //Log.Debug("CheckTimeOut");
         }
     }
 }

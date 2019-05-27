@@ -27,17 +27,15 @@ namespace GameFramework
 
         private bool m_IsRecving;
 
-        private bool m_IsConnected;
-
         private readonly PacketParser m_Parser;
 
-        private readonly byte[] PacketSizeCache;
+        private readonly byte[] m_PacketSizeCache;
 
         public TChannel(IPEndPoint ipEndPoint, TService service) : base(service, ChannelType.Connect)
         {
             int packetSize = this.GetService().PacketSizeLength;
-            this.PacketSizeCache = new byte[packetSize];
-            this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
+            this.m_PacketSizeCache = new byte[packetSize];
+            this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
 
             this.m_Socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             this.m_Socket.NoDelay = true;
@@ -47,15 +45,17 @@ namespace GameFramework
 
             this.RemoteAddress = ipEndPoint;
 
-            this.m_IsConnected = false;
             this.m_IsSending = false;
+            m_ChannelState = ChannelState.EDisConnected;
+            m_LastRecvTime = GetService().TimeNow;
+            Connect();
         }
 
         public TChannel(Socket m_Socket, TService service) : base(service, ChannelType.Accept)
         {
             int packetSize = this.GetService().PacketSizeLength;
-            this.PacketSizeCache = new byte[packetSize];
-            this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream("message", ushort.MaxValue);
+            this.m_PacketSizeCache = new byte[packetSize];
+            this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
 
             this.m_Socket = m_Socket;
             this.m_Socket.NoDelay = true;
@@ -65,8 +65,11 @@ namespace GameFramework
 
             this.RemoteAddress = (IPEndPoint)m_Socket.RemoteEndPoint;
 
-            this.m_IsConnected = true;
+            //this.m_IsConnected = true;
             this.m_IsSending = false;
+            m_ChannelState = ChannelState.EConnected;
+            m_LastRecvTime = GetService().TimeNow;
+            Accept();
         }
 
         public override void Dispose()
@@ -100,6 +103,27 @@ namespace GameFramework
             }
         }
 
+
+        protected override void Connect()
+        {
+            base.Connect();
+            if (m_ChannelState == ChannelState.EDisConnected)
+            {
+                this.ConnectAsync(this.RemoteAddress);
+                return;
+            }
+        }
+        protected override void Accept()
+        {
+            base.Accept();
+            if (!this.m_IsRecving)
+            {
+                this.m_IsRecving = true;
+                this.StartRecv();
+            }
+            this.GetService().MarkNeedStartSend(this.Id);
+        }
+        /*
         public override void Start()
         {
             if (!this.m_IsConnected)
@@ -115,7 +139,7 @@ namespace GameFramework
             }
 
             this.GetService().MarkNeedStartSend(this.Id);
-        }
+        }*/
 
         public override void Send(MemoryStream stream)
         {
@@ -124,6 +148,7 @@ namespace GameFramework
                 throw new Exception("TChannel已经被Dispose, 不能发送消息");
             }
 
+            this.m_LastRecvTime = GetService().TimeNow;
             switch (this.GetService().PacketSizeLength)
             {
                 case Packet.PacketSizeLength4:
@@ -131,20 +156,20 @@ namespace GameFramework
                     {
                         throw new Exception($"send packet too large: {stream.Length}");
                     }
-                    this.PacketSizeCache.WriteTo(0, (int)stream.Length);
+                    this.m_PacketSizeCache.WriteTo(0, (int)stream.Length);
                     break;
                 case Packet.PacketSizeLength2:
                     if (stream.Length > ushort.MaxValue)
                     {
                         throw new Exception($"send packet too large: {stream.Length}");
                     }
-                    this.PacketSizeCache.WriteTo(0, (ushort)stream.Length);
+                    this.m_PacketSizeCache.WriteTo(0, (ushort)stream.Length);
                     break;
                 default:
                     throw new Exception("packet size must be 2 or 4!");
             }
 
-            this.m_SendBuffer.Write(this.PacketSizeCache, 0, this.PacketSizeCache.Length);
+            this.m_SendBuffer.Write(this.m_PacketSizeCache, 0, this.m_PacketSizeCache.Length);
             this.m_SendBuffer.Write(stream);
 
             this.GetService().MarkNeedStartSend(this.Id);
@@ -171,8 +196,9 @@ namespace GameFramework
             }
         }
 
-        public void ConnectAsync(IPEndPoint ipEndPoint)
+        private void ConnectAsync(IPEndPoint ipEndPoint)
         {
+            m_ChannelState = ChannelState.EConnecting;
             this.m_OutArgs.RemoteEndPoint = ipEndPoint;
             if (this.m_Socket.ConnectAsync(this.m_OutArgs))
             {
@@ -196,13 +222,35 @@ namespace GameFramework
             }
 
             e.RemoteEndPoint = null;
-            this.m_IsConnected = true;
+            m_ChannelState = ChannelState.EConnected;
 
-            this.Start();
+            //接收线程
+            if (!this.m_IsRecving)
+            {
+                this.m_IsRecving = true;
+                this.StartRecv();
+            }
+            this.GetService().MarkNeedStartSend(this.Id);
+
+        }
+        public override void DisConnect()
+        {
+            if(IsDisposed)
+            {
+                return;
+            }
+            if(m_ChannelState != ChannelState.EDisConnected)
+            {
+                m_Socket.Disconnect(false);
+                m_ChannelState = ChannelState.EDisConnected;
+                OnError(ErrorCode.ERR_SelfDisconnect);
+                GetService().OnDisConnected(this);
+            }
         }
 
         private void OnDisconnectComplete(object o)
         {
+            m_ChannelState = ChannelState.EDisConnected;
             SocketAsyncEventArgs e = (SocketAsyncEventArgs)o;
             this.OnError((int)e.SocketError);
         }
@@ -242,12 +290,14 @@ namespace GameFramework
             if (e.SocketError != SocketError.Success)
             {
                 this.OnError((int)e.SocketError);
+                DisConnect();
                 return;
             }
 
             if (e.BytesTransferred == 0)
             {
                 this.OnError(ErrorCode.ERR_PeerDisconnect);
+                DisConnect();
                 return;
             }
 
@@ -257,7 +307,7 @@ namespace GameFramework
                 this.m_RecvBuffer.AddLast();
                 this.m_RecvBuffer.LastIndex = 0;
             }
-
+            m_LastRecvTime = GetService().TimeNow;//激活时间
             // 收到消息回调
             while (true)
             {
@@ -272,12 +322,13 @@ namespace GameFramework
                 {
                     Log.Error(ee);
                     this.OnError(ErrorCode.ERR_SocketError);
+                    DisConnect();
                     return;
                 }
 
                 try
                 {
-                    this.OnRead(this.m_Parser.GetPacket());
+                    this.OnRead(this,this.m_Parser.GetPacket());
                 }
                 catch (Exception ee)
                 {
@@ -297,7 +348,7 @@ namespace GameFramework
 
         public void StartSend()
         {
-            if (!this.m_IsConnected)
+            if (!this.IsConnected)
             {
                 return;
             }
@@ -348,12 +399,14 @@ namespace GameFramework
             if (e.SocketError != SocketError.Success)
             {
                 this.OnError((int)e.SocketError);
+                DisConnect();
                 return;
             }
 
             if (e.BytesTransferred == 0)
             {
                 this.OnError(ErrorCode.ERR_PeerDisconnect);
+                DisConnect();
                 return;
             }
 
@@ -366,5 +419,14 @@ namespace GameFramework
 
             this.StartSend();
         }
+        /*
+        public void CheckTimeOut()
+        {
+            if(GetService().TimeNow - m_LastRecvTime >= NetWorkConstant.Tcp_TimeOut)
+            {
+                DisConnect();
+            }
+        }*/
+    
     }
 }

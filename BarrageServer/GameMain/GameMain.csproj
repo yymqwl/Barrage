@@ -12,4 +12,8 @@
     <ProjectReference Include="..\GameFramework\GameFramework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="GameMain\Timer\" />
+  </ItemGroup>
+
 </Project>

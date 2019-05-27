@@ -27,6 +27,8 @@
         public const int ERR_SocketCantSend = 102009;
         public const int ERR_SocketError = 102010;
         public const int ERR_KcpWaitSendSizeTooLarge = 102011;
+        public const int ERR_SelfDisconnect = 102012;
+
 
         public const int ERR_WebsocketPeerReset = 103001;
         public const int ERR_WebsocketMessageTooBig = 103002;

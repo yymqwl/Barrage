@@ -24,7 +24,7 @@ namespace GameMain
 
         }
 
-        public virtual void Main(string[] args)
+        public virtual void Entry(string[] args)
         {
 
             m_IsLoop = true;
@@ -32,15 +32,14 @@ namespace GameMain
             SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
             try
             {
-
+                ClientTimer.Instance.Start();
                 Init();
-                ServerTimer.Instance.Start();
                 while (m_IsLoop)
                 {
                     try
                     {
                         Thread.Sleep(GameConstant.TThreadInternal);
-                        ServerTimer.Instance.Update();
+                        ClientTimer.Instance.Update();
                         m_GameModuleManager.Update();
                         OneThreadSynchronizationContext.Instance.Update();
                     }

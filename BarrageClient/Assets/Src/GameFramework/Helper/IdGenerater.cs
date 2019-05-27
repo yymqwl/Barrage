@@ -2,7 +2,7 @@
 {
     public static class IdGenerater
     {
-        public static long AppId { private get; set; }
+        public static long AppId {  get; set; }
 
         private static ushort value;
 

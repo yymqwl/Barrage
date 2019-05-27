@@ -14,7 +14,7 @@ public class TestKcp : MonoBehaviour
     void Start()
     {
         m_KService = new KService();
-        m_KService.RemoveCallback += KService_DisConnectCallback;
+        m_KService.DisConnectedCallback += KService_DisConnectCallback;
 
         /*
         m_kChannel = (KChannel)m_KService.ConnectChannel(NetHelper.ToIPEndPoint("127.0.0.1", 2000));
@@ -48,7 +48,7 @@ public class TestKcp : MonoBehaviour
         }
         if (GUILayout.Button("DisConnect", GUILayout.Width(200)))
         {
-            m_kChannel.Disconnect();
+            m_kChannel.DisConnect();
         }
         if (GUILayout.Button("Send",GUILayout.Width(200)) )
         {

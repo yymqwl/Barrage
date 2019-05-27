@@ -6,26 +6,26 @@ using GameFramework;
 namespace GameMain
 {
 
-    [GameFrameworkModule()]
+    //[GameFrameworkModule()]
     public class TestKcpMd : GameFrameworkModule
     {
         KService m_KService;
 
         public override bool Init()
         {
+            IdGenerater.AppId = 10;
             m_KService = new KService(NetHelper.ToIPEndPoint("127.0.0.1", 2000), Accept);
-            m_KService.RemoveCallback += Service_DisConnectCallback;
+            m_KService.DisConnectedCallback += Service_DisConnectCallback;
             Log.Debug("TestKcpMd");
             return base.Init();
         }
 
         private void Service_DisConnectCallback(AChannel ac)
         {
-          
             Log.Debug($"{ac.Id}:disconnect");
         }
 
-        private void Ac_ReadCallback(MemoryStream ms)
+        private void Ac_ReadCallback(AChannel ac,MemoryStream ms)
         {
             Log.Debug(Encoding.UTF8.GetString(ms.ToArray()));
         }

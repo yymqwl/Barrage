@@ -7,7 +7,7 @@ namespace GameMain
     public interface IGameMainEntry
     {
         IGameModuleManager GameModuleManager { get; }
-        void Main(string[] args);
+        void Entry(string[] args);
 
         bool IsLoop { get; set; }
     }
