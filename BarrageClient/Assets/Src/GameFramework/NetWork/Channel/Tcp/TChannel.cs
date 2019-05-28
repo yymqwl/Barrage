@@ -419,14 +419,6 @@ namespace GameFramework
 
             this.StartSend();
         }
-        /*
-        public void CheckTimeOut()
-        {
-            if(GetService().TimeNow - m_LastRecvTime >= NetWorkConstant.Tcp_TimeOut)
-            {
-                DisConnect();
-            }
-        }*/
     
     }
 }

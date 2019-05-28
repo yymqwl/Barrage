@@ -7,16 +7,22 @@ using System.Threading.Tasks;
 
 namespace GameFramework
 {
-    public abstract class NetworkBv : ABehaviour
+    public abstract class NetworkBS : ABehaviourSet
     {
         protected AService m_AService;
-        private readonly Dictionary<long, Session> m_Dict_Sessions = new Dictionary<long, Session>();
-        private NetworkProtocol m_NetworkProtocol;
-        private ChannelType m_ChannelType;
-        private string m_StrIpEndPoint;
+        protected readonly Dictionary<long, Session> m_Dict_Sessions = new Dictionary<long, Session>();
+        protected NetworkProtocol m_NetworkProtocol;
+
+        protected ChannelType m_ChannelType;
+        protected string m_StrIpEndPoint;
+        protected OpCodeTypeBv m_OpCodeTypeBv;
+
+        public IMessagePacker MessagePacker { get; set; }
         public NetworkProtocol NetworkProtocol { get { return m_NetworkProtocol; } }
         public string StrIpEndPoint { get { return m_StrIpEndPoint; } } 
-        public NetworkBv(NetworkProtocol networkProtocol, ChannelType channelType,string StrIpEndPoint)
+        public OpCodeTypeBv OpCodeTypeBv { get { return m_OpCodeTypeBv; } }
+        public IMessageDispatcher MessageDispatcher { get; set; }
+        public NetworkBS(NetworkProtocol networkProtocol, ChannelType channelType,string StrIpEndPoint)
         {
             m_NetworkProtocol = networkProtocol;
             m_ChannelType = channelType;
@@ -75,9 +81,6 @@ namespace GameFramework
         protected void OnAccept(AChannel channel)
         {
             Session session =  Create(channel);
-            //Session session = ComponentFactory.CreateWithParent<Session, AChannel>(this, channel);
-            //this.sessions.Add(session.Id, session);
-            //session.Start();
         }
         public virtual void Remove(long id)
         {

@@ -12,8 +12,10 @@ namespace GameFramework
     {
         private AChannel m_AChannel;
 
+        //
+        private readonly List<byte[]> m_List_Bytes = new List<byte[]>() { new byte[1], new byte[2] };
 
-        
+
         public AChannel AChannel
         {
             get
@@ -43,6 +45,17 @@ namespace GameFramework
                 return m_AChannel.IsConnected;
             }
         }
+        public int Error
+        {
+            get
+            {
+                return this.AChannel.Error;
+            }
+            set
+            {
+                this.AChannel.Error = value;
+            }
+        }
         public IPEndPoint RemoteAddress
         {
             get
@@ -50,11 +63,18 @@ namespace GameFramework
                 return this.m_AChannel.RemoteAddress;
             }
         }
-        public NetworkBv Network
+        public NetworkBS Network
         {
             get
             {
-                return this.GetParent<NetworkBv>();
+                return this.GetParent<NetworkBS>();
+            }
+        }
+        public MemoryStream Stream
+        {
+            get
+            {
+                return this.AChannel.Stream;
             }
         }
 
@@ -65,18 +85,62 @@ namespace GameFramework
         }
         public void OnRead(AChannel ac,MemoryStream memoryStream)
         {
+            byte flag = 0;
+            ushort opcode = 0;
+            object message = null;
             try
             {
-
+                memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
+                flag = memoryStream.GetBuffer()[Packet.FlagIndex];
+                opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
+                message = Network.OpCodeTypeBv.GetInstance(opcode);
             }
             catch (Exception e)
             {
-                Log.Error(e);
+                // 出现任何消息解析异常都要断开Session，防止客户端伪造消息
+                Log.Error($"opcode:{opcode}:{e}");
+                this.Error = ErrorCode.ERR_PacketParserError;
+                this.Network.Remove(this.Id);
+                return;
             }
+            Network.MessageDispatcher.Dispatch(this,opcode, message);
+            
         }
         public void Send(MemoryStream stream)
         {
             m_AChannel.Send(stream);
+        }
+
+        public void Send(IMessage message)
+        {
+            this.Send(0x00, message);
+        }
+
+        public void Send(byte flag, IMessage message)
+        {
+           ushort opcode = Network.OpCodeTypeBv.GetOpcode(message.GetType());
+           Send(flag,opcode,message);
+
+        }
+        public void Send(byte flag, ushort opcode, object message)
+        {
+            MemoryStream stream = this.Stream;
+            stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
+            stream.SetLength(Packet.MessageIndex);
+
+            Network.MessagePacker.SerializeTo(message, stream);
+            stream.Seek(0, SeekOrigin.Begin);
+
+            m_List_Bytes[0][0] = flag;
+            m_List_Bytes[1].WriteTo(0, opcode);
+            int index = 0;
+            foreach (var bytes in this.m_List_Bytes)
+            {
+                Array.Copy(bytes, 0, stream.GetBuffer(), index, bytes.Length);
+                index += bytes.Length;
+            }
+            this.Send(stream);
+
         }
         public override bool Init()
         {

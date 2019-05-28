@@ -1,15 +1,13 @@
-﻿using GameFramework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
-namespace GameMain
+namespace GameFramework
 {
     /// <summary>
     /// 游戏框架入口
     /// </summary>
-    public class GameModuleManager : IGameModuleManager
+    public partial class GameModuleManager : TInstance<GameModuleManager>, IGameModuleManager
     {
         public string GameModuleVersion => "1.1.0";
         protected LinkedList<GameFrameworkModule> m_GameFrameworkModules = new LinkedList<GameFrameworkModule>();
@@ -20,6 +18,8 @@ namespace GameMain
                 return m_GameFrameworkModules;
             }
         }
+
+        protected Dictionary<Type, GameFrameworkModule> m_Dict_LoopUp = new Dictionary<Type, GameFrameworkModule>();
 
 
         /// <summary>
@@ -75,11 +75,19 @@ namespace GameMain
         /// <summary>
         /// 获取游戏框架模块。
         /// </summary>
-        public T GetModule<T>() where T : class
+        public T GetModule<T>() where T : GameFrameworkModule
         {
 
             Type interfaceType = typeof(T);
-            return GetModule(interfaceType) as T;
+            GameFrameworkModule gfm;
+            if(m_Dict_LoopUp.TryGetValue(interfaceType, out gfm))
+            {
+                return gfm as T;
+            }
+            gfm = GetModule(interfaceType);
+            m_Dict_LoopUp.Add(interfaceType, gfm);
+            return gfm as T;
+            //return GetModule(interfaceType) as T;
         }
         /// <summary>
         /// 获取游戏框架模块。

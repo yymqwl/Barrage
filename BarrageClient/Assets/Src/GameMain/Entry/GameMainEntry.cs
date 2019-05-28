@@ -11,17 +11,16 @@ namespace GameMain
 {
     public class GameMainEntry : UInstance<GameMainEntry>, IGameMainEntry
     {
-        public IGameModuleManager GameModuleManager => m_GameModuleManager;
+        //public IGameModuleManager GameModuleManager => GameModuleManager.Instance;
 
-        protected IGameModuleManager m_GameModuleManager;
+        //protected IGameModuleManager m_GameModuleManager;
         
         public void Entry(string[] args)
         {
             SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
             ClientTimer.Instance.Start();
-            m_GameModuleManager =  new GameModuleManager();
-            m_GameModuleManager.CreateModules(typeof(GameMainEntry).Assembly);
-            m_GameModuleManager.Init();
+            GameModuleManager.Instance.CreateModules(typeof(GameMainEntry).Assembly);
+            GameModuleManager.Instance.Init();
             
 
         }
@@ -37,8 +36,7 @@ namespace GameMain
         }
         public void OnApplicationQuit()
         {
-            m_GameModuleManager.Shutdown();
-            m_GameModuleManager = null;
+            GameModuleManager.Instance.Shutdown();
             Log.Debug($"OnApplicationQuit");
         }
 
@@ -47,7 +45,7 @@ namespace GameMain
             try
             {
                 ClientTimer.Instance.Update();
-                m_GameModuleManager.Update();
+                GameModuleManager.Instance.Update();
                 OneThreadSynchronizationContext.Instance.Update();
             }
             catch(Exception e)

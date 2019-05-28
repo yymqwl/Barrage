@@ -45,7 +45,7 @@ namespace GameMain
                     switch (console_Command.CommandType)
                     {
                         case "quit":
-                            TestGameEntry.Instance.IsLoop = false;
+                            GameMainEntry.Instance.IsLoop = false;
                             break;
                         default: break;
                     }

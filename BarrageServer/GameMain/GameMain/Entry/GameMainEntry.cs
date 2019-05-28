@@ -8,20 +8,20 @@ namespace GameMain
 {
     public class GameMainEntry : IGameMainEntry
     {
-        public IGameModuleManager GameModuleManager => m_GameModuleManager;
+        public static GameMainEntry Instance { get; } = new GameMainEntry();
+
 
         protected bool m_IsLoop;
         public bool IsLoop { get => m_IsLoop; set { m_IsLoop = value; } }
 
-        protected IGameModuleManager m_GameModuleManager;
-
         protected virtual void Init()
         {
-
+            GameModuleManager.Instance.CreateModules(typeof(GameMainEntry).Assembly);
+            GameModuleManager.Instance.Init();
         }
         protected virtual void ShutDown()
         {
-
+            GameModuleManager.Instance.Shutdown();
         }
 
         public virtual void Entry(string[] args)
@@ -40,7 +40,7 @@ namespace GameMain
                     {
                         Thread.Sleep(GameConstant.TThreadInternal);
                         ClientTimer.Instance.Update();
-                        m_GameModuleManager.Update();
+                        GameModuleManager.Instance.Update();
                         OneThreadSynchronizationContext.Instance.Update();
                     }
                     catch (Exception e)
