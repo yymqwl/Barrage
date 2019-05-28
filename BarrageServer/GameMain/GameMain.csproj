@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
@@ -13,7 +13,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="GameMain\Timer\" />
+    <Compile Include="..\..\BarrageClient\Assets\Src\GameMain\Message\Common.cs">
+      <Link>GameMain\Message\Common.cs</Link>
+    </Compile>
+    <Compile Include="..\..\BarrageClient\Assets\Src\GameMain\Message\Common_Ext.cs">
+      <Link>GameMain\Message\Common_Ext.cs</Link>
+    </Compile>
+    <Compile Include="..\..\BarrageClient\Assets\Src\GameMain\Message\GameMainOpCode.cs">
+      <Link>GameMain\Message\GameMainOpCode.cs</Link>
+    </Compile>
   </ItemGroup>
 
 </Project>

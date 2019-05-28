@@ -22,6 +22,10 @@ public class TestAc : MonoBehaviour
         {
             m_AService = new KService();
         }
+        else if(ChannelType == NetworkProtocol.WebSocket)
+        {
+            m_AService = new WService();
+        }
 
         m_AService.DisConnectedCallback += AService_DisConnectedCallback;
     }
@@ -96,7 +100,33 @@ public class TestAc : MonoBehaviour
             }
             GUILayout.EndVertical();
         }
-      
+        else if (ChannelType == NetworkProtocol.WebSocket)
+        {
+            GUILayout.BeginVertical();
+            if (GUILayout.Button("Connect", GUILayout.Width(200)))
+            {
+                m_AChannel = m_AService.ConnectChannel("ws://127.0.0.1:3000/");
+                m_AChannel.ReadCallback += AChannel_ReadCallback;
+            }
+
+            if (GUILayout.Button("Send", GUILayout.Width(200)))
+            {
+                using (var mem = new MemoryStream())
+                {
+                    var word_byts = Encoding.UTF8.GetBytes("Hello websocket!");
+                    mem.Write(word_byts, 0, word_byts.Length);
+                    mem.Position = 0;
+                    m_AChannel.Send(mem);
+                }
+
+            }
+
+            if (GUILayout.Button("DisConnect", GUILayout.Width(200)))
+            {
+                m_AChannel.DisConnect();
+            }
+            GUILayout.EndVertical();
+        }
 
     }
 

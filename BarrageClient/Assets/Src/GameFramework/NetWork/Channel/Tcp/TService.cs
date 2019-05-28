@@ -43,7 +43,7 @@ namespace GameFramework
             this.AcceptAsync();
         }
 
-        public TService(int packetSizeLength)
+        public TService(int packetSizeLength = Packet.PacketSizeLength2)
         {
             this.PacketSizeLength = packetSizeLength;
             m_UpdateTime = new UpdateTime(NetWorkConstant.Tcp_CheckIdleInternal);

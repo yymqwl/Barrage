@@ -7,6 +7,9 @@ using Microsoft.IO;
 
 namespace GameFramework
 {
+    /// <summary>
+    /// 断开连接,还有异常问题未解决
+    /// </summary>
     public class WService : AService
     {
         private readonly HttpListener m_HttpListener;

@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+
+package GameMain.Msg;
+
+message Ping_Msg
+{
+	int64 time = 1;
+}
+
+message ReConnect_Msg
+{
+	int32 m_time=1;
+}
+
+message GetTime_Req
+{
+	int32 m_result=1;
+}
+message GetTime_Res
+{
+	int64 m_time=1;//Ê±¼ä
+}
