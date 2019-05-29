@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameFramework
 {
-    public abstract class NetworkBS : ABehaviourSet
+    public abstract class NetWorkBs: ABehaviourSet
     {
         protected AService m_AService;
         protected readonly Dictionary<long, Session> m_Dict_Sessions = new Dictionary<long, Session>();
@@ -15,20 +15,46 @@ namespace GameFramework
 
         protected ChannelType m_ChannelType;
         protected string m_StrIpEndPoint;
+        
         protected OpCodeTypeBv m_OpCodeTypeBv;
-
+        protected MessageDispatherBv m_MessageDispatherBv;
+        
         public IMessagePacker MessagePacker { get; set; }
         public NetworkProtocol NetworkProtocol { get { return m_NetworkProtocol; } }
         public string StrIpEndPoint { get { return m_StrIpEndPoint; } } 
-        public OpCodeTypeBv OpCodeTypeBv { get { return m_OpCodeTypeBv; } }
-        public IMessageDispatcher MessageDispatcher { get; set; }
-        public NetworkBS(NetworkProtocol networkProtocol, ChannelType channelType,string StrIpEndPoint)
+        public OpCodeTypeBv OpCodeTypeBv
+        {
+            get
+            {
+                if(m_OpCodeTypeBv == null)
+                {
+                    m_OpCodeTypeBv = GetIBehaviour<OpCodeTypeBv>();
+                }
+                return m_OpCodeTypeBv;
+            }
+        }
+        public MessageDispatherBv MessageDispatherBv {
+            get
+            {
+                if(m_MessageDispatherBv==null)
+                {
+                    m_MessageDispatherBv = GetIBehaviour<MessageDispatherBv>();
+                }
+                return m_MessageDispatherBv;
+            }
+        }
+        //public IMessageDispatcher MessageDispatcher { get; set; }
+        /*
+        public NetworkRoot(NetworkProtocol networkProtocol, ChannelType channelType,string StrIpEndPoint)
         {
             m_NetworkProtocol = networkProtocol;
             m_ChannelType = channelType;
             m_StrIpEndPoint = StrIpEndPoint;
+        }*/
 
-        }
+
+        
+       
         public override bool Init()
         {
             if(m_ChannelType == ChannelType.Connect)
@@ -68,6 +94,8 @@ namespace GameFramework
                             this.m_AService = new WService(prefixs, this.OnAccept);
                             break;
                     }
+                    this.m_AService.DisConnectedCallback += OnDisConnected;
+
                 }
                 catch (Exception e)
                 {
@@ -78,9 +106,20 @@ namespace GameFramework
 
             return base.Init();
         }
+
+        private void OnDisConnected(AChannel ac)
+        {
+            Log.Debug($"session disconnect {ac.Id}");
+            Remove(ac.Id);
+        }
+
         protected void OnAccept(AChannel channel)
         {
             Session session =  Create(channel);
+        }
+        public virtual void Remove(Session session)
+        {
+            Remove(session.Id);
         }
         public virtual void Remove(long id)
         {
@@ -90,7 +129,6 @@ namespace GameFramework
                 return;
             }
             this.m_Dict_Sessions.Remove(id);
-            session.Shut();
         }
         public Session Get(long id)
         {
@@ -132,13 +170,16 @@ namespace GameFramework
             }
             m_AService.Update();
         }
-        public override bool Shut()
+        public override bool ShutDown()
         {
-            bool pret= base.Shut();
-            foreach (var session in this.m_Dict_Sessions.Values)
+            bool pret= base.ShutDown();
+
+            var sessions = this.m_Dict_Sessions.Values.ToList();
+            foreach (var session in sessions)
             {
-                session.Shut();
+                session.ShutDown();
             }
+
             m_AService.Dispose();
             return pret;
         }

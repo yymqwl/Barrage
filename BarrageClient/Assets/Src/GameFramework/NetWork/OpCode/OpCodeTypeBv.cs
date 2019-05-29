@@ -9,20 +9,18 @@ namespace GameFramework
     {
         private readonly DoubleMap<ushort, Type> m_OpCodeTypes = new DoubleMap<ushort, Type>();
 
-        private readonly Dictionary<ushort, object> m_TypeMessages = new Dictionary<ushort, object>();
+        private readonly Dictionary<ushort, IMessage> m_TypeMessages = new Dictionary<ushort, IMessage>();
 
         public override bool Init()
         {
-            m_OpCodeTypes.Clear();
-            m_TypeMessages.Clear();
-
             return base.Init();
         }
+        
         public void Load(Assembly assembly)
         {
-            
-            
-            foreach (Type type in assembly.GetTypes())
+
+            var types = AssemblyManager.Instance.GetAllTypesByAttribute(assembly, typeof(MessageAttribute)); 
+            foreach(Type type in types)
             {
                 object[] attrs = type.GetCustomAttributes(typeof(MessageAttribute), false);
                 if (attrs.Length == 0)
@@ -35,10 +33,8 @@ namespace GameFramework
                     continue;
                 }
                 this.m_OpCodeTypes.Add(messageAttribute.Opcode, type);
-                this.m_TypeMessages.Add(messageAttribute.Opcode, Activator.CreateInstance(type));
-
+                this.m_TypeMessages.Add(messageAttribute.Opcode, (IMessage)Activator.CreateInstance(type));
             }
-            
         }
         public ushort GetOpcode(Type type)
         {
@@ -48,15 +44,20 @@ namespace GameFramework
         {
             return this.m_OpCodeTypes.GetValueByKey(opcode);
         }
-        public object GetInstance(ushort opcode)
+        public IMessage GetInstance(ushort opcode)
         {
-            return this.m_TypeMessages[opcode];
+            Type tp = GetType(opcode);
+            return (IMessage)Activator.CreateInstance(tp);
+            //return (IMessage)Activator.CreateInstance(type);
+            //return this.m_TypeMessages[opcode];
         }
 
 
-        public override bool Shut()
+        public override bool ShutDown()
         {
-            return base.Shut();
+            m_OpCodeTypes.Clear();
+            m_TypeMessages.Clear();
+            return base.ShutDown();
         }
 
 

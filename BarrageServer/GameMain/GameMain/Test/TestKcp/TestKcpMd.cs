@@ -41,11 +41,11 @@ namespace GameMain
             //KService.Instance.Update();
         }
 
-        public override bool Shutdown()
+        public override bool ShutDown()
         {
             m_KService.Dispose();
             //KService.Instance.Dispose();
-            return base.Shutdown();
+            return base.ShutDown();
         }
     }
 }

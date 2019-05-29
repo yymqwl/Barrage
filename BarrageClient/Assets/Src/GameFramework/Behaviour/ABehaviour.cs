@@ -8,6 +8,7 @@ namespace GameFramework
 {
     public abstract class ABehaviour : IBehaviour
     {
+        public virtual int Priority { get { return 0; } }
         public IBehaviour Parent { get; set; }
 
         public virtual bool Init()
@@ -15,7 +16,7 @@ namespace GameFramework
             return true;
         }
 
-        public virtual bool Shut()
+        public virtual bool ShutDown()
         {
             return true;
         }

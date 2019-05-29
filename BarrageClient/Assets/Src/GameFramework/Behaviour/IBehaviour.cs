@@ -8,12 +8,13 @@ namespace GameFramework
 {
     public interface IBehaviour
     {
+        int Priority { get; }
         IBehaviour Parent { get; set; }
 
         T GetParent<T>() where T : class, IBehaviour;
         bool Init();
 
-        bool Shut();
+        bool ShutDown();
 
         void Update();
 

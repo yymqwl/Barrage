@@ -63,11 +63,11 @@ namespace GameFramework
                 return this.m_AChannel.RemoteAddress;
             }
         }
-        public NetworkBS Network
+        public NetWorkBs Network
         {
             get
             {
-                return this.GetParent<NetworkBS>();
+                return this.GetParent<NetWorkBs>();
             }
         }
         public MemoryStream Stream
@@ -87,7 +87,7 @@ namespace GameFramework
         {
             byte flag = 0;
             ushort opcode = 0;
-            object message = null;
+            IMessage message = null;
             try
             {
                 memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
@@ -103,7 +103,7 @@ namespace GameFramework
                 this.Network.Remove(this.Id);
                 return;
             }
-            Network.MessageDispatcher.Dispatch(this,opcode, message);
+            Network.MessageDispatherBv.Handle(this, new MessageInfo(opcode, message));
             
         }
         public void Send(MemoryStream stream)
@@ -124,6 +124,11 @@ namespace GameFramework
         }
         public void Send(byte flag, ushort opcode, object message)
         {
+            if(!IsConnected)
+            {
+                Log.Debug("Session Not Connected");
+            }
+
             MemoryStream stream = this.Stream;
             stream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
             stream.SetLength(Packet.MessageIndex);
@@ -147,12 +152,12 @@ namespace GameFramework
 
             return base.Init();
         }
-        public override bool Shut()
+        public override bool ShutDown()
         {
             Network.Remove(Id);
             m_AChannel.Dispose();
 
-            return base.Shut();
+            return base.ShutDown();
         }
     }
 }

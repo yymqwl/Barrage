@@ -11,10 +11,6 @@ namespace GameMain
 {
     public class GameMainEntry : UInstance<GameMainEntry>, IGameMainEntry
     {
-        //public IGameModuleManager GameModuleManager => GameModuleManager.Instance;
-
-        //protected IGameModuleManager m_GameModuleManager;
-        
         public void Entry(string[] args)
         {
             SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
@@ -36,7 +32,7 @@ namespace GameMain
         }
         public void OnApplicationQuit()
         {
-            GameModuleManager.Instance.Shutdown();
+            GameModuleManager.Instance.ShutDown();
             Log.Debug($"OnApplicationQuit");
         }
 

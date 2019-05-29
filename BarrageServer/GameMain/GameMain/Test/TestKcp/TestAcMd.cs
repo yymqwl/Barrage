@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GameMain
 {
-    [GameFrameworkModule()]
+    //[GameFrameworkModule()]
     public class TestAcMd : GameFrameworkModule
     {
         public NetworkProtocol ChannelType = NetworkProtocol.WebSocket;
@@ -56,10 +56,10 @@ namespace GameMain
         {
             m_AService.Update();
         }
-        public override bool Shutdown()
+        public override bool ShutDown()
         {
             m_AService.Dispose();
-            return base.Shutdown();
+            return base.ShutDown();
         }
     }
 }

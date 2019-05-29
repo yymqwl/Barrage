@@ -21,7 +21,7 @@ namespace GameMain
         }
         protected virtual void ShutDown()
         {
-            GameModuleManager.Instance.Shutdown();
+            GameModuleManager.Instance.ShutDown();
         }
 
         public virtual void Entry(string[] args)

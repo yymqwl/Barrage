@@ -21,3 +21,9 @@ message GetTime_Res
 {
 	int64 m_time=1;//Ê±¼ä
 }
+
+message ListPing_Msg
+{
+	string Str_Ping=1;
+	repeated Ping_Msg Ls_Ping_Msg =2;
+}

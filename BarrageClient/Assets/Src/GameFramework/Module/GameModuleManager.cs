@@ -19,8 +19,6 @@ namespace GameFramework
             }
         }
 
-        protected Dictionary<Type, GameFrameworkModule> m_Dict_LoopUp = new Dictionary<Type, GameFrameworkModule>();
-
 
         /// <summary>
         /// 所有游戏框架模块轮询。
@@ -53,21 +51,21 @@ namespace GameFramework
 
         }
 
-        public void Shutdown()
+        public void ShutDown()
         {
             for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
-                current.Value.BeforeShutdown();
+                current.Value.BeforeShutDown();
             }
 
             for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
-                current.Value.Shutdown();
+                current.Value.ShutDown();
             }
 
             for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
             {
-                current.Value.AfterShutdown();
+                current.Value.AfterShutDown();
             }
 
             m_GameFrameworkModules.Clear();
@@ -79,15 +77,7 @@ namespace GameFramework
         {
 
             Type interfaceType = typeof(T);
-            GameFrameworkModule gfm;
-            if(m_Dict_LoopUp.TryGetValue(interfaceType, out gfm))
-            {
-                return gfm as T;
-            }
-            gfm = GetModule(interfaceType);
-            m_Dict_LoopUp.Add(interfaceType, gfm);
-            return gfm as T;
-            //return GetModule(interfaceType) as T;
+            return GetModule(interfaceType) as T;
         }
         /// <summary>
         /// 获取游戏框架模块。

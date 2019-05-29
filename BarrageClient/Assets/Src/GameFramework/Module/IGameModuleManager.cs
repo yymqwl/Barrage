@@ -12,7 +12,7 @@ namespace GameFramework
         LinkedList<GameFrameworkModule> GameFrameworkModules { get; }
         void Update();
         void Init();
-        void Shutdown();
+        void ShutDown();
         T GetModule<T>() where T : GameFrameworkModule;
         GameFrameworkModule GetModule(Type moduleType);
         void CreateModules(Assembly assembly);

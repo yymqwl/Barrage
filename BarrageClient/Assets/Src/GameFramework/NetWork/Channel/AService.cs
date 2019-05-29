@@ -5,8 +5,8 @@ namespace GameFramework
 {
     public enum NetworkProtocol
     {
-        KCP,
         TCP,
+        KCP,
         WebSocket,
     }
 

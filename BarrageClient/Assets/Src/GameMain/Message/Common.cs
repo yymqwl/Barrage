@@ -27,14 +27,17 @@ namespace GameMain.Msg {
             "Cgxjb21tb24ucHJvdG8SDEdhbWVNYWluLk1zZyIYCghQaW5nX01zZxIMCgR0",
             "aW1lGAEgASgDIh8KDVJlQ29ubmVjdF9Nc2cSDgoGbV90aW1lGAEgASgFIh8K",
             "C0dldFRpbWVfUmVxEhAKCG1fcmVzdWx0GAEgASgFIh0KC0dldFRpbWVfUmVz",
-            "Eg4KBm1fdGltZRgBIAEoA2IGcHJvdG8z"));
+            "Eg4KBm1fdGltZRgBIAEoAyJNCgxMaXN0UGluZ19Nc2cSEAoIU3RyX1BpbmcY",
+            "ASABKAkSKwoLTHNfUGluZ19Nc2cYAiADKAsyFi5HYW1lTWFpbi5Nc2cuUGlu",
+            "Z19Nc2diBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.Ping_Msg), global::GameMain.Msg.Ping_Msg.Parser, new[]{ "Time" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.ReConnect_Msg), global::GameMain.Msg.ReConnect_Msg.Parser, new[]{ "MTime" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.GetTime_Req), global::GameMain.Msg.GetTime_Req.Parser, new[]{ "MResult" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.GetTime_Res), global::GameMain.Msg.GetTime_Res.Parser, new[]{ "MTime" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.GetTime_Res), global::GameMain.Msg.GetTime_Res.Parser, new[]{ "MTime" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.ListPing_Msg), global::GameMain.Msg.ListPing_Msg.Parser, new[]{ "StrPing", "LsPingMsg" }, null, null, null)
           }));
     }
     #endregion
@@ -552,6 +555,155 @@ namespace GameMain.Msg {
             break;
           case 8: {
             MTime = input.ReadInt64();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class ListPing_Msg : pb::IMessage<ListPing_Msg> {
+    private static readonly pb::MessageParser<ListPing_Msg> _parser = new pb::MessageParser<ListPing_Msg>(() => new ListPing_Msg());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<ListPing_Msg> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GameMain.Msg.CommonReflection.Descriptor.MessageTypes[4]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ListPing_Msg() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ListPing_Msg(ListPing_Msg other) : this() {
+      strPing_ = other.strPing_;
+      lsPingMsg_ = other.lsPingMsg_.Clone();
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public ListPing_Msg Clone() {
+      return new ListPing_Msg(this);
+    }
+
+    /// <summary>Field number for the "Str_Ping" field.</summary>
+    public const int StrPingFieldNumber = 1;
+    private string strPing_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string StrPing {
+      get { return strPing_; }
+      set {
+        strPing_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "Ls_Ping_Msg" field.</summary>
+    public const int LsPingMsgFieldNumber = 2;
+    private static readonly pb::FieldCodec<global::GameMain.Msg.Ping_Msg> _repeated_lsPingMsg_codec
+        = pb::FieldCodec.ForMessage(18, global::GameMain.Msg.Ping_Msg.Parser);
+    private readonly pbc::RepeatedField<global::GameMain.Msg.Ping_Msg> lsPingMsg_ = new pbc::RepeatedField<global::GameMain.Msg.Ping_Msg>();
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public pbc::RepeatedField<global::GameMain.Msg.Ping_Msg> LsPingMsg {
+      get { return lsPingMsg_; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as ListPing_Msg);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(ListPing_Msg other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (StrPing != other.StrPing) return false;
+      if(!lsPingMsg_.Equals(other.lsPingMsg_)) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (StrPing.Length != 0) hash ^= StrPing.GetHashCode();
+      hash ^= lsPingMsg_.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (StrPing.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(StrPing);
+      }
+      lsPingMsg_.WriteTo(output, _repeated_lsPingMsg_codec);
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (StrPing.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(StrPing);
+      }
+      size += lsPingMsg_.CalculateSize(_repeated_lsPingMsg_codec);
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(ListPing_Msg other) {
+      if (other == null) {
+        return;
+      }
+      if (other.StrPing.Length != 0) {
+        StrPing = other.StrPing;
+      }
+      lsPingMsg_.Add(other.lsPingMsg_);
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            StrPing = input.ReadString();
+            break;
+          }
+          case 18: {
+            lsPingMsg_.AddEntriesFrom(input, _repeated_lsPingMsg_codec);
             break;
           }
         }

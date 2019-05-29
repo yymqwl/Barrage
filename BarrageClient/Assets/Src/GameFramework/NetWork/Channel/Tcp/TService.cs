@@ -160,7 +160,6 @@ namespace GameFramework
                 return;
             }
             this.m_IdChannels.Remove(id);
-            channel.Dispose();
         }
 
         public override void Update()
@@ -209,7 +208,6 @@ namespace GameFramework
             {
                 tc.DisConnect();
             }
-            //Log.Debug("CheckTimeOut");
         }
     }
 }

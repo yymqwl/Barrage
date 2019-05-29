@@ -8,28 +8,37 @@ namespace GameFramework
 {
     public abstract class ABehaviourSet :  IBehaviourSet
     {
-        private Dictionary<Type, List<IBehaviour>> m_Dict_IBehaviour = new Dictionary<Type, List<IBehaviour>>();
+        protected LinkedList<IBehaviour> m_IBehaviours = new LinkedList<IBehaviour>();
+        
+        public virtual int Priority { get { return 0; } }
 
         public IBehaviour Parent { get; set; }
 
         public virtual bool Init()
         {
+
+            for (LinkedListNode<IBehaviour> current = m_IBehaviours.Last; current != null; current = current.Previous)
+            {
+                current.Value.Init();
+            }
             return true;
         }
 
-        public virtual bool Shut()
+        public virtual bool ShutDown()
         {
+
+            for (LinkedListNode<IBehaviour> current = m_IBehaviours.Last; current != null; current = current.Previous)
+            {
+                current.Value.ShutDown();
+            }
             return true;
         }
 
         public virtual void Update()
         {
-            foreach(var vk in m_Dict_IBehaviour)
+            foreach(IBehaviour ib in m_IBehaviours)
             {
-                foreach(var ib in vk.Value)
-                {
-                    ib.Update();
-                }
+                ib.Update();
             }
         }
 
@@ -40,10 +49,12 @@ namespace GameFramework
 
         public IBehaviour GetIBehaviour(Type tp)
         {
-            List<IBehaviour> Temp_List = null;
-            if(m_Dict_IBehaviour.TryGetValue(tp,out Temp_List))
+            foreach (IBehaviour ib in m_IBehaviours)
             {
-                return Temp_List[0];
+                if(ib.GetType() == tp)
+                {
+                    return ib;
+                }
             }
             return null;
         }
@@ -56,52 +67,52 @@ namespace GameFramework
         public IBehaviour[] GetIBehaviours(Type tp)
         {
             List<IBehaviour> Temp_List = null;
-            if (m_Dict_IBehaviour.TryGetValue(tp, out Temp_List))
+            foreach (IBehaviour ib in m_IBehaviours)
             {
-                return Temp_List.ToArray();
+                if (ib.GetType() == tp)
+                {
+                    Temp_List.Add(ib);
+                }
             }
-            return null;
+            return Temp_List.ToArray();
         }
         public T AddIBehaviour<T>(T ib) where T : class, IBehaviour
         {
-            
-            Type tp = typeof(T);
-            List<IBehaviour> Temp_List = null;
-            if(!m_Dict_IBehaviour.TryGetValue(tp, out Temp_List))
+            if(ib==null)
             {
-                Temp_List = new List<IBehaviour>();
-                m_Dict_IBehaviour.Add(tp, Temp_List);
+                throw new GameFrameworkException("ib Null");
             }
-            if(Temp_List.Contains(ib))
+            LinkedListNode<IBehaviour> current = m_IBehaviours.First;
+            while (current != null)
             {
-                throw new GameFrameworkException($"{tp.Name}Already Add");
+                if (ib.Priority > current.Value.Priority)
+                {
+                    break;
+                }
+
+                current = current.Next;
             }
-            Temp_List.Add(ib);
-            ib.Init();
+
+            if (current != null)
+            {
+                m_IBehaviours.AddBefore(current, ib);
+            }
+            else
+            {
+                m_IBehaviours.AddLast(ib);
+            }
             ib.Parent = this;
             return ib;
         }
 
         public void RemoveIBehaviour<T>(T ib) where T :class, IBehaviour
         {
-            Type tp = typeof(T);
-            List<IBehaviour> Temp_List = null;
-            if (m_Dict_IBehaviour.TryGetValue(tp, out Temp_List))
+            if( !m_IBehaviours.Contains(ib) )
             {
-                if(Temp_List.Remove(ib))
-                {
-                    ib.Shut();
-                }
-                else
-                {
-                    Log.Debug($"Dont Have {tp.Name}");
-                }
+                throw new GameFrameworkException("Not Contains Ib");
             }
-            else
-            {
-                Log.Debug($"Dont Have {tp.Name}");
-            }
-
+            m_IBehaviours.Remove(ib);
+            ib.Parent = null;
         }
 
         public T GetParent<T>() where T : class, IBehaviour

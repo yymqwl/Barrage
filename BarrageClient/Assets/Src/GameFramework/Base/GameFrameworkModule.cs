@@ -29,9 +29,9 @@
 
         public virtual bool AfterInit() { return true; }
 
-        public virtual bool BeforeShutdown() { return true; }
+        public virtual bool BeforeShutDown() { return true; }
 
-        public virtual bool Shutdown() { return true; }
-        public virtual bool AfterShutdown() { return true; }
+        public virtual bool ShutDown() { return true; }
+        public virtual bool AfterShutDown() { return true; }
     }
 }
