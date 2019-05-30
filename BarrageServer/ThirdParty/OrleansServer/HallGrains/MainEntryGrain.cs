@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HallGrains
 {
-    [ImplicitStreamSubscription(GameConstant.HallStreamInput)]
+    //[ImplicitStreamSubscription(GameConstant.HallStreamInput)]
     public class MainEntryGrain : Grain, IMainEntry , IAsyncObserver<string>
     {
         public List<IUser> Ls_UserGrain = new List<IUser>();
@@ -19,30 +19,43 @@ namespace HallGrains
 
         private IAsyncStream<string> m_Stream;
 
+        public int m_Count = 0;
+
+        private StreamSubscriptionHandle<string> m_SSHandle;
+        private IDisposable m_Timer;
         public override async Task OnActivateAsync()
         {
             Console.WriteLine($"{typeof(MainEntryGrain)}OnActivateAsync");
+
+
+            m_Timer = RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             m_subsManager = new ObserverSubscriptionManager<IMainEntry_Obs>();
-            //RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
             var streamProvider = this.GetStreamProvider(GameConstant.HallStreamProvider);
             m_Stream = streamProvider.GetStream<string>(Guid.NewGuid(), GameConstant.HallStreamInput);
 
-            await m_Stream.SubscribeAsync(OnNextAsync);
+            m_SSHandle = await m_Stream.SubscribeAsync(this);
+            
 
             await base.OnActivateAsync();
         }
-        public override Task OnDeactivateAsync()
+        public async override Task OnDeactivateAsync()
         {
             Console.WriteLine($"{typeof(MainEntryGrain)}OnDeactivateAsync");
-            m_Stream.GetAllSubscriptionHandles().Dispose();
-            return base.OnDeactivateAsync();
+            await m_SSHandle.UnsubscribeAsync();
+            var tmplist = await m_Stream.GetAllSubscriptionHandles();
+            Console.WriteLine($"Stream:Count{tmplist.Count}");
+            //m_Stream.
+            //m_Stream.GetAllSubscriptionHandles().Dispose();
+            await base.OnDeactivateAsync();
         }
 
-        public async Task Update_Timer(object obj)
+        public  Task Update_Timer(object obj)
         {
-            Console.WriteLine("Update_Timer");
-            await Update(0);
+            m_Count++;
+            Console.WriteLine($"Update_Timer{m_Count}");
+            return Task.CompletedTask;
+            //await Update(0);
         }
         public   Task<Guid> Enter()
         {
@@ -61,13 +74,13 @@ namespace HallGrains
         {
             string str_hello = "SayHello";
             Console.WriteLine($"{str_hello}Send");
-
+            /*
             m_subsManager.Notify((IMainEntry_Obs imev) =>
             {
                 imev.Handle(str_hello);
 
             });
-
+            */
             return Task.CompletedTask;
         }
 
@@ -138,6 +151,7 @@ namespace HallGrains
 
         public Task OnNextAsync(string item, StreamSequenceToken token = null)
         {
+            Console.WriteLine(item);
             return Task.CompletedTask;
         }
 

@@ -6,6 +6,7 @@ namespace HallGrains
 {
     public class GameConstant
     {
+        public const string HallPubSubStore = "PubSubStore";
         public const string HallStreamProvider = "HallPovider";
         public const string HallStreamInput = "HallInput";
         public const string HallStreamOutput = "HallOutput";

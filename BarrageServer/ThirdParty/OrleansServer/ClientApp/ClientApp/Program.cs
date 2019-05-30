@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Orleans.Runtime;
 using Orleans.Hosting;
 using IHall;
+using Orleans.Streams;
 
 namespace ClientApp
 {
@@ -39,6 +40,7 @@ namespace ClientApp
                     Console.WriteLine("Silo started successfully");
                     bool bloop = true;
                     MainEntryView m_mev;
+                    IAsyncStream<string> m_stream = null;
                     while (bloop)
                     {
                         string str_line = Console.ReadLine();
@@ -53,13 +55,21 @@ namespace ClientApp
                         if (str_line == "/hello")
                         {
                             var me = client.GetGrain<IMainEntry>(0);
+                            /*var me = client.GetGrain<IMySql.IMysqlEntry>(0);
+
+                            await me.GetName();
+                            */
                             await me.SayHello();
                         }
                         if (str_line.StartsWith("/msg"))
                         {
+               
+                            /*
                             long id = long.Parse(str_line.Replace("/msg", "").Trim());
                             var me = client.GetGrain<IMainEntry>(id);
                             await me.SendMsg("Testmsg");
+                            */
+                            continue;
                         }
                         if (str_line == "/rg")
                         {
@@ -67,6 +77,7 @@ namespace ClientApp
                             m_mev = new MainEntryView();
                             var obj = await client.CreateObjectReference<MainEntryView>(m_mev);
                             await me.SubscribeAsync(obj);
+                            continue;
                         }
                         if (str_line.StartsWith("/j"))
                         {
@@ -75,26 +86,32 @@ namespace ClientApp
                             var me = client.GetGrain<IMainEntry>(0);
                             IUser iuser  = await me.Join(id);
                             await iuser.Say($"{id}:Hello Eventy");
-
+                            continue;
                         }
-                        if (str_line.StartsWith("/stream"))
+                        if (str_line == "/stream")
                         {
-                            var me = client.GetGrain<IMainEntry>(0);
-                            var guid = await me.Enter();
-                            var provider = client.GetStreamProvider(HallGrains.GameConstant.HallStreamProvider);
-                            var steam = provider.GetStream<string>(guid, HallGrains.GameConstant.HallStreamInput);
-                            await steam.OnNextAsync("Come From Client");
+                            if(m_stream == null)
+                            {
+                                var me = client.GetGrain<IMainEntry>(0);
+                                var guid = await me.Enter();
+                                var provider = client.GetStreamProvider(HallGrains.GameConstant.HallStreamProvider);
+                                m_stream = provider.GetStream<string>(guid, HallGrains.GameConstant.HallStreamInput);
+                            }
+                            await m_stream.OnNextAsync("Come From Client");
+                            continue;
                         }
                         if (str_line.StartsWith("/s"))
                         {
                             string msg = str_line.Replace("/s", "").Trim();
                             var me = client.GetGrain<IMainEntry>(0);
                             await me.SendMsg(msg);
+                            continue;
                         }
 
                         if (str_line.StartsWith("/gc"))
                         {
                             System.GC.Collect();
+                            continue;
                         }
                     }
                     //Console.WriteLine($"开始执行....");
@@ -127,7 +144,7 @@ namespace ClientApp
                     .ConfigureApplicationParts(parts =>
                         {
                             parts.AddApplicationPart(typeof(IMainEntry).Assembly);
-                            //parts.AddApplicationPart(typeof(MainEntryInterfaces.IHello).Assembly);
+                            parts.AddApplicationPart(typeof(IMySql.IMysqlEntry).Assembly);
                         }
                     )
                     .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole())

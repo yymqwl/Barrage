@@ -69,16 +69,16 @@ namespace ServerApp
                 })
                 //.ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(MainEntryGrain).Assembly).WithReferences())
                 .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole())
-                //.AddMemoryGrainStorage(HallGrains.GameConstant.HallStreamProvider)
+                .AddMemoryGrainStorage(HallGrains.GameConstant.HallPubSubStore)
                 .AddSimpleMessageStreamProvider(HallGrains.GameConstant.HallStreamProvider) ;
-            /*
+            
             builder.ConfigureApplicationParts(parts =>
             {
                 parts.AddApplicationPart(typeof(HallGrains.MainEntryGrain).Assembly).WithReferences();
                 parts.AddApplicationPart(typeof(MysqlGrains.MysqlEntryGrain).Assembly).WithReferences();
             });
-            */
             
+            /*
             if(gatewayPort == 30000)
             {
                 builder.ConfigureApplicationParts(parts =>
@@ -92,7 +92,7 @@ namespace ServerApp
                 {
                     parts.AddApplicationPart(typeof(MysqlGrains.MysqlEntryGrain).Assembly).WithReferences();
                 });
-            }
+            }*/
 
             var host = builder.Build();
             await host.StartAsync();
