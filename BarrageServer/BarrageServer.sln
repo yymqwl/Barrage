@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KcpLib", "ThirdParty\KcpLib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "protobuf-net", "ThirdParty\protobuf-net\protobuf-net.csproj", "{6CDA27FB-2186-4435-A313-F1FB1BD9C298}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Google.Protobuf", "ThirdParty\Google.Protobuf\Google.Protobuf.csproj", "{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Google.Protobuf", "ThirdParty\Google.Protobuf\Google.Protobuf.csproj", "{8EC95EC5-3FD8-4D6E-9145-961C241D8A98}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameFramework", "GameFramework\GameFramework.csproj", "{C530EFC8-0691-487C-921B-B90E7523D183}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameFramework", "GameFramework\GameFramework.csproj", "{C530EFC8-0691-487C-921B-B90E7523D183}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameMain", "GameMain\GameMain.csproj", "{C7643C95-66F2-40F6-AE97-DF170051EA2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMain", "GameMain\GameMain.csproj", "{C7643C95-66F2-40F6-AE97-DF170051EA2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

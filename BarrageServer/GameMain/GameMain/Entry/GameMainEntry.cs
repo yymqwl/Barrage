@@ -6,54 +6,19 @@ using System.Threading;
 
 namespace GameMain
 {
-    public class GameMainEntry : IGameMainEntry
+    public class GameMainEntry : AGameMainEntry
     {
+
         public static GameMainEntry Instance { get; } = new GameMainEntry();
-
-
-        protected bool m_IsLoop;
-        public bool IsLoop { get => m_IsLoop; set { m_IsLoop = value; } }
-
-        protected virtual void Init()
+        protected override void Init()
         {
             GameModuleManager.Instance.CreateModules(typeof(GameMainEntry).Assembly);
             GameModuleManager.Instance.Init();
         }
-        protected virtual void ShutDown()
+        protected  override void ShutDown()
         {
             GameModuleManager.Instance.ShutDown();
         }
-
-        public virtual void Entry(string[] args)
-        {
-
-            m_IsLoop = true;
-            ///所有消息拉到主线程
-            SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
-            try
-            {
-                ClientTimer.Instance.Start();
-                Init();
-                while (m_IsLoop)
-                {
-                    try
-                    {
-                        Thread.Sleep(GameConstant.TThreadInternal);
-                        ClientTimer.Instance.Update();
-                        GameModuleManager.Instance.Update();
-                        OneThreadSynchronizationContext.Instance.Update();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error(e);
-                    }
-                }
-                ShutDown();
-            }
-            catch (Exception e)
-            {
-                Log.Error(e);
-            }
-        }
+      
     }
 }

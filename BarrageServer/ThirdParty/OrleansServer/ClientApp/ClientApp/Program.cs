@@ -75,7 +75,7 @@ namespace ClientApp
                         {
                             var me = client.GetGrain<IMainEntry>(0);
                             m_mev = new MainEntryView();
-                            var obj = await client.CreateObjectReference<MainEntryView>(m_mev);
+                            var obj = await client.CreateObjectReference<IMainEntry_Obs>(m_mev);
                             await me.SubscribeAsync(obj);
                             continue;
                         }

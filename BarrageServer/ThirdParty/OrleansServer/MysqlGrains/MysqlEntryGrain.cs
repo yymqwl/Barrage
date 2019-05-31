@@ -12,7 +12,7 @@ namespace MysqlGrains
         public override Task OnActivateAsync()
         {
             Console.WriteLine($"{typeof(MysqlEntryGrain)}OnActivateAsync");
-            RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+            //RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             return base.OnActivateAsync();
         }
         public override Task OnDeactivateAsync()

@@ -19,10 +19,15 @@ namespace GameMain
             ConsoleEntry();
             return base.Init();
         }
-
+        public IGameMainEntry IGameMainEntry
+        {
+            get;
+            set;
+        }
         //public CancellationTokenSource m_CTS;
         public async void ConsoleEntry()
         {
+            Console.WriteLine("ConsoleModule");
             while(true)
             {
                 try
@@ -45,7 +50,7 @@ namespace GameMain
                     switch (console_Command.CommandType)
                     {
                         case "quit":
-                            GameMainEntry.Instance.IsLoop = false;
+                            IGameMainEntry.IsLoop = false;
                             break;
                         default: break;
                     }

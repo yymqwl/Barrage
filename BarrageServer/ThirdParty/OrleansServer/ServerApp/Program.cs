@@ -55,7 +55,21 @@ namespace ServerApp
                 {
                     options.Invariant = Invariant;
                     options.ConnectionString = ConnectionString;
-                }).ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
+                })
+                .UseAdoNetReminderService(options =>
+                {
+                    options.Invariant = Invariant;
+                    options.ConnectionString = ConnectionString;
+                })
+                /*
+                .AddAdoNetGrainStorage("OrleansStorage", options =>
+                {
+                    options.Invariant = Invariant;
+                    options.ConnectionString = ConnectionString;
+                    options.UseJsonFormat = true;
+                })*/
+                .ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
+                //.UseLocalhostClustering()
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = ClusterId;
@@ -67,10 +81,12 @@ namespace ServerApp
                     options.DeactivationTimeout = TimeSpan.FromSeconds(5);
                     options.CollectionQuantum = TimeSpan.FromSeconds(1);
                 })
+                //.AddMemoryGrainStorageAsDefault()
                 //.ConfigureApplicationParts(parts => parts.AddApplicationPart(typeof(MainEntryGrain).Assembly).WithReferences())
-                .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole())
-                .AddMemoryGrainStorage(HallGrains.GameConstant.HallPubSubStore)
-                .AddSimpleMessageStreamProvider(HallGrains.GameConstant.HallStreamProvider) ;
+                .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole());
+                //.ConfigureLogging(log => log.AddConsole())
+                //.AddMemoryGrainStorage(HallGrains.GameConstant.HallPubSubStore)
+                //.AddSimpleMessageStreamProvider(HallGrains.GameConstant.HallStreamProvider) ;
             
             builder.ConfigureApplicationParts(parts =>
             {

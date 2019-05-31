@@ -94,6 +94,10 @@ namespace GameFramework
             throw new GameFrameworkException($"Cant Find Type{moduleType.Name}");
         }
 
+        public T CreateModule<T>() where T: GameFrameworkModule
+        {
+            return CreateModule(typeof(T)) as T;
+        }
         /// <summary>
         /// 创建游戏框架模块。
         /// </summary>
@@ -131,14 +135,30 @@ namespace GameFramework
         }
         public void CreateModules(Assembly assembly)
         {
-            foreach (Type type in assembly.GetTypes())
+
+            var types = assembly.Find( (Type tp) =>
             {
-                object[] objects = type.GetCustomAttributes(typeof(GameFrameworkModuleAttribute), false);
-                if (objects.Length == 0)
+                object[] objects = tp.GetCustomAttributes(typeof(GameFrameworkModuleAttribute), false);
+                if (objects.Length > 0)
                 {
-                    continue;
+                    return true;
                 }
-                CreateModule(type);
+                return false;
+            });
+            foreach (var tp in types)
+            {
+                CreateModule(tp);
+            }
+     
+        }
+         
+        
+        public void CreateModules(Assembly assembly, Predicate<Type> predicate)
+        {
+            var types = assembly.Find(predicate);
+            foreach (var tp in types)
+            {
+                CreateModule(tp);
             }
         }
 
