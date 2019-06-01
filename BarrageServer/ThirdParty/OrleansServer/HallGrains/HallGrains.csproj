@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IHall\IHall.csproj" />
-    <ProjectReference Include="..\IMySql\IMySql.csproj" />
   </ItemGroup>
 
 </Project>

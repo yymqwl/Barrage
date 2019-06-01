@@ -3,6 +3,7 @@ using Orleans;
 using Orleans.Streams;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,19 +31,19 @@ namespace HallGrains
 
             m_Timer = RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             m_subsManager = new ObserverSubscriptionManager<IMainEntry_Obs>();
-
+            /*
             var streamProvider = this.GetStreamProvider(GameConstant.HallStreamProvider);
             m_Stream = streamProvider.GetStream<string>(Guid.NewGuid(), GameConstant.HallStreamInput);
 
             m_SSHandle = await m_Stream.SubscribeAsync(this);
-            
+            */
 
             await base.OnActivateAsync();
         }
         public async override Task OnDeactivateAsync()
         {
             Console.WriteLine($"{typeof(MainEntryGrain)}OnDeactivateAsync");
-            await m_SSHandle.UnsubscribeAsync();
+            //sawait m_SSHandle.UnsubscribeAsync();
             var tmplist = await m_Stream.GetAllSubscriptionHandles();
             Console.WriteLine($"Stream:Count{tmplist.Count}");
             //m_Stream.
@@ -74,7 +75,7 @@ namespace HallGrains
         public Task SayHello()
         {
             string str_hello = "SayHello";
-            Console.WriteLine($"{str_hello}Send");
+            Console.WriteLine($"{str_hello}Send {Thread.CurrentThread.ManagedThreadId}");
             
             m_subsManager.Notify((IMainEntry_Obs imev) =>
             {
@@ -93,12 +94,6 @@ namespace HallGrains
 
             Console.WriteLine($"Msg1:{Str_Test}");
             Str_Test = "MainEntryGrain:1";
-            
-            var hello = GetHello(0).Result;
-            str_msg = await hello.GetName();
-            Console.WriteLine($"Msg:{str_msg}");
-            
-
             //return Task.CompletedTask;
         }
 
@@ -143,12 +138,6 @@ namespace HallGrains
             }
         }
 
-        
-        public Task<IMySql.IMysqlEntry> GetHello(long id)
-        {
-            var usergrain = GrainFactory.GetGrain<IMySql.IMysqlEntry>(id);
-            return Task.FromResult(usergrain);
-        }
 
         public Task OnNextAsync(string item, StreamSequenceToken token = null)
         {

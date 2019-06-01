@@ -144,7 +144,7 @@ namespace ClientApp
                     .ConfigureApplicationParts(parts =>
                         {
                             parts.AddApplicationPart(typeof(IMainEntry).Assembly);
-                            parts.AddApplicationPart(typeof(IMySql.IMysqlEntry).Assembly);
+                            
                         }
                     )
                     .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole())
