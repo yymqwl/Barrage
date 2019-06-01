@@ -6,6 +6,11 @@ namespace IHall
 {
     public interface IMainEntry : IGrainWithIntegerKey
     {
+
+
+
+
+        /*
         Task<Guid> Enter();
 
         Task SayHello();
@@ -18,5 +23,6 @@ namespace IHall
 
         Task SubscribeAsync(IMainEntry_Obs viewer);
         Task UnsubscribeAsync(IMainEntry_Obs viewer);
+        */
     }
 }

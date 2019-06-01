@@ -41,6 +41,8 @@ namespace ServerApp
                         bloop = false;
                     }
                 }
+                //host.Dispose();
+
                 await host.StopAsync();
             }
             catch (Exception ex)

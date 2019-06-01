@@ -8,9 +8,13 @@ using System.Threading.Tasks;
 
 namespace HallGrains
 {
- 
+
     public class MainEntryGrain : Grain, IMainEntry
     {
+
+
+    }
+        /*
         public List<IUser> Ls_UserGrain = new List<IUser>();
 
         public string Str_Test = "MainEntryGrain";
@@ -112,5 +116,5 @@ namespace HallGrains
         {
             return Task.CompletedTask;
         }
-    }
+    }*/
 }
