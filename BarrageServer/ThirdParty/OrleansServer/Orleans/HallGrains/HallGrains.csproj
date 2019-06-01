@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GameFramework\GameFramework.csproj" />
     <ProjectReference Include="..\IHall\IHall.csproj" />
   </ItemGroup>
 

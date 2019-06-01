@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using GameFramework;
 using Orleans.Hosting;
 using GameMain.Silo;
@@ -54,7 +51,8 @@ namespace BarrageSilo
                 {
                     options.Invariant = GameConstant.DB_Name;
                     options.ConnectionString = GameConstant.Str_DBConnection;
-                }).ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
+                })
+                .ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = GameConstant.ClusterId;
@@ -66,14 +64,13 @@ namespace BarrageSilo
                     options.DeactivationTimeout = TimeSpan.FromSeconds(5);
                     options.CollectionQuantum = TimeSpan.FromSeconds(1);
                 })
-                 .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole());
+                .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole());
 
 
 
             builder.ConfigureApplicationParts(parts =>
             {
-                //parts.AddApplicationPart(typeof(HallGrains.MainEntryGrain).Assembly).WithReferences();
-                //parts.AddApplicationPart(typeof(MysqlGrains.MysqlEntryGrain).Assembly).WithReferences();
+                parts.AddApplicationPart(typeof(HallGrains.GateWayGrain).Assembly).WithReferences();
             });
 
             /*

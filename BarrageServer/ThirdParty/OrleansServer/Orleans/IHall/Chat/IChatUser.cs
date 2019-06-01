@@ -3,11 +3,13 @@ using System.Threading.Tasks;
 
 namespace IHall
 {
-    public interface IUser : IGrainWithIntegerKey
+    /// <summary>
+    /// 
+    /// </summary>
+    public interface IChatUser : IGrainWithIntegerKey
     {
         Task SetName(string name);
         Task Say(string msg);
-        Task Update(float t);
 
         Task<bool> Connected();
     }

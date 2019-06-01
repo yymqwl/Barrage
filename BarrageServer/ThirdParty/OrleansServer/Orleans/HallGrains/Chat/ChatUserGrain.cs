@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace HallGrains
 {
 
-    public class UserGrain : Grain, IUser
+    public class ChatUserGrain : Grain, IChatUser
     {
         public bool IsConnected { get; set; }
         public DateTime LastActiveTime { get; set; }
