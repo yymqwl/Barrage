@@ -13,17 +13,10 @@ namespace HallGrains
     public class GateWayGrain :   Grain , IGateWay
     {
         private ObserverSubscriptionManager<IGateWay_Obs> m_IGW_Obs = new ObserverSubscriptionManager<IGateWay_Obs>();
-
-        IHello m_IHello;
+        
         public override async Task OnActivateAsync()
         {
-            Console.WriteLine($"{typeof(GateWayGrain)}OnActivateAsync");
-
             m_IGW_Obs.Clear();
-
-            m_IHello = GrainFactory.GetGrain<IHello>(0);
-
-            RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
 
             await base.OnActivateAsync();
         }
@@ -35,14 +28,16 @@ namespace HallGrains
 
         public Task<byte[]> Call(long id, byte[] msg)
         {
+
             return Task.FromResult(msg);
         }
 
+        /*
         public  Task Update_Timer(object obj)
         {
             Log.Debug($"Update: threadId{Thread.CurrentThread.ManagedThreadId}");
             return Task.CompletedTask;
-        }
+        }*/
 
         public Task SubscribeAsync(IGateWay_Obs view)
         {

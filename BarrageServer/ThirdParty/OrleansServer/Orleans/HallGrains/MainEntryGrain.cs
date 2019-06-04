@@ -4,14 +4,39 @@ using Orleans.Streams;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using GameFramework;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace HallGrains
 {
 
     public class MainEntryGrain : Grain, IMainEntry
     {
+        IHello m_IHello;
 
+
+        public Task<IChatRoom> GetIChatRoom()
+        {
+            return Task.FromResult(GrainFactory.GetGrain<IChatRoom>(0));
+        }
+
+        public override async Task OnActivateAsync()
+        {
+            Log.Debug ($"{typeof(MainEntryGrain)}OnActivateAsync");
+            m_IHello = GrainFactory.GetGrain<IHello>(0);
+            await base.OnActivateAsync();
+        }
+        public async override Task OnDeactivateAsync()
+        {
+            Log.Debug($"{typeof(MainEntryGrain)}OnDeactivateAsync");
+            await base.OnDeactivateAsync();
+        }
+        public Task Update_Timer(object obj)
+        {
+            Log.Debug($"Update: threadId{Thread.CurrentThread.ManagedThreadId}");
+            return Task.CompletedTask;
+        }
 
     }
         /*

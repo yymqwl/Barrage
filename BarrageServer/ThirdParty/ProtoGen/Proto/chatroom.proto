@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+
+package GameMain.Msg;
+
+message Login_Req
+{
+	int64 Id=1;
+}
+message Login_Res
+{
+	int32 Result=1;
+}
+message SetName_Req
+{
+	string Name = 1;
+}
+message SetName_Res
+{
+	int32 Result=1;
+}
+
+message Say_Req
+{
+	string Msg=1;
+}
+message ChatRoomMsg_Req
+{
+	string Msg=1;
+}
+
+message Msg_Res
+{
+	int32 Result=1;
+}

@@ -6,6 +6,7 @@ namespace IHall
 {
     public interface IMainEntry : IGrainWithIntegerKey
     {
+        Task<IChatRoom> GetIChatRoom();
 
     }
 }

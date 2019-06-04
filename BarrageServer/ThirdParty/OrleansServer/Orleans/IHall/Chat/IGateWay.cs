@@ -15,8 +15,6 @@ namespace IHall
 
         Task UnSubscribeAsync(IGateWay_Obs view);
         Task Ping(IGateWay_Obs view);
-
-
         Task<byte[]> Call(long id,byte[] msg);
 
         Task Reply(long id,byte[] msg);

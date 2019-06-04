@@ -34,13 +34,16 @@ namespace BarrageSilo
         }
         public override void Entry(string[] args)
         {
-            //SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
+            
             m_IsLoop = true;
             try
             {
 
                 ClientTimer.Instance.Start();
                 Init();
+
+                SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
+
                 while (m_IsLoop)
                 {
                     try
