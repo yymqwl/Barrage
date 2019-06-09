@@ -13,7 +13,7 @@ namespace GameFramework
             return typeof(T);
         }
         protected abstract void Run(Session session, T message);
-        public virtual void Handle(Session session, IMessage message)
+        public  void Handle(Session session, IMessage message)
         {
             T tmessage = message as T;
             if (message == null)

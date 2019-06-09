@@ -28,8 +28,7 @@ namespace GameMain.Msg {
             "CgJJZBgBIAEoAyIbCglMb2dpbl9SZXMSDgoGUmVzdWx0GAEgASgFIhsKC1Nl",
             "dE5hbWVfUmVxEgwKBE5hbWUYASABKAkiHQoLU2V0TmFtZV9SZXMSDgoGUmVz",
             "dWx0GAEgASgFIhYKB1NheV9SZXESCwoDTXNnGAEgASgJIh4KD0NoYXRSb29t",
-            "TXNnX1JlcRILCgNNc2cYASABKAkiGQoHTXNnX1JlcxIOCgZSZXN1bHQYASAB",
-            "KAViBnByb3RvMw=="));
+            "TXNnX1JlcRILCgNNc2cYASABKAliBnByb3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
@@ -38,8 +37,7 @@ namespace GameMain.Msg {
             new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.SetName_Req), global::GameMain.Msg.SetName_Req.Parser, new[]{ "Name" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.SetName_Res), global::GameMain.Msg.SetName_Res.Parser, new[]{ "Result" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.Say_Req), global::GameMain.Msg.Say_Req.Parser, new[]{ "Msg" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.ChatRoomMsg_Req), global::GameMain.Msg.ChatRoomMsg_Req.Parser, new[]{ "Msg" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.Msg_Res), global::GameMain.Msg.Msg_Res.Parser, new[]{ "Result" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.ChatRoomMsg_Req), global::GameMain.Msg.ChatRoomMsg_Req.Parser, new[]{ "Msg" }, null, null, null)
           }));
     }
     #endregion
@@ -812,135 +810,6 @@ namespace GameMain.Msg {
             break;
           case 10: {
             Msg = input.ReadString();
-            break;
-          }
-        }
-      }
-    }
-
-  }
-
-  public sealed partial class Msg_Res : pb::IMessage<Msg_Res> {
-    private static readonly pb::MessageParser<Msg_Res> _parser = new pb::MessageParser<Msg_Res>(() => new Msg_Res());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<Msg_Res> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[6]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Msg_Res() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Msg_Res(Msg_Res other) : this() {
-      result_ = other.result_;
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public Msg_Res Clone() {
-      return new Msg_Res(this);
-    }
-
-    /// <summary>Field number for the "Result" field.</summary>
-    public const int ResultFieldNumber = 1;
-    private int result_;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int Result {
-      get { return result_; }
-      set {
-        result_ = value;
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as Msg_Res);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(Msg_Res other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      if (Result != other.Result) return false;
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (Result != 0) hash ^= Result.GetHashCode();
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (Result != 0) {
-        output.WriteRawTag(8);
-        output.WriteInt32(Result);
-      }
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (Result != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Result);
-      }
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(Msg_Res other) {
-      if (other == null) {
-        return;
-      }
-      if (other.Result != 0) {
-        Result = other.Result;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-          case 8: {
-            Result = input.ReadInt32();
             break;
           }
         }

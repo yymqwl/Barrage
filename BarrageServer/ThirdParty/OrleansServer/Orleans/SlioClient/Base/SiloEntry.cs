@@ -13,7 +13,7 @@ namespace SlioClient
         protected override void Init()
         {
             GameModuleManager.Instance.CreateModule<ClientConsoleModule>().IGameMainEntry = this;
-            GameModuleManager.Instance.CreateModule<SiloModule>();
+            //GameModuleManager.Instance.CreateModule<SiloModule>();
 
 
             GameModuleManager.Instance.Init();

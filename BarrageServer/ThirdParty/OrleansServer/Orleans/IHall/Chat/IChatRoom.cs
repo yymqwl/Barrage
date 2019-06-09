@@ -9,12 +9,12 @@ namespace IHall
     public interface IChatRoom : IGrainWithIntegerKey
     {
 
-        Task<IChatUser> EnterRoom(long id,string name);
+        Task<IChatUser> EnterRoom(long id);
 
         Task<IChatUser> GetChatUser(long id);
 
         Task ExitRoom(long  id);
-        Task Update();
+        //Task Update();
 
     }
 }

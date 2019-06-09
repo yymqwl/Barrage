@@ -22,7 +22,7 @@ namespace SlioClient
             {
                 case "hello":
                     var gateway=  SiloModule.ClusterClient.GetGrain<IGateWay>(0);
-                    byte[] bys =  gateway.Call(0,Encoding.Default.GetBytes("Client")).Result;
+                    //byte[] bys =  gateway.Call(0,Encoding.Default.GetBytes("Client")).Result;
 
                     break;
                 default:break;

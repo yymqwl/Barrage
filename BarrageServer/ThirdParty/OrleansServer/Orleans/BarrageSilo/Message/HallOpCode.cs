@@ -6,13 +6,13 @@ namespace HallGrains
 {
     public enum  HallOpCode:ushort
     {
-        Login_Req,
-        //Login_Res,
+        Login_Req=1000,
+        Login_Res,
         SetName_Req,
-        //SetName_Res,
+        SetName_Res,
         Say_Req,
-        //Say_Res,
+        Say_Res,
         ChatRoomMsg_Req,
-        Msg_Res,
+        ChatRoomMsg_Res,
     }
 }

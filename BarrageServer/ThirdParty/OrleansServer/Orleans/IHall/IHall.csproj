@@ -12,4 +12,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GameFramework\GameFramework.csproj" />
+  </ItemGroup>
+
 </Project>

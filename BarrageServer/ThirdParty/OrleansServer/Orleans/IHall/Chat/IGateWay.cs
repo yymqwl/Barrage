@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using GameFramework;
 using System.Threading.Tasks;
 
 namespace IHall
@@ -15,9 +16,9 @@ namespace IHall
 
         Task UnSubscribeAsync(IGateWay_Obs view);
         Task Ping(IGateWay_Obs view);
-        Task<byte[]> Call(long id,byte[] msg);
+        Task<IMessage> Call(long id, IMessage msg);
 
-        Task Reply(long id,byte[] msg);
+        Task Reply(long id,IMessage msg);
     }
     /*
      *         Task<bool> Ping();

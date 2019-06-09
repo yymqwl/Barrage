@@ -30,7 +30,10 @@ namespace HallGrains
         }
         public Task Say(string msg)
         {
-            Console.WriteLine(msg);
+            //Console.WriteLine(msg);
+
+
+
             return Task.CompletedTask;
         }
 
@@ -44,5 +47,9 @@ namespace HallGrains
             return Task.CompletedTask;
         }
 
+        public Task<long> GetId()
+        {
+            return Task.FromResult(this.GetPrimaryKeyLong());
+        }
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-
+using GameFramework;
 namespace IHall
 {
     /// <summary>
@@ -10,6 +10,6 @@ namespace IHall
     /// </summary>
     public interface IGateWay_Obs : IGrainObserver
     {
-        void Reply(long Id,byte[] msg);
+        void Reply(long Id, IMessage msg);
     }
 }

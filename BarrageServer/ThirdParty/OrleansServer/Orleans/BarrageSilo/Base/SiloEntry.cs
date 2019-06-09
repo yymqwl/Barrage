@@ -12,8 +12,13 @@ namespace BarrageSilo
         public static SiloEntry Instance { get; } = new SiloEntry();
         protected override void Init()
         {
+            AssemblyManager.Instance.Add(GetType().Assembly);
             GameModuleManager.Instance.CreateModule<ConsoleModule>().IGameMainEntry = this;
-            GameModuleManager.Instance.CreateModules(typeof(SiloEntry).Assembly,(Type tp)=>
+            GameModuleManager.Instance.CreateModule<SiloNetWork>();
+            GameModuleManager.Instance.CreateModule<SiloModule>();
+            GameModuleManager.Instance.CreateModule<SiloClient>();
+
+            /*GameModuleManager.Instance.CreateModules(typeof(SiloEntry).Assembly,(Type tp)=>
             {
                 object[] objects = tp.GetCustomAttributes(typeof(GameFrameworkModuleAttribute), false);
                 if (objects.Length > 0 && tp.Namespace.Contains("BarrageSilo") )
@@ -24,7 +29,7 @@ namespace BarrageSilo
                 return false;
 
             });
-            
+            */
 
             GameModuleManager.Instance.Init();
         }

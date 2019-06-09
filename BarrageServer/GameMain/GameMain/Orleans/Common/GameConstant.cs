@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GameFramework;
-namespace GameMain.Silo
+namespace GameMain
 {
     public partial class GameConstant 
     {

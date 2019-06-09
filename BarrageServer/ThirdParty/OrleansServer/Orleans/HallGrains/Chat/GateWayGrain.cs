@@ -26,7 +26,7 @@ namespace HallGrains
             await base.OnDeactivateAsync();
         }
 
-        public Task<byte[]> Call(long id, byte[] msg)
+        public Task<IMessage> Call(long id, IMessage msg)
         {
 
             return Task.FromResult(msg);
@@ -65,7 +65,7 @@ namespace HallGrains
             return Task.CompletedTask;
         }
 
-        public Task Reply(long id, byte[] msg)
+        public Task Reply(long id, IMessage msg)
         {
             m_IGW_Obs.Notify((IGateWay_Obs  gw_view) =>
             {

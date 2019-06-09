@@ -1,7 +1,7 @@
 ﻿using System;
 using GameFramework;
 using Orleans.Hosting;
-using GameMain.Silo;
+using GameMain;
 using Orleans.Configuration;
 using Microsoft.Extensions.Logging;
 using Orleans;
@@ -12,12 +12,13 @@ namespace BarrageSilo
     public class SiloModule : GameFrameworkModule
     {
 
-        public override int Priority => 0;
+        public override int Priority => 9;
         private ISiloHost m_SiloHost;
         public  override bool Init()
         {
-            Console.WriteLine("输入Silo序号:");
-            int index = Convert.ToInt32(Console.ReadLine());
+            //Console.WriteLine("输入Silo序号:");
+            //int index = Convert.ToInt32(Console.ReadLine());
+            int index = 0;
             RunSilo(11111 + index, 30000 + index);
             return base.Init();
         }

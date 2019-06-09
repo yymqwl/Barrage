@@ -1,22 +1,21 @@
-﻿using System;
+﻿using GameFramework;
+using GameMain;
+using Microsoft.Extensions.Logging;
+using Orleans;
+using Orleans.Configuration;
+using Orleans.Hosting;
+using Orleans.Runtime;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-using GameFramework;
-using Orleans.Hosting;
-using GameMain;
-using Orleans.Configuration;
-using Microsoft.Extensions.Logging;
-using Orleans;
-using Orleans.Runtime;
 
-namespace SlioClient
+namespace BarrageSilo
 {
     [GameFrameworkModule]
-    public class SiloModule : GameFrameworkModule
+    public class SiloClient: GameFrameworkModule
     {
-
-        public override int Priority => 0;
+        public override int Priority => 10;
         private IClusterClient m_ClusterClient;
         public IClusterClient ClusterClient
         {
@@ -26,12 +25,11 @@ namespace SlioClient
             }
         }
 
-        
         public override bool Init()
         {
 
             m_ClusterClient = InitialiseClient();
-           
+
             return base.Init();
         }
         public void StopSilo()
@@ -70,12 +68,12 @@ namespace SlioClient
                 client.Connect(RetryFilter).Wait();
                 return client;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Log.Debug(e);
             }
             return null;
-        
+
         }
         private const int InitializeAttemptsBeforeFailing = 5;
         private static int attempt = 0;

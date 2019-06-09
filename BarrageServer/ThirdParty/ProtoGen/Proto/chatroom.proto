@@ -28,8 +28,3 @@ message ChatRoomMsg_Req
 {
 	string Msg=1;
 }
-
-message Msg_Res
-{
-	int32 Result=1;
-}

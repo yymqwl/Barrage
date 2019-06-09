@@ -12,5 +12,7 @@ namespace IHall
         Task Say(string msg);
 
         Task<bool> Connected();
+
+        Task<long> GetId();
     }
 }
