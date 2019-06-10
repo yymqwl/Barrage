@@ -14,7 +14,6 @@ namespace IHall
         Task<IChatUser> GetChatUser(long id);
 
         Task ExitRoom(long  id);
-        //Task Update();
-
+        Task Update();
     }
 }

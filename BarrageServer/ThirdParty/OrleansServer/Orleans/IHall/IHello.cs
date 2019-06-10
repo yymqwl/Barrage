@@ -9,5 +9,7 @@ namespace IHall
     public interface IHello : IGrainWithIntegerKey
     {
         Task<string> SayHello();
+
+        Task Update();
     }
 }

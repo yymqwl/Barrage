@@ -53,6 +53,8 @@ namespace ServerApp
         private static async Task<ISiloHost> InitialiseSilo(int siloPort, int gatewayPort)
         {
             var builder = new SiloHostBuilder()
+               
+                /*
                 .UseAdoNetClustering(options =>
                 {
                     options.Invariant = Invariant;
@@ -62,7 +64,7 @@ namespace ServerApp
                 {
                     options.Invariant = Invariant;
                     options.ConnectionString = ConnectionString;
-                })
+                })*/
                 /*
                 .AddAdoNetGrainStorage("OrleansStorage", options =>
                 {
@@ -71,7 +73,7 @@ namespace ServerApp
                     options.UseJsonFormat = true;
                 })*/
                 .ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
-                //.UseLocalhostClustering()
+                .UseLocalhostClustering()
                 .Configure<ClusterOptions>(options =>
                 {
                     options.ClusterId = ClusterId;

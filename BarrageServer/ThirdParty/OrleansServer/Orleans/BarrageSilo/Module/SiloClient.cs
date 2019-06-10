@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
-
+using IHall;
 namespace BarrageSilo
 {
     [GameFrameworkModule]
@@ -24,11 +24,33 @@ namespace BarrageSilo
                 return m_ClusterClient;
             }
         }
+        
+        public IMainEntry MainEntry
+        {
+            get
+            {
+                return m_MainEntry;
+            }
+        }
+
+        protected IMainEntry m_MainEntry;
+        protected SiloGateWay_Obs m_SiloGateWay_Obs;
+        protected IGateWay_Obs m_IGateWay_Obs;
 
         public override bool Init()
         {
 
             m_ClusterClient = InitialiseClient();
+
+            m_MainEntry = m_ClusterClient.GetGrain<IMainEntry>(0);
+
+            m_SiloGateWay_Obs = new SiloGateWay_Obs();
+            m_IGateWay_Obs = m_ClusterClient.CreateObjectReference<IGateWay_Obs>(m_SiloGateWay_Obs).Result;
+
+            m_MainEntry.GetIGateWay().Result.SubscribeAsync(m_IGateWay_Obs).Wait();
+
+
+
 
             return base.Init();
         }
@@ -95,10 +117,12 @@ namespace BarrageSilo
         }
         public override void Update()
         {
-
+            m_MainEntry.Update().Wait();
         }
         public override bool ShutDown()
         {
+            m_MainEntry.GetIGateWay().Result.UnSubscribeAsync(m_IGateWay_Obs).Wait();
+            m_ClusterClient.DeleteObjectReference<IGateWay_Obs>(m_IGateWay_Obs);
             StopSilo();
             return base.ShutDown();
         }

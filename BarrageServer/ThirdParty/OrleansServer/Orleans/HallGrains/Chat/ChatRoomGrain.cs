@@ -13,6 +13,8 @@ namespace HallGrains
         public override async Task OnActivateAsync()
         {
              Dict_ChatUser.Clear();
+
+
              await base.OnActivateAsync();
         }
         public Task<IChatUser> EnterRoom(long id)
@@ -40,6 +42,11 @@ namespace HallGrains
             IChatUser icu = null;
             Dict_ChatUser.TryGetValue(id,out icu);
             return Task.FromResult(icu);
+        }
+
+        public Task Update()
+        {
+            return Task.CompletedTask;
         }
     }
 }

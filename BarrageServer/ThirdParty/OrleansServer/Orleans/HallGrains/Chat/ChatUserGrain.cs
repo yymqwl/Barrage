@@ -18,6 +18,8 @@ namespace HallGrains
             return Task.FromResult(this.IsConnected);
         }
 
+        
+
         public Task SetName(string name)
         {
 

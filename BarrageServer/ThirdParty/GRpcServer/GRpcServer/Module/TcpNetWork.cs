@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BarrageSilo
+namespace GRpcServer
 {
     [GameFrameworkModuleAttribute]
-    public class SiloNetWork: GameFrameworkModule
+    public class TcpNetWork : GameFrameworkModule
     {
         ServerNetWork m_ServerNetWork;
         public ServerNetWork ServerNetWork { get { return m_ServerNetWork; } }
@@ -26,7 +26,7 @@ namespace BarrageSilo
 
             m_ServerNetWork.Init();
 
-            
+
             opCodeTypeBv.Load(GetType().Assembly);
             messageDispatherBv.Load(GetType().Assembly);
 
@@ -36,7 +36,7 @@ namespace BarrageSilo
         }
         public override bool ShutDown()
         {
-            Log.Debug("SiloNetWork ShutDown");
+            Log.Debug("GRpcNetWork ShutDown");
             m_ServerNetWork.ShutDown();
             return base.ShutDown();
         }

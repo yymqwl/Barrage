@@ -19,6 +19,8 @@ namespace IHall
         Task<IMessage> Call(long id, IMessage msg);
 
         Task Reply(long id,IMessage msg);
+
+        Task Update();
     }
     /*
      *         Task<bool> Ping();

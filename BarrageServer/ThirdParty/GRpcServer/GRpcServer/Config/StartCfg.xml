@@ -1,0 +1,9 @@
+﻿<?xml version="1.0"?>
+<StartConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Ls_StartConfigItem>
+    <StartConfigItem>
+      <ServerType>All</ServerType>
+      <Rpg_Ip>127.0.0.1:5000</Rpg_Ip>
+    </StartConfigItem>
+  </Ls_StartConfigItem>
+</StartConfig>

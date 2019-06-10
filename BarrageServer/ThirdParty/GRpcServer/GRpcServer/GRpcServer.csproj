@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\GameFramework\GameFramework.csproj" />
+    <ProjectReference Include="..\..\..\GameMain\GameMain.csproj" />
+    <ProjectReference Include="..\GameMsg\GameMsg.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Message\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Config\StartCfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

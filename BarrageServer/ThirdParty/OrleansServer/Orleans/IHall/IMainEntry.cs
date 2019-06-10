@@ -7,6 +7,7 @@ namespace IHall
     public interface IMainEntry : IGrainWithIntegerKey
     {
         Task<IChatRoom> GetIChatRoom();
-
+        Task<IGateWay> GetIGateWay();
+        Task Update();
     }
 }

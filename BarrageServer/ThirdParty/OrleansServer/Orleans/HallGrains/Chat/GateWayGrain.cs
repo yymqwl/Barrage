@@ -32,12 +32,6 @@ namespace HallGrains
             return Task.FromResult(msg);
         }
 
-        /*
-        public  Task Update_Timer(object obj)
-        {
-            Log.Debug($"Update: threadId{Thread.CurrentThread.ManagedThreadId}");
-            return Task.CompletedTask;
-        }*/
 
         public Task SubscribeAsync(IGateWay_Obs view)
         {
@@ -71,6 +65,11 @@ namespace HallGrains
             {
                 gw_view.Reply(id,msg);
             });
+            return Task.CompletedTask;
+        }
+
+        public Task Update()
+        {
             return Task.CompletedTask;
         }
         /*

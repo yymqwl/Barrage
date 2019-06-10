@@ -24,5 +24,9 @@ namespace HallGrains
             return Task.FromResult("HelloGrain");
         }
 
+        public Task Update()
+        {
+            return Task.CompletedTask;
+        }
     }
 }

@@ -13,18 +13,28 @@ namespace HallGrains
 
     public class MainEntryGrain : Grain, IMainEntry
     {
+        IChatRoom m_ChatRoom;
+        IGateWay m_IGateWay;
         IHello m_IHello;
-
 
         public Task<IChatRoom> GetIChatRoom()
         {
             return Task.FromResult(GrainFactory.GetGrain<IChatRoom>(0));
         }
 
+        public Task<IGateWay> GetIGateWay()
+        {
+            return Task.FromResult(GrainFactory.GetGrain<IGateWay>(0));
+        }
+
         public override async Task OnActivateAsync()
         {
             Log.Debug ($"{typeof(MainEntryGrain)}OnActivateAsync");
+            m_ChatRoom = await GetIChatRoom();
+            m_IGateWay = await GetIGateWay();
             m_IHello = GrainFactory.GetGrain<IHello>(0);
+
+            RegisterTimer(Update_Timer, null, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
             await base.OnActivateAsync();
         }
         public async override Task OnDeactivateAsync()
@@ -32,10 +42,21 @@ namespace HallGrains
             Log.Debug($"{typeof(MainEntryGrain)}OnDeactivateAsync");
             await base.OnDeactivateAsync();
         }
-        public Task Update_Timer(object obj)
+
+        public Task Update()
         {
-            Log.Debug($"Update: threadId{Thread.CurrentThread.ManagedThreadId}");
             return Task.CompletedTask;
+        }
+
+        public async Task Update_Timer(object obj)
+        {
+            await m_IHello.Update();
+            await m_ChatRoom.Update();
+            await m_IGateWay.Update();
+
+            
+            Log.Debug($"MainEntry Update: threadId{Thread.CurrentThread.ManagedThreadId}");
+            //return Task.CompletedTask;
         }
 
     }
