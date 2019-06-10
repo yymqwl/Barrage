@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+
+package GameMain.Msg;
+
+
+service Hello
+{
+	rpc Handle(Hello_Msg ) returns (Hello_Msg) {}
+}
+
+message Hello_Msg
+{
+	string Msg=1;//ÏûÏ¢
+}

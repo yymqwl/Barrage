@@ -15,5 +15,6 @@
   <ItemGroup>
     <Protobuf Include="..\..\ProtoGen\Proto\Service\GRpcServer.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\GRpcServer.proto" />
     <Protobuf Include="..\..\ProtoGen\Proto\Service\ChatRoom.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\ChatRoom.proto" />
+    <Protobuf Include="..\..\ProtoGen\Proto\Service\Hello.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\Hello.proto" />
   </ItemGroup>
 </Project>
