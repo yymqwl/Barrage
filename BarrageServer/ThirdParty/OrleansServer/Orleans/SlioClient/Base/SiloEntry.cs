@@ -12,7 +12,11 @@ namespace SlioClient
         public static SiloEntry Instance { get; } = new SiloEntry();
         protected override void Init()
         {
+            AssemblyManager.Instance.Add(typeof(IHall.IHello).Assembly);
+            AssemblyManager.Instance.Add(GetType().Assembly);
+
             GameModuleManager.Instance.CreateModule<ClientConsoleModule>().IGameMainEntry = this;
+            GameModuleManager.Instance.CreateModule<SiloNetWork>();
             //GameModuleManager.Instance.CreateModule<SiloModule>();
 
 
@@ -31,12 +35,15 @@ namespace SlioClient
 
                 ClientTimer.Instance.Start();
                 Init();
+
+                SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
                 while (m_IsLoop)
                 {
                     try
                     {
                         Thread.Sleep(GameConstant.TThreadInternal);
                         ClientTimer.Instance.Update();
+                        OneThreadSynchronizationContext.Instance.Update();
                         GameModuleManager.Instance.Update();
                     }
                     catch (Exception e)

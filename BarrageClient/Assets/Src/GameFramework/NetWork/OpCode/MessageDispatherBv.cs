@@ -60,7 +60,7 @@ namespace GameFramework
             m_Dict_Handlers[opcode].Add(handler);
         }
 
-        public void Handle(Session session, MessageInfo messageInfo)
+        public virtual void Handle(Session session, MessageInfo messageInfo)
         {
             List<IMHandler> actions;
             if(!m_Dict_Handlers.TryGetValue(messageInfo.Opcode,out actions) )

@@ -9,7 +9,7 @@ using pb = global::Google.Protobuf;
 using pbc = global::Google.Protobuf.Collections;
 using pbr = global::Google.Protobuf.Reflection;
 using scg = global::System.Collections.Generic;
-namespace GameMain.Msg {
+namespace GameMain.ChatRoom {
 
   /// <summary>Holder for reflection information generated from chatroom.proto</summary>
   public static partial class ChatroomReflection {
@@ -24,20 +24,22 @@ namespace GameMain.Msg {
     static ChatroomReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cg5jaGF0cm9vbS5wcm90bxIMR2FtZU1haW4uTXNnIhcKCUxvZ2luX1JlcRIK",
-            "CgJJZBgBIAEoAyIbCglMb2dpbl9SZXMSDgoGUmVzdWx0GAEgASgFIhsKC1Nl",
-            "dE5hbWVfUmVxEgwKBE5hbWUYASABKAkiHQoLU2V0TmFtZV9SZXMSDgoGUmVz",
-            "dWx0GAEgASgFIhYKB1NheV9SZXESCwoDTXNnGAEgASgJIh4KD0NoYXRSb29t",
-            "TXNnX1JlcRILCgNNc2cYASABKAliBnByb3RvMw=="));
+            "Cg5jaGF0cm9vbS5wcm90bxIRR2FtZU1haW4uQ2hhdFJvb20iFwoJTG9naW5f",
+            "UmVxEgoKAklkGAEgASgDIhsKCUxvZ2luX1JlcxIOCgZSZXN1bHQYASABKAUi",
+            "GwoLU2V0TmFtZV9SZXESDAoETmFtZRgBIAEoCSIdCgtTZXROYW1lX1JlcxIO",
+            "CgZSZXN1bHQYASABKAUiFgoHU2F5X1JlcRILCgNNc2cYASABKAkiFgoHU2F5",
+            "X1JlcxILCgNNc2cYASABKAkiGAoIUGluZ19Nc2cSDAoEVGltZRgBIAEoA2IG",
+            "cHJvdG8z"));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.Login_Req), global::GameMain.Msg.Login_Req.Parser, new[]{ "Id" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.Login_Res), global::GameMain.Msg.Login_Res.Parser, new[]{ "Result" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.SetName_Req), global::GameMain.Msg.SetName_Req.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.SetName_Res), global::GameMain.Msg.SetName_Res.Parser, new[]{ "Result" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.Say_Req), global::GameMain.Msg.Say_Req.Parser, new[]{ "Msg" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.Msg.ChatRoomMsg_Req), global::GameMain.Msg.ChatRoomMsg_Req.Parser, new[]{ "Msg" }, null, null, null)
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.Login_Req), global::GameMain.ChatRoom.Login_Req.Parser, new[]{ "Id" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.Login_Res), global::GameMain.ChatRoom.Login_Res.Parser, new[]{ "Result" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.SetName_Req), global::GameMain.ChatRoom.SetName_Req.Parser, new[]{ "Name" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.SetName_Res), global::GameMain.ChatRoom.SetName_Res.Parser, new[]{ "Result" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.Say_Req), global::GameMain.ChatRoom.Say_Req.Parser, new[]{ "Msg" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.Say_Res), global::GameMain.ChatRoom.Say_Res.Parser, new[]{ "Msg" }, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::GameMain.ChatRoom.Ping_Msg), global::GameMain.ChatRoom.Ping_Msg.Parser, new[]{ "Time" }, null, null, null)
           }));
     }
     #endregion
@@ -52,7 +54,7 @@ namespace GameMain.Msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[0]; }
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[0]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -181,7 +183,7 @@ namespace GameMain.Msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[1]; }
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -310,7 +312,7 @@ namespace GameMain.Msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[2]; }
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -439,7 +441,7 @@ namespace GameMain.Msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[3]; }
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -568,7 +570,7 @@ namespace GameMain.Msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[4]; }
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -689,15 +691,15 @@ namespace GameMain.Msg {
 
   }
 
-  public sealed partial class ChatRoomMsg_Req : pb::IMessage<ChatRoomMsg_Req> {
-    private static readonly pb::MessageParser<ChatRoomMsg_Req> _parser = new pb::MessageParser<ChatRoomMsg_Req>(() => new ChatRoomMsg_Req());
+  public sealed partial class Say_Res : pb::IMessage<Say_Res> {
+    private static readonly pb::MessageParser<Say_Res> _parser = new pb::MessageParser<Say_Res>(() => new Say_Res());
     private pb::UnknownFieldSet _unknownFields;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<ChatRoomMsg_Req> Parser { get { return _parser; } }
+    public static pb::MessageParser<Say_Res> Parser { get { return _parser; } }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::GameMain.Msg.ChatroomReflection.Descriptor.MessageTypes[5]; }
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -706,21 +708,21 @@ namespace GameMain.Msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ChatRoomMsg_Req() {
+    public Say_Res() {
       OnConstruction();
     }
 
     partial void OnConstruction();
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ChatRoomMsg_Req(ChatRoomMsg_Req other) : this() {
+    public Say_Res(Say_Res other) : this() {
       msg_ = other.msg_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public ChatRoomMsg_Req Clone() {
-      return new ChatRoomMsg_Req(this);
+    public Say_Res Clone() {
+      return new Say_Res(this);
     }
 
     /// <summary>Field number for the "Msg" field.</summary>
@@ -736,11 +738,11 @@ namespace GameMain.Msg {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public override bool Equals(object other) {
-      return Equals(other as ChatRoomMsg_Req);
+      return Equals(other as Say_Res);
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(ChatRoomMsg_Req other) {
+    public bool Equals(Say_Res other) {
       if (ReferenceEquals(other, null)) {
         return false;
       }
@@ -790,7 +792,7 @@ namespace GameMain.Msg {
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(ChatRoomMsg_Req other) {
+    public void MergeFrom(Say_Res other) {
       if (other == null) {
         return;
       }
@@ -810,6 +812,135 @@ namespace GameMain.Msg {
             break;
           case 10: {
             Msg = input.ReadString();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
+  public sealed partial class Ping_Msg : pb::IMessage<Ping_Msg> {
+    private static readonly pb::MessageParser<Ping_Msg> _parser = new pb::MessageParser<Ping_Msg>(() => new Ping_Msg());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<Ping_Msg> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::GameMain.ChatRoom.ChatroomReflection.Descriptor.MessageTypes[6]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Ping_Msg() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Ping_Msg(Ping_Msg other) : this() {
+      time_ = other.time_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public Ping_Msg Clone() {
+      return new Ping_Msg(this);
+    }
+
+    /// <summary>Field number for the "Time" field.</summary>
+    public const int TimeFieldNumber = 1;
+    private long time_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public long Time {
+      get { return time_; }
+      set {
+        time_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as Ping_Msg);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(Ping_Msg other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Time != other.Time) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Time != 0L) hash ^= Time.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Time != 0L) {
+        output.WriteRawTag(8);
+        output.WriteInt64(Time);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Time != 0L) {
+        size += 1 + pb::CodedOutputStream.ComputeInt64Size(Time);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(Ping_Msg other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Time != 0L) {
+        Time = other.Time;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 8: {
+            Time = input.ReadInt64();
             break;
           }
         }

@@ -5,6 +5,14 @@ package GameMain.Msg;
 
 
 
+
+
+
+
+
+
+
+
 message EnterRoom_Req
 {
 	int64 Id=1;

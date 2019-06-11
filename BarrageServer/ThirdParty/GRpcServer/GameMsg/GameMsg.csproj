@@ -12,6 +12,10 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\GameFramework\GameFramework.csproj" />
+  </ItemGroup>
   <ItemGroup>
     <Protobuf Include="..\..\ProtoGen\Proto\Service\GRpcServer.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\GRpcServer.proto" />
     <Protobuf Include="..\..\ProtoGen\Proto\Service\ChatRoom.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\ChatRoom.proto" />

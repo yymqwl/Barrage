@@ -48,7 +48,7 @@ namespace GameFramework
         public static object Deserialize(Type type, MemoryStream stream)
         {
             object message = Activator.CreateInstance(type);
-            ((Google.Protobuf.IMessage)message).MergeFrom(stream.GetBuffer(), (int)stream.Position, (int)stream.Length);
+            ((Google.Protobuf.IMessage)message).MergeFrom(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length- stream.Position) );
             ISupportInitialize iSupportInitialize = message as ISupportInitialize;
             if (iSupportInitialize == null)
             {
@@ -60,7 +60,7 @@ namespace GameFramework
         public static object Deserialize(object message, MemoryStream stream)
         {
             // 这个message可以从池中获取，减少gc
-            ((Google.Protobuf.IMessage)message).MergeFrom(stream.GetBuffer(), (int)stream.Position, (int)stream.Length);
+            ((Google.Protobuf.IMessage)message).MergeFrom(stream.GetBuffer(), (int)stream.Position, (int)(stream.Length - stream.Position));
             ISupportInitialize iSupportInitialize = message as ISupportInitialize;
             if (iSupportInitialize == null)
             {

@@ -71,6 +71,8 @@ namespace BarrageSilo
             try
             {
                 var client = new ClientBuilder()
+                    .UseLocalhostClustering()
+                    /*
                 .UseAdoNetClustering(options =>
                 {
                     options.Invariant = GameConstant.DB_Name;
@@ -80,7 +82,7 @@ namespace BarrageSilo
                 {
                     options.ClusterId = GameConstant.ClusterId;
                     options.ServiceId = GameConstant.ServiceId;
-                })
+                })*/
                 .ConfigureApplicationParts(parts =>
                 {
                     parts.AddApplicationPart(typeof(IHall.IGateWay).Assembly);

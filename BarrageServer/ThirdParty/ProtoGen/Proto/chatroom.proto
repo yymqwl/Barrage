@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 
-package GameMain.Msg;
+package GameMain.ChatRoom;
 
 message Login_Req
 {
@@ -24,7 +24,11 @@ message Say_Req
 {
 	string Msg=1;
 }
-message ChatRoomMsg_Req
+message Say_Res
 {
 	string Msg=1;
+}
+message Ping_Msg
+{
+	int64 Time=1;
 }

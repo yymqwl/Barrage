@@ -1,4 +1,5 @@
-﻿using Orleans;
+﻿using GameFramework;
+using Orleans;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,6 +13,9 @@ namespace IHall
         Task<IChatUser> EnterRoom(long id);
 
         Task<IChatUser> GetChatUser(long id);
+
+
+        Task BroadCast(IMessage msg);
 
         Task ExitRoom(long  id);
         Task Update();

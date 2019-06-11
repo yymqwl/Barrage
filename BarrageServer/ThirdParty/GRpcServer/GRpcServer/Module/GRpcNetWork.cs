@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using Grpc.Core;
 using System.Net;
+using GameMain.Msg;
+
 namespace GRpcServer
 {
     [GameFrameworkModuleAttribute]
@@ -31,6 +33,7 @@ namespace GRpcServer
             int port = NetHelper.GetPort(item.Rpg_Ip);
             m_Server = new Server
             {
+                Services = { Hello.BindService(new HelloImpl()) },
                 Ports = { new ServerPort(str_ip , port, ServerCredentials.Insecure) }
             };
             

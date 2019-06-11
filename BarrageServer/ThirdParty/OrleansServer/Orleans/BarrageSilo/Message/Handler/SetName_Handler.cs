@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GameMain.Msg;
+using GameMain.ChatRoom;
 using IHall;
 namespace BarrageSilo
 {

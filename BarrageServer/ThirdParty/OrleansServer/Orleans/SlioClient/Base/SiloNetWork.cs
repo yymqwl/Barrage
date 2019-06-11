@@ -4,17 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BarrageSilo
+namespace SlioClient
 {
     [GameFrameworkModuleAttribute]
-    public class SiloNetWork: GameFrameworkModule
+    public class SiloNetWork : GameFrameworkModule
     {
         ServerNetWork m_ServerNetWork;
         public ServerNetWork ServerNetWork { get { return m_ServerNetWork; } }
         public override bool Init()
         {
             Log.Debug("SiloNetWork Init");
-            m_ServerNetWork = new ServerNetWork(NetworkProtocol.TCP, "127.0.0.1:2000");
+            m_ServerNetWork = new ServerNetWork(NetworkProtocol.TCP, "127.0.0.1:2010");
             m_ServerNetWork.MessagePacker = new Protobuf3Packer();
 
 
@@ -26,9 +26,9 @@ namespace BarrageSilo
 
             m_ServerNetWork.Init();
 
-            
+
             //opCodeTypeBv.Load(GetType().Assembly);
-            opCodeTypeBv.Load(typeof(IHall.IHello ).Assembly);
+            opCodeTypeBv.Load(typeof(IHall.IHello).Assembly);
             messageDispatherBv.Load(GetType().Assembly);
 
 

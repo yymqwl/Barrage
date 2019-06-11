@@ -48,6 +48,8 @@ namespace BarrageSilo
         private   ISiloHost InitialiseSilo(int siloPort, int gatewayPort)
         {
             var builder = new SiloHostBuilder()
+                .UseLocalhostClustering()
+                /*
                 .UseAdoNetClustering(options =>
                 {
                     options.Invariant = GameConstant.DB_Name;
@@ -58,7 +60,7 @@ namespace BarrageSilo
                 {
                     options.ClusterId = GameConstant.ClusterId;
                     options.ServiceId = GameConstant.ServiceId;
-                })
+                })*/
                 .Configure<GrainCollectionOptions>(options =>
                 {
                     options.CollectionAge = TimeSpan.FromSeconds(61);

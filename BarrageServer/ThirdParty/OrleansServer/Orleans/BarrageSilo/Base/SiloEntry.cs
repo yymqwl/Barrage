@@ -12,6 +12,7 @@ namespace BarrageSilo
         public static SiloEntry Instance { get; } = new SiloEntry();
         protected override void Init()
         {
+            AssemblyManager.Instance.Add(typeof( IHall.IHello).Assembly);
             AssemblyManager.Instance.Add(GetType().Assembly);
             GameModuleManager.Instance.CreateModule<ConsoleModule>().IGameMainEntry = this;
             GameModuleManager.Instance.CreateModule<SiloNetWork>();
@@ -55,6 +56,7 @@ namespace BarrageSilo
                     {
                         Thread.Sleep(GameConstant.TThreadInternal);
                         ClientTimer.Instance.Update();
+                        OneThreadSynchronizationContext.Instance.Update();
                         GameModuleManager.Instance.Update();
                     }
                     catch (Exception e)

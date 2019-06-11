@@ -3,7 +3,7 @@ using Orleans;
 using Orleans.Providers;
 using System;
 using System.Threading.Tasks;
-
+using GameMain.ChatRoom;
 namespace HallGrains
 {
 
@@ -33,8 +33,12 @@ namespace HallGrains
         public Task Say(string msg)
         {
             //Console.WriteLine(msg);
-
-
+            IMainEntry ime = GrainFactory.GetGrain<IMainEntry>(0);
+            var chatroom = ime.GetIChatRoom().Result;
+            chatroom.BroadCast(new Say_Res
+            {
+                Msg = $"{this.GetPrimaryKeyLong()}{Name}:{msg}"
+            });
 
             return Task.CompletedTask;
         }

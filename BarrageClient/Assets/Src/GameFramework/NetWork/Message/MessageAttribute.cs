@@ -4,9 +4,12 @@
     {
         public ushort Opcode { get; }
 
-        public MessageAttribute(ushort opcode)
+        public uint ServerType { get; }
+
+        public MessageAttribute(ushort opcode,uint servertype = 0)
         {
             this.Opcode = opcode;
+            this.ServerType = servertype;
         }
     }
 }

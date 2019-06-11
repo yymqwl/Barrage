@@ -13,6 +13,7 @@ namespace GameMain.Msg {
     static readonly string __ServiceName = "GameMain.Msg.Hello";
 
     static readonly grpc::Marshaller<global::GameMain.Msg.Hello_Msg> __Marshaller_GameMain_Msg_Hello_Msg = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GameMain.Msg.Hello_Msg.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::GameMain.Msg.Hello_Ping> __Marshaller_GameMain_Msg_Hello_Ping = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::GameMain.Msg.Hello_Ping.Parser.ParseFrom);
 
     static readonly grpc::Method<global::GameMain.Msg.Hello_Msg, global::GameMain.Msg.Hello_Msg> __Method_Handle = new grpc::Method<global::GameMain.Msg.Hello_Msg, global::GameMain.Msg.Hello_Msg>(
         grpc::MethodType.Unary,
@@ -20,6 +21,13 @@ namespace GameMain.Msg {
         "Handle",
         __Marshaller_GameMain_Msg_Hello_Msg,
         __Marshaller_GameMain_Msg_Hello_Msg);
+
+    static readonly grpc::Method<global::GameMain.Msg.Hello_Ping, global::GameMain.Msg.Hello_Ping> __Method_Ping = new grpc::Method<global::GameMain.Msg.Hello_Ping, global::GameMain.Msg.Hello_Ping>(
+        grpc::MethodType.Unary,
+        __ServiceName,
+        "Ping",
+        __Marshaller_GameMain_Msg_Hello_Ping,
+        __Marshaller_GameMain_Msg_Hello_Ping);
 
     /// <summary>Service descriptor</summary>
     public static global::Google.Protobuf.Reflection.ServiceDescriptor Descriptor
@@ -32,6 +40,11 @@ namespace GameMain.Msg {
     public abstract partial class HelloBase
     {
       public virtual global::System.Threading.Tasks.Task<global::GameMain.Msg.Hello_Msg> Handle(global::GameMain.Msg.Hello_Msg request, grpc::ServerCallContext context)
+      {
+        throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
+      }
+
+      public virtual global::System.Threading.Tasks.Task<global::GameMain.Msg.Hello_Ping> Ping(global::GameMain.Msg.Hello_Ping request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -77,6 +90,22 @@ namespace GameMain.Msg {
       {
         return CallInvoker.AsyncUnaryCall(__Method_Handle, null, options, request);
       }
+      public virtual global::GameMain.Msg.Hello_Ping Ping(global::GameMain.Msg.Hello_Ping request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return Ping(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual global::GameMain.Msg.Hello_Ping Ping(global::GameMain.Msg.Hello_Ping request, grpc::CallOptions options)
+      {
+        return CallInvoker.BlockingUnaryCall(__Method_Ping, null, options, request);
+      }
+      public virtual grpc::AsyncUnaryCall<global::GameMain.Msg.Hello_Ping> PingAsync(global::GameMain.Msg.Hello_Ping request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      {
+        return PingAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
+      }
+      public virtual grpc::AsyncUnaryCall<global::GameMain.Msg.Hello_Ping> PingAsync(global::GameMain.Msg.Hello_Ping request, grpc::CallOptions options)
+      {
+        return CallInvoker.AsyncUnaryCall(__Method_Ping, null, options, request);
+      }
       /// <summary>Creates a new instance of client from given <c>ClientBaseConfiguration</c>.</summary>
       protected override HelloClient NewInstance(ClientBaseConfiguration configuration)
       {
@@ -89,7 +118,8 @@ namespace GameMain.Msg {
     public static grpc::ServerServiceDefinition BindService(HelloBase serviceImpl)
     {
       return grpc::ServerServiceDefinition.CreateBuilder()
-          .AddMethod(__Method_Handle, serviceImpl.Handle).Build();
+          .AddMethod(__Method_Handle, serviceImpl.Handle)
+          .AddMethod(__Method_Ping, serviceImpl.Ping).Build();
     }
 
     /// <summary>Register service method with a service binder with or without implementation. Useful when customizing the  service binding logic.
@@ -99,6 +129,7 @@ namespace GameMain.Msg {
     public static void BindService(grpc::ServiceBinderBase serviceBinder, HelloBase serviceImpl)
     {
       serviceBinder.AddMethod(__Method_Handle, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::GameMain.Msg.Hello_Msg, global::GameMain.Msg.Hello_Msg>(serviceImpl.Handle));
+      serviceBinder.AddMethod(__Method_Ping, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::GameMain.Msg.Hello_Ping, global::GameMain.Msg.Hello_Ping>(serviceImpl.Ping));
     }
 
   }

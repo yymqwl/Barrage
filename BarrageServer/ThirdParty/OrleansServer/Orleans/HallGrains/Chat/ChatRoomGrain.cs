@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using GameFramework;
 using IHall;
 using Orleans;
 
@@ -36,6 +37,8 @@ namespace HallGrains
             }
             return Task.CompletedTask;
         }
+        
+         
 
         public Task<IChatUser> GetChatUser(long id)
         {
@@ -47,6 +50,20 @@ namespace HallGrains
         public Task Update()
         {
             return Task.CompletedTask;
+        }
+
+        public async Task BroadCast(IMessage msg)
+        {
+            IMainEntry ime = GrainFactory.GetGrain<IMainEntry>(0);
+            var igw= await ime.GetIGateWay();
+
+            foreach(var vk in  Dict_ChatUser)
+            {
+                await igw.Reply(vk.Key, msg);
+            }
+
+            //return Task.CompletedTask;
+            
         }
     }
 }

@@ -8,6 +8,7 @@ namespace IHall
     {
         Task<IChatRoom> GetIChatRoom();
         Task<IGateWay> GetIGateWay();
+        Task<IHello> GetIHello();
         Task Update();
     }
 }

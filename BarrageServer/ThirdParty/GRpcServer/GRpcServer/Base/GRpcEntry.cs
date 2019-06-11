@@ -1,5 +1,6 @@
 ﻿using GameFramework;
 using GameMain;
+using GameMain.Msg;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,15 +8,6 @@ using System.Threading;
 
 namespace GRpcServer
 {
-
-    public enum ServerType
-    {
-        None=0,
-        MsgParse=1,//解析,网关
-        Room=1<<1,//角色跟房间
-
-        All= MsgParse|Room
-    }
 
     public class GRpcEntry : AGameMainEntry
     {
@@ -41,7 +33,7 @@ namespace GRpcServer
 
             GameModuleManager.Instance.CreateModule<ConfigManager>();
             GameModuleManager.Instance.CreateModule<GRpcNetWork>();
-            GameModuleManager.Instance.CreateModule<GRpcClient>();
+            GameModuleManager.Instance.CreateModule<GRpcClientMd>();
             //GameModuleManager.Instance.CreateModule<SiloNetWork>();
 
             GameModuleManager.Instance.Init();

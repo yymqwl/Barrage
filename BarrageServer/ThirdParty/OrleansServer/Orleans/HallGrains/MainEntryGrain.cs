@@ -27,6 +27,11 @@ namespace HallGrains
             return Task.FromResult(GrainFactory.GetGrain<IGateWay>(0));
         }
 
+        public Task<IHello> GetIHello()
+        {
+            return Task.FromResult(m_IHello);
+        }
+
         public override async Task OnActivateAsync()
         {
             Log.Debug ($"{typeof(MainEntryGrain)}OnActivateAsync");

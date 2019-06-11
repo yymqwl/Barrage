@@ -7,9 +7,15 @@ package GameMain.Msg;
 service Hello
 {
 	rpc Handle(Hello_Msg ) returns (Hello_Msg) {}
+
+	rpc Ping(Hello_Ping) returns(Hello_Ping){}
 }
 
 message Hello_Msg
 {
 	string Msg=1;//ÏûÏ¢
+}
+message Hello_Ping
+{
+	int64 Time=1;//
 }
