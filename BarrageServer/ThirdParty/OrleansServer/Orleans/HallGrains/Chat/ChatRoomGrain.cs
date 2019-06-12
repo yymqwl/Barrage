@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using GameFramework;
+using GameMain.ChatRoom;
 using IHall;
 using Orleans;
 
@@ -23,19 +24,19 @@ namespace HallGrains
             var icr = GrainFactory.GetGrain<IChatUser>(id);
             if(Dict_ChatUser.ContainsKey(id))
             {
-                return null;
+                return Task.FromResult(Dict_ChatUser[id]);
             }
             Dict_ChatUser.Add(id,icr);
             return Task.FromResult(icr);
         }
 
-        public Task ExitRoom(long id)
+        public async Task ExitRoom(long id)
         {
             if (Dict_ChatUser.Remove(id))
             {
-                
+                await BroadCast(new Say_Res { Msg = "Id:ExitRoom"  });
             }
-            return Task.CompletedTask;
+            //return Task.CompletedTask;
         }
         
          
@@ -47,9 +48,27 @@ namespace HallGrains
             return Task.FromResult(icu);
         }
 
-        public Task Update()
+        public async Task Update()
         {
-            return Task.CompletedTask;
+            List<long> Ls_user = new List<long>();
+            foreach(var vk in Dict_ChatUser)
+            {
+                 if( await vk.Value.CheckTimeOut())
+                {
+                    Ls_user.Add(vk.Key);
+                }
+
+            }
+            if(Ls_user.Count>0)
+            {
+                
+                Ls_user.ForEach(async (long id) =>
+                {
+                     await ExitRoom(id);
+                });
+                
+            }
+          
         }
 
         public async Task BroadCast(IMessage msg)
@@ -59,7 +78,7 @@ namespace HallGrains
 
             foreach(var vk in  Dict_ChatUser)
             {
-                await igw.Reply(vk.Key, msg);
+                await igw.Reply(await vk.Value.GetSessionId(), msg);
             }
 
             //return Task.CompletedTask;

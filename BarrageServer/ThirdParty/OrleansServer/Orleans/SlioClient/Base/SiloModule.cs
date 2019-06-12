@@ -51,6 +51,7 @@ namespace SlioClient
             try
             {
                 var client = new ClientBuilder()
+                    .UseLocalhostClustering()/*
                 .UseAdoNetClustering(options =>
                 {
                     options.Invariant = GameConstant.DB_Name;
@@ -60,7 +61,7 @@ namespace SlioClient
                 {
                     options.ClusterId = GameConstant.ClusterId;
                     options.ServiceId = GameConstant.ServiceId;
-                })
+                })*/
                 .ConfigureApplicationParts(parts =>
                 {
                     parts.AddApplicationPart(typeof(IHall.IGateWay).Assembly);

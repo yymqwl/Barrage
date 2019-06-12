@@ -36,6 +36,7 @@ namespace HallGrains
         public Task SubscribeAsync(IGateWay_Obs view)
         {
             UnSubscribeAsync(view).Wait();
+            m_IGW_Obs.Subscribe(view);
             return Task.CompletedTask;
         }
 

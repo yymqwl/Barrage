@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace BarrageSilo
 {
@@ -38,6 +39,10 @@ namespace BarrageSilo
         {
             GameModuleManager.Instance.ShutDown();
         }
+        async Task DoAsync()
+        {
+            await Task.Run(() => { });
+        }
         public override void Entry(string[] args)
         {
             
@@ -47,9 +52,7 @@ namespace BarrageSilo
 
                 ClientTimer.Instance.Start();
                 Init();
-
                 SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
-
                 while (m_IsLoop)
                 {
                     try

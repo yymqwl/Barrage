@@ -1,0 +1,2 @@
+xcopy /s/e/f/y "Cs/*.cs"  "../../../BarrageClient/Assets/Src/GameMain/Message"
+echo CopyFinish..

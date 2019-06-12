@@ -19,6 +19,7 @@ namespace HallGrains
 
         public Task<IChatRoom> GetIChatRoom()
         {
+            Log.Debug($"GetIChatRoom:ThreadId:{Thread.CurrentThread.ManagedThreadId}");
             return Task.FromResult(GrainFactory.GetGrain<IChatRoom>(0));
         }
 
@@ -60,7 +61,7 @@ namespace HallGrains
             await m_IGateWay.Update();
 
             
-            Log.Debug($"MainEntry Update: threadId{Thread.CurrentThread.ManagedThreadId}");
+            //Log.Debug($"MainEntry Update: threadId{Thread.CurrentThread.ManagedThreadId}");
             //return Task.CompletedTask;
         }
 

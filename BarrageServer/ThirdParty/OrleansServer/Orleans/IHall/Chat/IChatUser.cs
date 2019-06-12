@@ -14,5 +14,10 @@ namespace IHall
         Task<bool> Connected();
 
         Task<long> GetId();
+
+        Task Ping();//活跃
+        Task<bool> CheckTimeOut();//超时
+        Task SetSessionId(long id);
+        Task<long> GetSessionId();
     }
 }

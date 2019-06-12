@@ -9,34 +9,34 @@ using System.Threading;
 
 namespace GameMain
 {
-    public class GameMainEntry : UInstance<GameMainEntry>, IGameMainEntry
+    public class AGameMainEntry : MonoBehaviour, IGameMainEntry
     {
-        public void Entry(string[] args)
+        public virtual void Entry(string[] args)
         {
             SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
             ClientTimer.Instance.Start();
-            GameModuleManager.Instance.CreateModules(typeof(GameMainEntry).Assembly);
-            GameModuleManager.Instance.Init();
+            //GameModuleManager.Instance.CreateModules(typeof(GameMainEntry).Assembly);
+            //GameModuleManager.Instance.Init();
             
 
         }
         
-        private void Awake()
+        private  void Awake()
         {
             Entry(null);
         }
 
-        public void OnApplicationPause(bool pause)
+        public virtual void OnApplicationPause(bool pause)
         {
             Log.Debug($"OnApplicationPause{pause}");
         }
-        public void OnApplicationQuit()
+        public virtual void OnApplicationQuit()
         {
             GameModuleManager.Instance.ShutDown();
             Log.Debug($"OnApplicationQuit");
         }
 
-        private void Update()
+        public virtual void Update()
         {
             try
             {

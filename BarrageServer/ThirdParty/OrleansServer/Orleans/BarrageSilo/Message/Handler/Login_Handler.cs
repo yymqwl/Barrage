@@ -16,12 +16,17 @@ namespace BarrageSilo
                 Log.Debug("Has Logined");
                 return;
             }
-            
 
             var client = GameModuleManager.Instance.GetModule<SiloClient>();
-            var ime = client.ClusterClient.GetGrain<IMainEntry>(0);
+
+
+            var ime = client.MainEntry;
             var chatroom = await ime.GetIChatRoom();
-            var chatuser = await chatroom.GetChatUser(message.Id);
+            
+            var chatuser = await chatroom.EnterRoom(message.Id);
+
+            await chatuser.SetSessionId(session.Id);
+            await chatuser.SetName(message.Id.ToString());
 
             var useridbv =  new UserIdBv(message.Id);
             session.AddIBehaviour(useridbv);

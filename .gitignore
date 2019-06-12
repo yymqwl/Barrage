@@ -269,3 +269,4 @@ BarrageClient/KcpLib.csproj
 BarrageClient/protobuf-net.csproj
 BarrageClient/BarrageClient.sln
 
+BarrageClient/Export/

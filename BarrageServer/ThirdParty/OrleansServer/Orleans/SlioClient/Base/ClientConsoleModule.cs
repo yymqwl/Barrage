@@ -6,6 +6,7 @@ using GameFramework;
 using IHall;
 using GameMain.ChatRoom;
 using System.IO;
+using HallGrains;
 
 namespace SlioClient
 {
@@ -70,6 +71,12 @@ namespace SlioClient
                         var say_req = new Say_Req();
                         say_req.Msg = cmd.Params[0];
                         m_Session.Send(say_req);
+                    }
+                    break;
+                case "say2":
+                    {
+                       var cug = SiloModule.ClusterClient.GetGrain<IChatUser>(1);
+                       cug.Say(cmd.Params[0]).Wait();
                     }
                     break;
                 case "name":
