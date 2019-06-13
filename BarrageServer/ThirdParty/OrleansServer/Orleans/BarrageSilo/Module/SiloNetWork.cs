@@ -14,7 +14,8 @@ namespace BarrageSilo
         public override bool Init()
         {
             Log.Debug("SiloNetWork Init");
-            m_ServerNetWork = new ServerNetWork(NetworkProtocol.TCP, "127.0.0.1:2000");
+            var gameconfig = GameModuleManager.Instance.GetModule<ConfigManager>().GameConfig;
+            m_ServerNetWork = new ServerNetWork(NetworkProtocol.TCP, gameconfig.NetWorkIp);
             m_ServerNetWork.MessagePacker = new Protobuf3Packer();
 
 

@@ -12,6 +12,7 @@ namespace ChatRoom
     public class ChatRoomUI : UInstance<ChatRoomUI>
     {
 
+        public string Str_Ip = "127.0.0.1:2000";
         public StringBuilder m_Sb = new StringBuilder();
 
         Session m_Session;
@@ -25,7 +26,7 @@ namespace ChatRoom
         }
         public void Start()
         {
-
+            Application.targetFrameRate = -1;
             Screen.SetResolution(960, 640, false);
             StartCoroutine(Ping_Msg());
 
@@ -76,10 +77,10 @@ namespace ChatRoom
             yield return new WaitForSeconds(1);
             if(m_Session == null|| !m_Session.IsConnected)
             {
-                m_Session = ClientNetWork.Create("127.0.0.1:2000");
+                m_Session = ClientNetWork.Create(Str_Ip);
             }
  
-            m_Session.Send(new Ping_Msg { Time = DateTime.Now.Ticks });
+            m_Session.Send(new Ping_Msg { Time = DateTime.UtcNow.Ticks });
             StartCoroutine(Ping_Msg());
             
         }

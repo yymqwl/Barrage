@@ -14,7 +14,7 @@ namespace IHall
 
         Task<IChatUser> GetChatUser(long id);
 
-
+        Task DirectPingUser(long id);
         Task BroadCast(IMessage msg);
 
         Task ExitRoom(long  id);

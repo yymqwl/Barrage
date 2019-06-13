@@ -4,6 +4,7 @@ using Orleans.Hosting;
 using GameMain;
 using Orleans.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using Orleans;
 
 namespace BarrageSilo
@@ -47,20 +48,32 @@ namespace BarrageSilo
         }
         private   ISiloHost InitialiseSilo(int siloPort, int gatewayPort)
         {
+            var gameconfig = GameModuleManager.Instance.GetModule<ConfigManager>().GameConfig;
             var builder = new SiloHostBuilder()
-                .UseLocalhostClustering()
                 /*
+                .Configure<EndpointOptions>(options =>
+                {
+                    options.AdvertisedIPAddress = IPAddress.Parse(gameconfig.SiloIp);
+                    options.SiloPort = gameconfig.SiloPort;
+                    options.GatewayPort = gameconfig.SiloGatePort;
+                    
+                    options.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 40000);
+                    options.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 50000);
+                })*/
+                //.UseLocalhostClustering(gameconfig.SiloPort, gameconfig.SiloGatePort)
+                //.ConfigureEndpoints(gameconfig.SiloIp, gameconfig.SiloPort, gameconfig.SiloGatePort)
+                //.UseLocalhostClustering()
                 .UseAdoNetClustering(options =>
                 {
-                    options.Invariant = GameConstant.DB_Name;
-                    options.ConnectionString = GameConstant.Str_DBConnection;
+                    options.Invariant = gameconfig.DB_Name;//GameConstant.DB_Name;
+                    options.ConnectionString = gameconfig.Str_DBConnection;//GameConstant.Str_DBConnection;
                 })
                 .ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
                 .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = GameConstant.ClusterId;
-                    options.ServiceId = GameConstant.ServiceId;
-                })*/
+                    options.ClusterId = gameconfig.ClusterId;
+                    options.ServiceId = gameconfig.ServiceId;
+                })
                 .Configure<GrainCollectionOptions>(options =>
                 {
                     options.CollectionAge = TimeSpan.FromSeconds(61);

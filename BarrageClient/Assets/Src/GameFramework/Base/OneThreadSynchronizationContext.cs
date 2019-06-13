@@ -6,6 +6,7 @@ namespace GameFramework
 {
     public class OneThreadSynchronizationContext : SynchronizationContext
     {
+
         public static OneThreadSynchronizationContext Instance { get; } = new OneThreadSynchronizationContext();
 
         private readonly int m_MainThreadId = Thread.CurrentThread.ManagedThreadId;
@@ -29,7 +30,7 @@ namespace GameFramework
 
         public override void Post(SendOrPostCallback callback, object state)
         {
-            // 如果是主线程Post则直接执行回调，不需要进入队列
+            // 如果是主线程Post则直接执行回调,不需要进入队列,进入线程之后会在下一帧处理消息
             if (Thread.CurrentThread.ManagedThreadId == this.m_MainThreadId)
             {
                 callback(state);

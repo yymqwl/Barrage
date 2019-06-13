@@ -66,6 +66,14 @@ namespace SlioClient
                         m_Session.Send(ping_msg);
                     }
                     break;
+                case "ping2":
+                    {
+                        /*
+                        var cug = SiloModule.ClusterClient.GetGrain<IChatUser>(1);
+                        cug.Ping();
+                        */
+                    }
+                    break;
                 case "say":
                     {
                         var say_req = new Say_Req();

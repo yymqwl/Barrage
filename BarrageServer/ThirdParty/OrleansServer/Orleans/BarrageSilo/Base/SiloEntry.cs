@@ -19,6 +19,7 @@ namespace BarrageSilo
             GameModuleManager.Instance.CreateModule<SiloNetWork>();
             GameModuleManager.Instance.CreateModule<SiloModule>();
             GameModuleManager.Instance.CreateModule<SiloClient>();
+            GameModuleManager.Instance.CreateModule<ConfigManager>();
 
             /*GameModuleManager.Instance.CreateModules(typeof(SiloEntry).Assembly,(Type tp)=>
             {

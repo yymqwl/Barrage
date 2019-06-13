@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using System.Net;
 using IHall;
 namespace BarrageSilo
 {
@@ -78,19 +79,26 @@ namespace BarrageSilo
         {
             try
             {
+                var gameconfig = GameModuleManager.Instance.GetModule<ConfigManager>().GameConfig;
+
                 var client = new ClientBuilder()
-                    .UseLocalhostClustering()
-                    /*
+                /*.Configure<GatewayOptions>((options) =>
+                {
+                    
+                })*/
+                //.UseLocalhostClustering(gameconfig.SiloGatePort+1, GameConstant.ServiceId, GameConstant.ClusterId)
+                //.UseLocalhostClustering()
+                
                 .UseAdoNetClustering(options =>
                 {
-                    options.Invariant = GameConstant.DB_Name;
-                    options.ConnectionString = GameConstant.Str_DBConnection;
+                    options.Invariant = gameconfig.DB_Name;//GameConstant.DB_Name;
+                    options.ConnectionString = gameconfig.Str_DBConnection;//GameConstant.Str_DBConnection;
                 })
                 .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = GameConstant.ClusterId;
-                    options.ServiceId = GameConstant.ServiceId;
-                })*/
+                    options.ClusterId = gameconfig.ClusterId;
+                    options.ServiceId = gameconfig.ServiceId;
+                })
                 .ConfigureApplicationParts(parts =>
                 {
                     parts.AddApplicationPart(typeof(IHall.IGateWay).Assembly);
@@ -125,9 +133,9 @@ namespace BarrageSilo
             await Task.Delay(TimeSpan.FromSeconds(3));
             return true;
         }
-        public override void Update()
+        public  override void Update()
         {
-            m_MainEntry.Update().Wait();
+           //m_MainEntry.Update();
         }
         public override bool ShutDown()
         {

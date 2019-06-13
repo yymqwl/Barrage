@@ -12,8 +12,7 @@ namespace ChatRoom
     {
         protected override void Run(Session session, Ping_Msg message)
         {
-            var sp = new TimeSpan(DateTime.Now.Ticks - message.Time);
-
+            var sp = new TimeSpan(DateTime.UtcNow.Ticks - message.Time);
             Log.Debug($"Ping:{sp.TotalMilliseconds}");
         }
     }

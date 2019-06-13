@@ -84,5 +84,15 @@ namespace HallGrains
             //return Task.CompletedTask;
             
         }
+
+        public async Task DirectPingUser(long id)
+        {
+            var iuser = await GetChatUser(id);
+            if(iuser!=null)
+            {
+                await iuser.Ping();
+            }
+
+        }
     }
 }

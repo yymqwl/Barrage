@@ -19,10 +19,27 @@ namespace BarrageSilo
                 session.Send(message);
                 return;
             }
-            var client = GameModuleManager.Instance.GetModule<SiloClient>();
-            var user = await client.ChatRoom.GetChatUser(uidbv.Id);
 
+            var client = GameModuleManager.Instance.GetModule<SiloClient>();
+
+            var dt1 = DateTime.UtcNow;
+
+            await client.ChatRoom.DirectPingUser(uidbv.Id);//合并操作
+
+            var ts = DateTime.UtcNow - dt1;
+            Log.Debug($"InnerPing1:{ts.TotalMilliseconds}");
+
+            dt1 = DateTime.UtcNow;
+            var user = await client.ChatRoom.GetChatUser(uidbv.Id);
+            ts = DateTime.UtcNow - dt1;
+            Log.Debug($"InnerPing2:{ts.TotalMilliseconds}");
+
+            dt1 = DateTime.UtcNow;
             await user.Ping();
+            ts = DateTime.UtcNow - dt1;
+            Log.Debug($"InnerPing3:{ts.TotalMilliseconds}");
+
+
 
             session.Send(message);
         }
