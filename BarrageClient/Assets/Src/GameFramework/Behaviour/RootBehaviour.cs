@@ -1,7 +1,7 @@
 ﻿namespace GameFramework
 {
 
-    public abstract class RootBehaviour<T> :ABehaviourSet
+    public class RootBehaviour<T> :ABehaviourSet
     {
         T m_Owner;
         public T Owner

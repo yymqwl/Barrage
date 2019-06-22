@@ -109,11 +109,6 @@ namespace GameFramework
             m_AChannel.Send(stream);
         }
 
-        /*
-        public void Send(IMessage message)
-        {
-            this.Send(0x00, message);
-        }*/
 
         public void Send(IMessage message)
         {

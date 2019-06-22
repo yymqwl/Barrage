@@ -30,26 +30,20 @@
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endregion
 
-namespace Google.Protobuf.Reflection
-{
-    /// <summary>
-    /// Interface implemented by all descriptor types.
-    /// </summary>
-    public interface IDescriptor
-    {
-        /// <summary>
-        /// Returns the name of the entity (message, field etc) being described.
-        /// </summary>
-        string Name { get; }
+using System.Runtime.CompilerServices;
+using System.Security;
 
-        /// <summary>
-        /// Returns the fully-qualified name of the entity being described.
-        /// </summary>
-        string FullName { get; }
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
 
-        /// <summary>
-        /// Returns the descriptor for the .proto file that this entity is part of.
-        /// </summary>
-        FileDescriptor File { get; }
-    }
-}
+#if !NCRUNCH
+[assembly: AllowPartiallyTrustedCallers]
+#endif
+
+[assembly: InternalsVisibleTo("Google.Protobuf.Test, PublicKey=" +
+    "002400000480000094000000060200000024000052534131000400000100010025800fbcfc63a1" +
+    "7c66b303aae80b03a6beaa176bb6bef883be436f2a1579edd80ce23edf151a1f4ced97af83abcd" +
+    "981207041fd5b2da3b498346fcfcd94910d52f25537c4a43ce3fbe17dc7d43e6cbdb4d8f1242dc" +
+    "b6bd9b5906be74da8daa7d7280f97130f318a16c07baf118839b156299a48522f9fae2371c9665" +
+    "c5ae9cb6")]

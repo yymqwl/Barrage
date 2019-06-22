@@ -40,11 +40,21 @@ namespace BarrageSilo
                 return m_ChatRoom;
             }
         }
+
+        public IGateWay GateWay
+        {
+            get
+            {
+                return m_IGateWay;
+            }
+        }
         public IChatRoom m_ChatRoom;
 
         protected IMainEntry m_MainEntry;
         protected SiloGateWay_Obs m_SiloGateWay_Obs;
         protected IGateWay_Obs m_IGateWay_Obs;
+
+        protected IGateWay m_IGateWay;
 
         public  override bool Init()
         {
@@ -56,7 +66,9 @@ namespace BarrageSilo
             m_SiloGateWay_Obs = new SiloGateWay_Obs();
             m_IGateWay_Obs = m_ClusterClient.CreateObjectReference<IGateWay_Obs>(m_SiloGateWay_Obs).Result;
 
-            m_MainEntry.GetIGateWay().Result.SubscribeAsync(m_IGateWay_Obs).Wait();
+            m_IGateWay = m_MainEntry.GetIGateWay().Result;
+
+            m_IGateWay.SubscribeAsync(m_IGateWay_Obs).Wait();
 
             m_ChatRoom = m_MainEntry.GetIChatRoom().Result;
 

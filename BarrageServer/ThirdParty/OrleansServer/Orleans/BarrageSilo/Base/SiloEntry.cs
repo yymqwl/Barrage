@@ -51,7 +51,9 @@ namespace BarrageSilo
             try
             {
 
+                
                 ClientTimer.Instance.Start();
+
                 Init();
                 SynchronizationContext.SetSynchronizationContext(OneThreadSynchronizationContext.Instance);
                 while (m_IsLoop)

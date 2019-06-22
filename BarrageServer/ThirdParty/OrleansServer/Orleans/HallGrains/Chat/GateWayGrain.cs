@@ -13,11 +13,18 @@ namespace HallGrains
     public class GateWayGrain :   Grain , IGateWay
     {
         private ObserverSubscriptionManager<IGateWay_Obs> m_IGW_Obs = new ObserverSubscriptionManager<IGateWay_Obs>();
-        
+        RpcCallDispather m_RpcCallDispather;
+
+
         public override async Task OnActivateAsync()
         {
             m_IGW_Obs.Clear();
+            /*m_RpcCallDispather = new RpcCallDispather();
 
+            m_RpcCallDispather.Load(typeof(IGateWay).Assembly);
+            m_RpcCallDispather.Load(GetType().Assembly);
+            */
+            
             await base.OnActivateAsync();
         }
         public async override Task OnDeactivateAsync()
@@ -26,8 +33,10 @@ namespace HallGrains
             await base.OnDeactivateAsync();
         }
 
-        public Task<IMessage> Call(long id, IMessage msg)
+        public  Task<IMessage> Call(long id, IMessage msg)
         {
+            
+            //m_RpcCallDispather.Call()
 
             return Task.FromResult(msg);
         }

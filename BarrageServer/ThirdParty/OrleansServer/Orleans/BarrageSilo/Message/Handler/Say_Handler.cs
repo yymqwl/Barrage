@@ -14,7 +14,7 @@ namespace BarrageSilo
         {
             var useridbv = session.GetIBehaviour<UserIdBv>();
             var client = GameModuleManager.Instance.GetModule<SiloClient>();
-            var ichatuser = await client.ChatRoom.GetChatUser(useridbv.Id);//client.ClusterClient.GetGrain<IChatUser>(useridbv.Id);
+            var ichatuser = await client.ChatRoom.GetChatUser(useridbv.Id);
 
             Log.Debug($"Say:ThreadId:{Thread.CurrentThread.ManagedThreadId}");
 
