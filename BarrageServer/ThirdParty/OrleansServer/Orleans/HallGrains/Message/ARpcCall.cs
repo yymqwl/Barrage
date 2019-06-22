@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GameFramework;
+using Orleans;
 
 namespace HallGrains
 {
@@ -12,9 +13,10 @@ namespace HallGrains
             return GetType();
         }
 
-        public virtual IMessage Handle(long userid, IMessage message)
+        public virtual IMessage Handle(long userid, IMessage message  , IGrainFactory grainfactory)
         {
             return message;
         }
+
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Orleans;
 
 namespace HallGrains
 {
@@ -55,7 +56,7 @@ namespace HallGrains
             }
             m_Dict_Handlers[opcode].Add(handler);
         }
-        public  void Call(long uid, MessageInfo messageInfo)
+        public  void Call(long uid, MessageInfo messageInfo, IGrainFactory grainfactory )
         {
             List<IRpcCall> actions;
             if (!m_Dict_Handlers.TryGetValue(messageInfo.Opcode, out actions))
@@ -67,7 +68,7 @@ namespace HallGrains
             {
                 foreach (IRpcCall ev in actions)
                 {
-                    ev.Handle(uid, messageInfo.Message);
+                    ev.Handle(uid, messageInfo.Message , grainfactory);
                 }
             }
             catch (Exception e)

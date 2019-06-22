@@ -9,7 +9,7 @@ namespace HallGrains
 {
     public interface IRpcCall
     {
-        IMessage Handle( long userid, IMessage message);
+        IMessage Handle( long userid, IMessage message, IGrainFactory grainfactory);
 
         Type GetMessageType();
     }
