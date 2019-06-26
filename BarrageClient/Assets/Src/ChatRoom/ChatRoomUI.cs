@@ -15,6 +15,7 @@ namespace ChatRoom
         public string Str_Ip = "127.0.0.1:2000";
         public StringBuilder m_Sb = new StringBuilder();
 
+        protected string Str_Ping;
         Session m_Session;
 
         public ClientNetWork ClientNetWork
@@ -31,8 +32,14 @@ namespace ChatRoom
             StartCoroutine(Ping_Msg());
 
         }
+
+        public void SetPing_Str(string ping_str)
+        {
+            Str_Ping = ping_str;
+        }
         string ChatId;
         string ChatMsg;
+
         public void OnGUI()
         {
 
@@ -40,6 +47,8 @@ namespace ChatRoom
 
             GUILayout.BeginVertical();
             GUILayout.TextArea(m_Sb.ToString(), GUILayout.Width(200),GUILayout.Height(400));
+            GUILayout.Label(Str_Ping, GUILayout.Width(200));
+
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical();
@@ -64,7 +73,7 @@ namespace ChatRoom
             GUILayout.BeginVertical();
             if (GUILayout.Button("Exit"))
             {
-
+                m_Session.Send(new ExitRoom_Req { Id =long.Parse(ChatId)});
             }
             GUILayout.EndVertical();
 

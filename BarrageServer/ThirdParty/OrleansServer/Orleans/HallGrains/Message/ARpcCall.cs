@@ -1,22 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using GameFramework;
 using Orleans;
 
 namespace HallGrains
 {
-    public class ARpcCall : IRpcCall
+    public abstract class ARpcCall<TRequest,TRespone> : IRpcCall where TRequest : class, IMessage  where TRespone : class, IMessage
     {
-        public Type GetMessageType()
+        public Type GetRequestType()
         {
-            return GetType();
+            return typeof(TRequest);
         }
 
-        public virtual IMessage Handle(long userid, IMessage message  , IGrainFactory grainfactory)
+        public Type GetResponeType()
         {
-            return message;
+            return typeof(TRespone);
         }
+
+        public async virtual Task<IMessage> Handle(long userid, IMessage message  , IGrainFactory grainfactory)
+        {
+            var trequest = message as TRequest;
+            if(trequest == null)
+            {
+                Log.Error($"消息类型转换错误Requst: {GetRequestType().Name}");
+                return null;
+            }
+            IMessage responce = await Run(userid,trequest,grainfactory) as IMessage;
+
+            if(responce == null)
+            {
+                //Log.Error($"消息类型转换错误responce: {GetResponeType().Name}");
+            }
+            return  responce;
+        }
+        public  abstract  Task<TRespone> Run(long userid, TRequest requst, IGrainFactory grainfactory);
 
     }
 }

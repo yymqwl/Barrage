@@ -4,13 +4,15 @@ using Orleans;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace HallGrains
 {
     public interface IRpcCall
     {
-        IMessage Handle( long userid, IMessage message, IGrainFactory grainfactory);
+        Task<IMessage> Handle( long userid, IMessage message, IGrainFactory grainfactory);
 
-        Type GetMessageType();
+        Type GetRequestType();
+        Type GetResponeType();
     }
 }

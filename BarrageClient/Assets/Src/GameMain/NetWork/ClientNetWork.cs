@@ -10,5 +10,6 @@ namespace GameMain
             m_NetworkProtocol = NetworkProtocol;
             m_ChannelType = ChannelType.Connect;
         }
+
     }
 }

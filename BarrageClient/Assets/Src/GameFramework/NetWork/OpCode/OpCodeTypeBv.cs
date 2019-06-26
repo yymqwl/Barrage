@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace GameFramework
 {
-    public class OpCodeTypeBv : ABehaviour
+    public class OpCodeTypeBv : ABehaviour,IOpCodeType
     {
         private readonly DoubleMap<ushort, Type> m_OpCodeTypes = new DoubleMap<ushort, Type>();
 

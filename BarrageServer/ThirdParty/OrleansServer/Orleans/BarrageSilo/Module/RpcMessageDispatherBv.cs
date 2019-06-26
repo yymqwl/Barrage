@@ -8,7 +8,7 @@ namespace BarrageSilo
 {
     public class RpcMessageDispatherBv : MessageDispatherBv
     {
-        public async override void Handle(Session session, MessageInfo messageInfo)
+        public async override void Dispatch(Session session, MessageInfo messageInfo)
         {
 
             
@@ -23,7 +23,10 @@ namespace BarrageSilo
 
                 var client = GameModuleManager.Instance.GetModule<SiloClient>();
                 IMessage message = await client.GateWay.Call(useridbv.Id, messageInfo.Message);
-                session.Send(message);
+                if(message != null)
+                {
+                    session.Send(message);
+                }
                 return;
             }
             else

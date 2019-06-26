@@ -7,9 +7,11 @@ using Orleans;
 using GameFramework;
 using System.Threading;
 using System.Net;
+using Orleans.Concurrency;
 
 namespace HallGrains
 {
+    [Reentrant]
     public class GateWayGrain :   Grain , IGateWay
     {
         private ObserverSubscriptionManager<IGateWay_Obs> m_IGW_Obs = new ObserverSubscriptionManager<IGateWay_Obs>();
@@ -21,12 +23,17 @@ namespace HallGrains
             m_IGW_Obs.Clear();
             m_RpcCallDispather = new RpcCallDispather();
 
-            
-            m_RpcCallDispather.Load(typeof(IGateWay).Assembly);
+            var opCodeTypeBv = new OpCodeTypeBv();
+            opCodeTypeBv.Load(typeof(IHall.IHello).Assembly);
+            m_RpcCallDispather.IOpCodeType = opCodeTypeBv;
+
+
+            m_RpcCallDispather.Load(typeof(GateWayGrain).Assembly);
+
             /*
             m_RpcCallDispather.Load(GetType().Assembly);
             */
-            
+
             await base.OnActivateAsync();
         }
         public async override Task OnDeactivateAsync()
@@ -35,13 +42,16 @@ namespace HallGrains
             await base.OnDeactivateAsync();
         }
 
-        public  Task<IMessage> Call(long id, IMessage msg)
+        public async Task<IMessage> Call(long id, IMessage request)
         {
-            
 
-            //m_RpcCallDispather.Call()
 
-            return Task.FromResult(msg);
+            return await m_RpcCallDispather.Call(id, request, GrainFactory);
+            /*
+            IMessage respone = await m_RpcCallDispather.Call(id, request, GrainFactory);
+            return respone;
+            //return Task.FromResult(msg);
+            */
         }
 
 

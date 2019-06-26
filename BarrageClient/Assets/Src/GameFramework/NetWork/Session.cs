@@ -91,7 +91,7 @@ namespace GameFramework
             {
                 memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
                 opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
-                message = Network.MessagePacker.DeserializeFrom(Network.OpCodeTypeBv.GetType(opcode), memoryStream) as IMessage;
+                message = Network.MessagePacker.DeserializeFrom(Network.IOpCodeType.GetType(opcode), memoryStream) as IMessage;
             }
             catch (Exception e)
             {
@@ -101,7 +101,7 @@ namespace GameFramework
                 this.Network.Remove(this.Id);
                 return;
             }
-            Network.MessageDispatherBv.Handle(this, new MessageInfo(opcode, message));
+            Network.IMessageDispatcher.Dispatch(this, new MessageInfo(opcode, message));
             
         }
         public void Send(MemoryStream stream)
@@ -112,7 +112,7 @@ namespace GameFramework
 
         public void Send(IMessage message)
         {
-           ushort opcode = Network.OpCodeTypeBv.GetOpcode(message.GetType());
+           ushort opcode = Network.IOpCodeType.GetOpcode(message.GetType());
            Send(opcode,message);
 
         }

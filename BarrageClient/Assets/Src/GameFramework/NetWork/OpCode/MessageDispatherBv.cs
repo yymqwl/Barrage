@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace GameFramework
 {
-    public class MessageDispatherBv :ABehaviour
+    public class MessageDispatherBv :ABehaviour , IMessageDispatcher
     {
-        public override int Priority => 10;
         protected readonly Dictionary<ushort, List<IMHandler>> m_Dict_Handlers = new Dictionary<ushort, List<IMHandler>>();
 
 
@@ -21,6 +20,7 @@ namespace GameFramework
         public void Load(Assembly assembly)
         {
             var types = AssemblyManager.Instance.GetAllTypesByAttribute(assembly,typeof(MessageHandlerAttribute));
+            var iopCodeType = GetParent<NetWorkBs>().IOpCodeType;
             foreach (Type type in types)
             {
                 object[] attrs = type.GetCustomAttributes(typeof(MessageHandlerAttribute), false);
@@ -40,7 +40,7 @@ namespace GameFramework
                     continue;
                 }
                 Type messageType = iMHandler.GetMessageType();
-                ushort opcode = GetParent<NetWorkBs>().OpCodeTypeBv.GetOpcode(messageType);
+                ushort opcode = iopCodeType.GetOpcode(messageType);
                 if (opcode == 0)
                 {
                     Log.Error($"消息opcode为0: {messageType.Name}");
@@ -60,10 +60,10 @@ namespace GameFramework
             m_Dict_Handlers[opcode].Add(handler);
         }
 
-        public virtual void Handle(Session session, MessageInfo messageInfo)
+        public virtual  void Dispatch(Session session, MessageInfo messageInfo)
         {
             List<IMHandler> actions;
-            if(!m_Dict_Handlers.TryGetValue(messageInfo.Opcode,out actions) )
+            if (!m_Dict_Handlers.TryGetValue(messageInfo.Opcode, out actions))
             {
                 Log.Error($"消息没有处理: {messageInfo.Opcode}");
                 return;
@@ -72,15 +72,13 @@ namespace GameFramework
             {
                 foreach (IMHandler ev in actions)
                 {
-                    ev.Handle(session,messageInfo.Message);
+                    ev.Handle(session, messageInfo.Message);
                 }
             }
             catch (Exception e)
             {
                 Log.Error(e);
             }
-
-
         }
 
         public override bool ShutDown()
@@ -88,5 +86,7 @@ namespace GameFramework
             m_Dict_Handlers.Clear();
             return base.ShutDown();
         }
+
+
     }
 }

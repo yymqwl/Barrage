@@ -7,7 +7,7 @@ using IHall;
 
 namespace BarrageSilo
 {
-    [MessageHandler]
+    //[MessageHandler]
     public class ExitRoom_Handler : AMHandler<ExitRoom_Req>
     {
         protected async override void Run(Session session, ExitRoom_Req message)

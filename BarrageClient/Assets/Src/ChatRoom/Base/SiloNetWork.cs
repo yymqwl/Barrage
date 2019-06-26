@@ -18,9 +18,11 @@ namespace ChatRoom
 
             var opCodeTypeBv = new OpCodeTypeBv();
             m_ClientNetWork.AddIBehaviour(opCodeTypeBv);
+            m_ClientNetWork.IOpCodeType = opCodeTypeBv;
 
             var messageDispatherBv = new MessageDispatherBv();
             m_ClientNetWork.AddIBehaviour(messageDispatherBv);
+            m_ClientNetWork.IMessageDispatcher = messageDispatherBv;
 
             m_ClientNetWork.Init();
 

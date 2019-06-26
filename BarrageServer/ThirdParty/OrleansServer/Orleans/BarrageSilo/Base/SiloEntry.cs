@@ -15,6 +15,7 @@ namespace BarrageSilo
         {
             AssemblyManager.Instance.Add(typeof( IHall.IHello).Assembly);
             AssemblyManager.Instance.Add(GetType().Assembly);
+            AssemblyManager.Instance.Add(typeof(HallGrains.HelloGrain).Assembly);
             GameModuleManager.Instance.CreateModule<ConsoleModule>().IGameMainEntry = this;
             GameModuleManager.Instance.CreateModule<SiloNetWork>();
             GameModuleManager.Instance.CreateModule<SiloModule>();

@@ -6,7 +6,7 @@ using GameMain.ChatRoom;
 using IHall;
 namespace BarrageSilo
 {
-    [MessageHandler]
+    //[MessageHandler]
     public class SetName_Handler : AMHandler<SetName_Req>
     {
         protected async override void Run(Session session, SetName_Req message)

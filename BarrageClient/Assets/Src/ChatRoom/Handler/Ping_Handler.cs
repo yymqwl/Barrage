@@ -14,6 +14,7 @@ namespace ChatRoom
         {
             var sp = new TimeSpan(DateTime.UtcNow.Ticks - message.Time);
             Log.Debug($"Ping:{sp.TotalMilliseconds}");
+            ChatRoomUI.Instance.SetPing_Str(sp.TotalMilliseconds.ToString());
         }
     }
 }

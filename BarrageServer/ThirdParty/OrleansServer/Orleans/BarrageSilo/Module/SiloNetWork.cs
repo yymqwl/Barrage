@@ -20,10 +20,15 @@ namespace BarrageSilo
 
 
             var opCodeTypeBv = new OpCodeTypeBv();
+            m_ServerNetWork.IOpCodeType = opCodeTypeBv;
             m_ServerNetWork.AddIBehaviour(opCodeTypeBv);
 
-            var messageDispatherBv = new MessageDispatherBv();
+
+            var messageDispatherBv = new RpcMessageDispatherBv();
             m_ServerNetWork.AddIBehaviour(messageDispatherBv);
+            m_ServerNetWork.IMessageDispatcher = messageDispatherBv;
+
+
 
             m_ServerNetWork.Init();
 

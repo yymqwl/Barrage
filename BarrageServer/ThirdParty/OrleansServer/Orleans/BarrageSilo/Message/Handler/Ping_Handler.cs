@@ -8,7 +8,7 @@ using GameMain.ChatRoom;
 
 namespace BarrageSilo
 {
-    [MessageHandler]
+    //[MessageHandler]
     public class Ping_Handler : AMHandler<Ping_Msg>
     {
         protected async override void Run(Session session, Ping_Msg message)

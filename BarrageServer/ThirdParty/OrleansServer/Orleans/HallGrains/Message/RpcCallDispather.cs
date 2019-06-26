@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Text;
 using Orleans;
 
@@ -9,14 +11,16 @@ namespace HallGrains
 {
     public class RpcCallDispather
     {
-        protected readonly Dictionary<ushort, List<IRpcCall>> m_Dict_Handlers = new Dictionary<ushort, List<IRpcCall>>();
+        protected readonly Dictionary<ushort, IRpcCall> m_Dict_Handlers = new Dictionary<ushort, IRpcCall>();
 
-        protected OpCodeTypeBv m_OpCodeTypeBv = new OpCodeTypeBv();
+        public IOpCodeType IOpCodeType
+        {
+            get;set;
+        }
+
 
         public void Load(Assembly assembly)
         {
-            m_OpCodeTypeBv.Load(assembly);
-
             var types = AssemblyManager.Instance.GetAllTypesByAttribute(assembly, typeof(MessageHandlerAttribute));
             foreach (Type type in types)
             {
@@ -36,8 +40,8 @@ namespace HallGrains
                     Log.Error($"message handle {type.Name} 需要继承 IMHandler");
                     continue;
                 }
-                Type messageType = iMHandler.GetMessageType();
-                ushort opcode = m_OpCodeTypeBv.GetOpcode(messageType);
+                Type messageType = iMHandler.GetRequestType();
+                ushort opcode = IOpCodeType.GetOpcode(messageType);
                 if (opcode == 0)
                 {
                     Log.Error($"消息opcode为0: {messageType.Name}");
@@ -50,26 +54,51 @@ namespace HallGrains
         }
         public void RegisterHandler(ushort opcode, IRpcCall handler)
         {
-            if (!m_Dict_Handlers.ContainsKey(opcode))
-            {
-                m_Dict_Handlers.Add(opcode, new List<IRpcCall>());
-            }
-            m_Dict_Handlers[opcode].Add(handler);
+            m_Dict_Handlers[opcode] = handler;
         }
-        public  void Call(long uid, MessageInfo messageInfo, IGrainFactory grainfactory )
+
+
+
+        public async Task<IMessage> Call(long uid, IMessage request, IGrainFactory grainfactory)
+        {
+            ushort opcode = IOpCodeType.GetOpcode(request.GetType());
+            IRpcCall action;
+            if (!m_Dict_Handlers.TryGetValue(opcode, out action))
+            {
+                Log.Error($"消息没有处理: {opcode}");
+                return null;
+            }
+            try
+            {
+                return await action.Handle(uid,request,grainfactory);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+            }
+            return null;
+        }
+
+            /*
+        public async Task<IMessage> Call(long uid, MessageInfo messageInfo, IGrainFactory grainfactory )
         {
             List<IRpcCall> actions;
             if (!m_Dict_Handlers.TryGetValue(messageInfo.Opcode, out actions))
             {
                 Log.Error($"消息没有处理: {messageInfo.Opcode}");
-                return;
+                
+                return ;
             }
             try
             {
+                
+                if()
+                
                 foreach (IRpcCall ev in actions)
                 {
-                    ev.Handle(uid, messageInfo.Message , grainfactory);
+                     ev.Handle(uid, messageInfo.Message , grainfactory);
                 }
+                
             }
             catch (Exception e)
             {
@@ -77,8 +106,8 @@ namespace HallGrains
             }
 
 
+        }*/
+
+
         }
-
-
     }
-}
