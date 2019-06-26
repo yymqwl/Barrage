@@ -16,4 +16,8 @@
     <ProjectReference Include="..\..\..\..\GameFramework\GameFramework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="IGameModule\" />
+  </ItemGroup>
+
 </Project>

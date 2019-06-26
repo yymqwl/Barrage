@@ -11,6 +11,7 @@ namespace HallGrains
     {
         public override async Task OnActivateAsync()
         {
+            
             Console.WriteLine($"{typeof(HelloGrain)}OnActivateAsync");
             await base.OnActivateAsync();
         }

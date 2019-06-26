@@ -19,9 +19,11 @@ namespace HallGrains
         public override async Task OnActivateAsync()
         {
             m_IGW_Obs.Clear();
-            /*m_RpcCallDispather = new RpcCallDispather();
+            m_RpcCallDispather = new RpcCallDispather();
 
+            
             m_RpcCallDispather.Load(typeof(IGateWay).Assembly);
+            /*
             m_RpcCallDispather.Load(GetType().Assembly);
             */
             
@@ -36,6 +38,7 @@ namespace HallGrains
         public  Task<IMessage> Call(long id, IMessage msg)
         {
             
+
             //m_RpcCallDispather.Call()
 
             return Task.FromResult(msg);

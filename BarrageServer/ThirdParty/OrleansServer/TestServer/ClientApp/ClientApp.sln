@@ -3,17 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApp", "ClientApp\ClientApp.csproj", "{F4B78FC2-50B2-43A4-89B7-8075B3B6C82D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApp", "ClientApp\ClientApp.csproj", "{F4B78FC2-50B2-43A4-89B7-8075B3B6C82D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerApp", "..\ServerApp\ServerApp.csproj", "{C13A4CD6-67D6-4A77-82BC-2AF5E0317ADE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerApp", "..\ServerApp\ServerApp.csproj", "{C13A4CD6-67D6-4A77-82BC-2AF5E0317ADE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IHall", "..\IHall\IHall.csproj", "{851C86D5-F376-481D-A91D-0876BB456274}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IHall", "..\IHall\IHall.csproj", "{851C86D5-F376-481D-A91D-0876BB456274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HallGrains", "..\HallGrains\HallGrains.csproj", "{50F87576-FE0C-411B-B858-5DDB3E463125}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMySql", "..\IMySql\IMySql.csproj", "{A10EE3ED-1917-4200-9E54-5501E77E45B0}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MysqlGrains", "..\MysqlGrains\MysqlGrains.csproj", "{6FE66DAA-6BE0-46BD-B08F-D3BC0E059A4D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HallGrains", "..\HallGrains\HallGrains.csproj", "{50F87576-FE0C-411B-B858-5DDB3E463125}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +33,6 @@ Global
 		{50F87576-FE0C-411B-B858-5DDB3E463125}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50F87576-FE0C-411B-B858-5DDB3E463125}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50F87576-FE0C-411B-B858-5DDB3E463125}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A10EE3ED-1917-4200-9E54-5501E77E45B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A10EE3ED-1917-4200-9E54-5501E77E45B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A10EE3ED-1917-4200-9E54-5501E77E45B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A10EE3ED-1917-4200-9E54-5501E77E45B0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6FE66DAA-6BE0-46BD-B08F-D3BC0E059A4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6FE66DAA-6BE0-46BD-B08F-D3BC0E059A4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6FE66DAA-6BE0-46BD-B08F-D3BC0E059A4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6FE66DAA-6BE0-46BD-B08F-D3BC0E059A4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\HallGrains\HallGrains.csproj" />
-    <ProjectReference Include="..\MysqlGrains\MysqlGrains.csproj" />
   </ItemGroup>
 
   <ItemGroup>

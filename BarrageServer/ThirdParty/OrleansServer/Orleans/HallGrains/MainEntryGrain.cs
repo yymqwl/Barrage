@@ -19,6 +19,7 @@ namespace HallGrains
 
         public Task<IChatRoom> GetIChatRoom()
         {
+
             Log.Debug($"GetIChatRoom:ThreadId:{Thread.CurrentThread.ManagedThreadId}");
             return Task.FromResult(GrainFactory.GetGrain<IChatRoom>(0));
         }

@@ -80,9 +80,6 @@ namespace HallGrains
             {
                 await igw.Reply(await vk.Value.GetSessionId(), msg);
             }
-
-            //return Task.CompletedTask;
-            
         }
 
         public async Task DirectPingUser(long id)
