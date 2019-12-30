@@ -1,0 +1,4 @@
+﻿<?xml version="1.0"?>
+<ServerSetting xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Login_Ip>http://192.168.50.90:8800/Login/</Login_Ip>
+</ServerSetting>
