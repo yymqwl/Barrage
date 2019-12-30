@@ -18,7 +18,6 @@ namespace GameFramework
 
         //private bool m_IsConnected;
 
-        //private bool m_IsRecving;
 
         private readonly MemoryStream m_MemoryStream;
 
@@ -34,7 +33,6 @@ namespace GameFramework
 
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
             this.m_RecvStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
-
             m_ChannelState = ChannelState.EConnected;
             Start();
         }
@@ -45,6 +43,8 @@ namespace GameFramework
 
             this.m_MemoryStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
             this.m_RecvStream = this.GetService().MemoryStreamManager.GetStream(NetWorkConstant.Str_Msg, ushort.MaxValue);
+
+            m_ChannelState = ChannelState.EDisConnected;
         }
 
         public override void Dispose()
@@ -77,6 +77,10 @@ namespace GameFramework
 
         protected  void Start()
         {
+            if(!IsConnected)
+            {
+                return;
+            }
             this.StartRecv();
             this.StartSend();
         }
@@ -88,10 +92,6 @@ namespace GameFramework
 
         public async void ConnectAsync(string url)
         {
-            if(IsConnected)
-            {
-                return;
-            }
             try
             {
                 await ((ClientWebSocket)this.m_WebSocket).ConnectAsync(new Uri(url), m_CancellationTokenSource.Token);

@@ -2,7 +2,7 @@
 
 namespace GameMain
 {
-    [GameFrameworkModule]
+    //[GameFrameworkModule]
     public class NetWorkModule: GameFrameworkModule
     {
         ServerNetWork m_ServerNetWork;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.645
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BarrageServer", "BarrageServer\BarrageServer.csproj", "{DA5031E0-0100-4B40-96C9-068803DC10D5}"
 EndProject
@@ -31,7 +31,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Grpc", "Grpc", "{273E630D-0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GameMsg", "ThirdParty\GRpcServer\GameMsg\GameMsg.csproj", "{F3314FB3-8301-4C4A-9441-D8EBA7AFA3EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GRpcServer", "ThirdParty\GRpcServer\GRpcServer\GRpcServer.csproj", "{6290EEB2-50E7-4A8C-99A4-6972854AA20C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GRpcServer", "ThirdParty\GRpcServer\GRpcServer\GRpcServer.csproj", "{6290EEB2-50E7-4A8C-99A4-6972854AA20C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A580D505-67CE-41E4-8550-37B20AE6934A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebSocket", "Test\TestWebSocket\TestWebSocket.csproj", "{789AF35A-CA3A-435B-8C9B-CBFBD7001D55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +91,10 @@ Global
 		{6290EEB2-50E7-4A8C-99A4-6972854AA20C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6290EEB2-50E7-4A8C-99A4-6972854AA20C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6290EEB2-50E7-4A8C-99A4-6972854AA20C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{789AF35A-CA3A-435B-8C9B-CBFBD7001D55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{789AF35A-CA3A-435B-8C9B-CBFBD7001D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{789AF35A-CA3A-435B-8C9B-CBFBD7001D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{789AF35A-CA3A-435B-8C9B-CBFBD7001D55}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -101,6 +109,7 @@ Global
 		{5BE4AB73-44FB-4B66-82C9-C5FCF189F569} = {D4ABECD6-C794-4FFC-9689-0900641D2489}
 		{F3314FB3-8301-4C4A-9441-D8EBA7AFA3EE} = {273E630D-097C-4B95-9F78-01074105BF94}
 		{6290EEB2-50E7-4A8C-99A4-6972854AA20C} = {273E630D-097C-4B95-9F78-01074105BF94}
+		{789AF35A-CA3A-435B-8C9B-CBFBD7001D55} = {A580D505-67CE-41E4-8550-37B20AE6934A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {18ABBC05-1BFA-4D5E-933A-5620AE8B1911}

@@ -17,12 +17,15 @@ namespace GameMain
         public override bool Init()
         {
             ConsoleEntry();
+
             return base.Init();
         }
         public IGameMainEntry IGameMainEntry
         {
-            get;
-            set;
+            get
+            {
+               return  GameMainEntry.Instance;
+            }
         }
         //public CancellationTokenSource m_CTS;
         public async void ConsoleEntry()
