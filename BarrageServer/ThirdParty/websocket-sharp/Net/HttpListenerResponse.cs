@@ -72,8 +72,8 @@ namespace WebSocketSharp.Net
     private WebHeaderCollection _headers;
     private bool                _headersSent;
     private bool                _keepAlive;
-    private string              _location;
     private ResponseStream      _outputStream;
+    private Uri                 _redirectLocation;
     private bool                _sendChunked;
     private int                 _statusCode;
     private string              _statusDescription;
@@ -179,8 +179,8 @@ namespace WebSocketSharp.Net
             headers.InternalSet ("Connection", "keep-alive", true);
         }
 
-        if (_location != null)
-          headers.InternalSet ("Location", _location, true);
+        if (_redirectLocation != null)
+          headers.InternalSet ("Location", _redirectLocation.AbsoluteUri, true);
 
         if (_cookies != null) {
           foreach (var cookie in _cookies) {
@@ -572,7 +572,9 @@ namespace WebSocketSharp.Net
     /// </exception>
     public string RedirectLocation {
       get {
-        return _location;
+        return _redirectLocation != null
+               ? _redirectLocation.OriginalString
+               : null;
       }
 
       set {
@@ -585,7 +587,7 @@ namespace WebSocketSharp.Net
         }
 
         if (value == null) {
-          _location = null;
+          _redirectLocation = null;
           return;
         }
 
@@ -596,7 +598,7 @@ namespace WebSocketSharp.Net
         if (!Uri.TryCreate (value, UriKind.Absolute, out uri))
           throw new ArgumentException ("Not an absolute URL.", "value");
 
-        _location = value;
+        _redirectLocation = uri;
       }
     }
 
@@ -646,8 +648,8 @@ namespace WebSocketSharp.Net
     ///   the response to the request.
     ///   </para>
     ///   <para>
-    ///   The default value is 200. It is same as
-    ///   <see cref="HttpStatusCode.OK"/>.
+    ///   The default value is 200. It indicates that the request has
+    ///   succeeded.
     ///   </para>
     /// </value>
     /// <exception cref="InvalidOperationException">
@@ -1020,7 +1022,7 @@ namespace WebSocketSharp.Net
       if (!Uri.TryCreate (url, UriKind.Absolute, out uri))
         throw new ArgumentException ("Not an absolute URL.", "url");
 
-      _location = url;
+      _redirectLocation = uri;
       _statusCode = 302;
       _statusDescription = "Found";
     }
