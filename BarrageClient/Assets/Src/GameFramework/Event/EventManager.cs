@@ -50,6 +50,19 @@ namespace GameFramework.Event
             m_EventPool.Update(elapseSeconds, realElapseSeconds);
         }
 
+
+        public override void Init()
+        {
+            base.Init();
+            m_EventPool.Clear();
+        }
+
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            this.ShutDown();
+        }
         /// <summary>
         /// 关闭并清理事件管理器。
         /// </summary>
