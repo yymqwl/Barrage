@@ -85,7 +85,7 @@ namespace HallGrains
             return Task.CompletedTask;
         }
 
-        public async Task SendMsg(string msg)
+        public  Task SendMsg(string msg)
         {
             string str_msg = "SendMsg";
 
@@ -94,12 +94,15 @@ namespace HallGrains
             Console.WriteLine($"Msg1:{Str_Test}");
             Str_Test = "MainEntryGrain:1";
             
+            /*
             var hello = GetHello(0).Result;
             str_msg = await hello.GetName();
+            */
+
             Console.WriteLine($"Msg:{str_msg}");
             
 
-            //return Task.CompletedTask;
+            return Task.CompletedTask;
         }
 
         public Task SubscribeAsync(IMainEntry_Obs viewer)
@@ -144,11 +147,12 @@ namespace HallGrains
         }
 
         
+        /*
         public Task<IMySql.IMysqlEntry> GetHello(long id)
         {
             var usergrain = GrainFactory.GetGrain<IMySql.IMysqlEntry>(id);
             return Task.FromResult(usergrain);
-        }
+        }*/
 
         public Task OnNextAsync(string item, StreamSequenceToken token = null)
         {

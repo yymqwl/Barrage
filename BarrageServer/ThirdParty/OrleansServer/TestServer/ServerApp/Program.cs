@@ -3,6 +3,7 @@ using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using System;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace ServerApp
@@ -16,12 +17,14 @@ namespace ServerApp
         private const string ConnectionString = "server=localhost;port=3306;database=orleans;user id=root;password=25689328;SslMode=none;";
         static void Main(string[] args)
         {
+            /*
             Console.WriteLine("输入Silo序号:");
             var index = Convert.ToInt32(Console.ReadLine());
             Console.Title = "Silo" + index;
-
+         
             RunMainAsync(11111 + index, 30000 + index).Wait();
-
+            */
+            RunMainAsync(11111 , 30000 ).Wait();
             Console.ReadKey();
         }
         private static async Task RunMainAsync(int siloPort, int gatewayPort)
@@ -30,7 +33,7 @@ namespace ServerApp
             {
                 var host = await InitialiseSilo(siloPort, gatewayPort);
                 Console.WriteLine("Silo started successfully");
-                //await RunGataWall();
+                await RunGataWall();
 
                 bool bloop = true;
                 while (bloop)
@@ -53,7 +56,7 @@ namespace ServerApp
         private static async Task<ISiloHost> InitialiseSilo(int siloPort, int gatewayPort)
         {
             var builder = new SiloHostBuilder()
-               
+
                 /*
                 .UseAdoNetClustering(options =>
                 {
@@ -72,7 +75,8 @@ namespace ServerApp
                     options.ConnectionString = ConnectionString;
                     options.UseJsonFormat = true;
                 })*/
-                .ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
+                .Configure<EndpointOptions>(options => options.AdvertisedIPAddress = IPAddress.Loopback)
+                //.ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
                 .UseLocalhostClustering()
                 .Configure<ClusterOptions>(options =>
                 {
@@ -95,7 +99,7 @@ namespace ServerApp
             builder.ConfigureApplicationParts(parts =>
             {
                 parts.AddApplicationPart(typeof(HallGrains.MainEntryGrain).Assembly).WithReferences();
-                parts.AddApplicationPart(typeof(MysqlGrains.MysqlEntryGrain).Assembly).WithReferences();
+                //parts.AddApplicationPart(typeof(MysqlGrains.MysqlEntryGrain).Assembly).WithReferences();
             });
             
             /*
@@ -161,16 +165,19 @@ namespace ServerApp
         {
 
             var client = new ClientBuilder()
-                     .UseAdoNetClustering(options =>
-                     {
-                         options.Invariant = Invariant;
-                         options.ConnectionString = ConnectionString;
-                     })
-                    .Configure<ClusterOptions>(options =>
-                    {
-                        options.ClusterId = ClusterId;
-                        options.ServiceId = ServiceId;
-                    })
+                    .UseLocalhostClustering()
+                    /*
+                         .UseAdoNetClustering(options =>
+                         {
+                             options.Invariant = Invariant;
+                             options.ConnectionString = ConnectionString;
+                         })
+                        .Configure<ClusterOptions>(options =>
+                        {
+                            options.ClusterId = ClusterId;
+                            options.ServiceId = ServiceId;
+                        })
+                        */
                     .ConfigureApplicationParts(parts => {
                         parts.AddApplicationPart(typeof(IHall.IMainEntry).Assembly);
                     })
