@@ -8,6 +8,8 @@ using Orleans.Configuration;
 using Orleans.Hosting;
 using System.Net;
 using GHall;
+using IHall;
+using Orleans.Runtime;
 
 namespace ChatRoom
 {
@@ -43,13 +45,18 @@ namespace ChatRoom
                 var host = await InitialiseSilo();
 
 
-                using (var client = await InitialiseClient())
-                {
-                    var IME0 = client.GetGrain<IHall.IChatRoomEntry>(0);
-                    await IME0.Init();
-                    await IME0.SayHello();
-                }
+                var client = await InitialiseClient();
 
+
+                /*
+                var IME0 = client.GetGrain<IHall.IChatRoomEntry>(0);
+                await IME0.Init();
+                await IME0.SayHello();
+                */
+
+                var gs = client.GetGrain<IHall.ISession>(0);
+                var  gsobs = new GateSession();
+                var gsobs_ref = await client.CreateObjectReference<ISessionObserver>(gsobs);
                 bool bloop = true;
                 while (bloop)
                 {
@@ -58,8 +65,22 @@ namespace ChatRoom
                     {
                         bloop = false;
                     }
-                }
+                    if(str_line == "add")
+                    {
+                        await gs.SetISessionObserver(await client.CreateObjectReference<ISessionObserver>(new GateSession()));
+                    }
+                    if (str_line == "say")
+                    {
+                        await  gs.SayHello();
+                    }
+                    if (str_line == "remove")
+                    {
+                        await gs.SetISessionObserver(null);
+                    }
 
+
+                }
+                await client.AbortAsync();
                 await host.StopAsync();
             }
             catch (Exception ex)
@@ -112,5 +133,14 @@ namespace ChatRoom
 
             return client;
         }
+    }
+}
+
+
+public class GateSession : IHall.ISessionObserver
+{
+    public void ReceiveMessage(string msg)
+    {
+        Console.WriteLine($"GateSession {msg}");
     }
 }
