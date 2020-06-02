@@ -51,8 +51,7 @@ namespace TableRoomSilo
                     options.DeactivationTimeout = TimeSpan.FromSeconds(5);
                     options.CollectionQuantum = TimeSpan.FromSeconds(1);
                 })
-                .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole());
-
+                .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Error).AddConsole());//LogLevel.Warning
                 builder.ConfigureApplicationParts(parts =>
                 {
                     parts.AddApplicationPart(typeof(GChatRoomEntry).Assembly).WithReferences();
@@ -68,6 +67,7 @@ namespace TableRoomSilo
             return Task.CompletedTask;
 
         }
+
 
 
 

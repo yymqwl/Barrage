@@ -4,6 +4,7 @@ using Orleans.Configuration;
 using Orleans.Runtime;
 using System;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using TableRoom;
 
@@ -19,7 +20,7 @@ namespace TableSiloClient
         {
             Console.Title = "Client";
 
-            RunMainAsync().Wait();
+            RunMainAsync1().Wait();
             //Hello1().Wait();
             //DoAsync().Wait();
         }
@@ -34,7 +35,18 @@ namespace TableSiloClient
         {
             using (var client = await InitialiseClient())
             {
-                
+                Console.WriteLine("Silo started successfully");
+                bool bloop = true;
+                var grentry = client.GetGrain<IMainEntry>(0);
+                await grentry.Init();
+                while (bloop)
+                {
+                    Thread.Sleep(20);
+                    await grentry.Update(0);
+                }
+                await grentry.ShutDown();
+                Console.WriteLine($"开始执行....");
+                Console.WriteLine($"执行结束");
             }
         }
 
@@ -188,7 +200,6 @@ namespace TableSiloClient
             await Task.Delay(TimeSpan.FromSeconds(3));
             return true;
         }
-
     }
     public class NetUserObser : INetUserObserver
     {

@@ -13,13 +13,35 @@ namespace TableRoom
         Dictionary<string,IChatRoom> m_Dict_ChatRoom = new Dictionary<string, IChatRoom>();
         Dictionary<string,IChatUser> m_Dict_ChatUser = new Dictionary<string, IChatUser>();
 
-        
+
+        /*
         public override Task OnActivateAsync()
         {
             Log.Debug("OnActivateAsync GChatRoomEntry"+this.GetPrimaryKeyLong());
             this.Clear();
          
             return base.OnActivateAsync();
+        }
+        public override Task OnDeactivateAsync()
+        {
+            Log.Debug("OnDeactivateAsync GChatRoomEntry" + this.GetPrimaryKeyLong());
+            this.Clear();
+            return base.OnDeactivateAsync();
+        }
+        */
+        public async override Task<bool> Init()
+        {
+            Log.Debug("GChatRoomEntry Init" + this.GetPrimaryKeyLong());
+            Clear();
+            var bret = await base.Init();
+            return bret;
+        }
+        
+        public async override Task<bool> ShutDown()
+        {
+            Log.Debug("GChatRoomEntry ShutDown" + this.GetPrimaryKeyLong());
+            var bret = await base.ShutDown();
+            return bret;
         }
 
         public override Task Update(float t)
@@ -35,12 +57,7 @@ namespace TableRoom
             m_Dict_ChatUser.Clear();
 
         }
-        public override Task OnDeactivateAsync()
-        {
-            Log.Debug("OnDeactivateAsync GChatRoomEntry" + this.GetPrimaryKeyLong());
-            this.Clear();
-            return base.OnDeactivateAsync();
-        }
+
 
         public IChatUser GetChatUser(string id)
         {

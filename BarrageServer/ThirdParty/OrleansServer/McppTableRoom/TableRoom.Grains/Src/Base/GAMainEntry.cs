@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace TableRoom
 {
     [StatelessWorker]
-    public class GAMainEntry :GEntry
+    public class GAMainEntry :GEntry , IAMainEntry
     {
         LinkedList<IEntry> m_Entrys = new LinkedList<IEntry>();
 
@@ -21,6 +21,7 @@ namespace TableRoom
                 return this.m_Entrys;
             }
         }
+        /*
         protected IServerTimer m_IServerTimer;
         public Task<IServerTimer> GetIServerTimer()
         {
@@ -29,7 +30,7 @@ namespace TableRoom
                 m_IServerTimer = GrainFactory.GetGrain<IServerTimer>(0);
             }
             return Task.FromResult(m_IServerTimer);
-        }
+        }*/
 
 
         public async override Task<bool> Init()
@@ -75,8 +76,13 @@ namespace TableRoom
 
             return (entry);
         }
-        public override async Task Update(float t)
+        public override async Task Update(float dt)
         {
+            foreach (IEntry entry in m_Entrys)
+            {
+                await entry.Update(dt);
+            }
+            /*
             var  ist = await GetIServerTimer();
             if( true == await ist.CheckUpdate())
             {
@@ -85,7 +91,7 @@ namespace TableRoom
                 {
                     await entry.Update(dt);
                 }
-            }
+            }*/
         }
     }
 }

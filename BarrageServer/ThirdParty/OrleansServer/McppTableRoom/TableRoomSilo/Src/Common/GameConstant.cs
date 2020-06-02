@@ -11,5 +11,8 @@ namespace TableRoomSilo
         /// 自动踢出玩家时间
         public const uint TPlayerIdle = 30;
 
+
+        public const int ServerRate = 100;//服务器刷新率
+        public const float DeltaServerTime = MathUtils.OneNub / ServerRate;//
     }
 }

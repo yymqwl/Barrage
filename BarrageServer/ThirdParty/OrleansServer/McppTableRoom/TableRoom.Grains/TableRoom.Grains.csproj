@@ -13,7 +13,7 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Barrage\BarrageServer\GameFramework\GameFramework.csproj" />
+	  <ProjectReference Include="..\..\..\..\GameFramework\GameFramework.csproj" />
 	  <ProjectReference Include="..\TableRoom.Interfaces\TableRoom.Interfaces.csproj" />
 	</ItemGroup>
 

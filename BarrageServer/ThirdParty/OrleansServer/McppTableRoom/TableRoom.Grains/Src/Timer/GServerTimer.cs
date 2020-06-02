@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace TableRoom
 {
+    /*
     public class GServerTimer : Grain, IServerTimer
     {
         protected DateTime m_Cur_DateTime;//
@@ -49,5 +50,5 @@ namespace TableRoom
         }
 
 
-    }
+    }*/
 }

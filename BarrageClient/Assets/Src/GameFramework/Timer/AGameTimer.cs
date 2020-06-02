@@ -37,7 +37,7 @@ namespace GameFramework
             m_Last_DateTime = m_Cur_DateTime;
         }
 
-        public  bool Shutdown()
+        public  bool ShutDown()
         {
             return true;
         }

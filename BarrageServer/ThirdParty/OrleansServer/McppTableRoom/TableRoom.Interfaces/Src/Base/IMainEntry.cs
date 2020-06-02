@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace TableRoom
 {
-    public interface IMainEntry : IEntry
+    public interface IMainEntry : IAMainEntry
     {
         Task<IChatRoomEntry> GetIChatRoomEntry();
-        Task<IServerTimer> GetIServerTimer();
     }
 }
