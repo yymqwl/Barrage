@@ -55,8 +55,9 @@ namespace ChatRoom
                 */
 
                 var gs = client.GetGrain<IHall.ISession>(0);
-                var  gsobs = new GateSession();
+                var gsobs = new GateSession();
                 var gsobs_ref = await client.CreateObjectReference<ISessionObserver>(gsobs);
+               
                 bool bloop = true;
                 while (bloop)
                 {
