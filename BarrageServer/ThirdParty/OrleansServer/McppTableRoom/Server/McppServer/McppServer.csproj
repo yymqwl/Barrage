@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Barrage\BarrageServer\GameFramework\GameFramework.csproj" />
+    <ProjectReference Include="..\..\Barrage\BarrageServer\ThirdParty\websocket-sharp\websocket-sharp.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Setting\ServerSetting.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Setting\www.hengtaiyunyou.com.pfx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Src\7zip\" />
+    <Folder Include="Src\Lz\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StackExchange.Redis" Version="2.1.30" />
+  </ItemGroup>
+
+</Project>

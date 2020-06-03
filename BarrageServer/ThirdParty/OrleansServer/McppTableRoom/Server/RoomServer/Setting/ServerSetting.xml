@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ServerSetting>
+  <Web_Ip>ws://192.168.0.90:8810</Web_Ip>
+  <WeChat_AppId>wxb0b8e3b0ed5a9fc4</WeChat_AppId>
+  <WeChat_AppSecret>8371d89de4951ae4bead0d18a37dbab9</WeChat_AppSecret>
+</ServerSetting>
