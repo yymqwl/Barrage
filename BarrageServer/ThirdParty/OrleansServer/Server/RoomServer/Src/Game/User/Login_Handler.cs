@@ -21,7 +21,6 @@ namespace RoomServer
             }
             Log.Debug($"Py{py.Id}:登录成功");
             py.CheckNetUser().Wait();
-            //py.CheckNetUser().Wait();
             GameMainEntry.Instance.PlayerModule.SetSession_Py(py, session);
             py.SendAsync(Msg_Json.Create_Msg_Json(NetOpCode.Login_Res, new Login_Res { Res = 1 }));
         }

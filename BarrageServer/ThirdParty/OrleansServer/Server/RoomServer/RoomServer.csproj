@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+		<PackageReference Include="Microsoft.Orleans.Core" Version="3.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Setting\ServerSetting.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Src\Game\Common\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GameFramework\GameFramework.csproj" />
+    <ProjectReference Include="..\..\..\protobuf-net\protobuf-net.csproj" />
+    <ProjectReference Include="..\..\..\websocket-sharp\websocket-sharp.csproj" />
+    <ProjectReference Include="..\McppTableRoom\TableRoom.Grains\TableRoom.Grains.csproj" />
+    <ProjectReference Include="..\McppTableRoom\TableRoom.Interfaces\TableRoom.Interfaces.csproj" />
+  </ItemGroup>
+
+</Project>

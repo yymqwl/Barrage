@@ -6,11 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Barrage\BarrageServer\GameFramework\GameFramework.csproj" />
-    <ProjectReference Include="..\..\Barrage\BarrageServer\ThirdParty\websocket-sharp\websocket-sharp.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Setting\ServerSetting.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -26,6 +21,11 @@
 
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.1.30" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\GameFramework\GameFramework.csproj" />
+    <ProjectReference Include="..\..\..\websocket-sharp\websocket-sharp.csproj" />
   </ItemGroup>
 
 </Project>

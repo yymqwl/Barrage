@@ -20,6 +20,12 @@ namespace RoomServer
                 this.SendReLogin(session);
                 return;
             }
+            if (! GameMainEntry.Instance.SiloClientModule.INetUserEntry.IsConnected(py.Id).Result )
+            {
+                this.SendReLogin(session);
+                return ;
+            }
+
             this.Run(py,message);
         }
 

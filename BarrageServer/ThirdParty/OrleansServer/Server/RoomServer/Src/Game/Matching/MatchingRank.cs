@@ -69,7 +69,7 @@ namespace RoomServer
             {
                 var mi = m_Ls_MatchingItems[i];
                 var ms = m_Ls_MatchStrategy[(int)mi.MatchStrategyType];
-                var ts = TimeHelper.DateTimeToUnixTimestamp_Now()-mi.St_Time;
+                var ts = TimeHelper.ClientNow() - mi.St_Time;//TimeHelper.DateTimeToUnixTimestamp_Now()-mi.St_Time;
 
                 if(ts>=TMatching_AI_Time)
                 {

@@ -15,7 +15,6 @@ namespace RoomServer
             var enterRoom_Req = message.ToObject<EnterRoom_Req>();
 
 
-            
             var rpbv= webpy.GetIBehaviour<RoomPlayerBv>();
             if(rpbv == null)
             {

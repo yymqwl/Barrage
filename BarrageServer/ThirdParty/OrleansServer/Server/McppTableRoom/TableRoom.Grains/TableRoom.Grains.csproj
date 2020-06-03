@@ -12,8 +12,8 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
 		</PackageReference>
 	</ItemGroup>
-	<ItemGroup>
-	  <ProjectReference Include="..\..\..\Barrage\BarrageServer\GameFramework\GameFramework.csproj" />
+	<ItemGroup>	  
+    <ProjectReference Include="..\..\..\..\..\GameFramework\GameFramework.csproj" />
 	  <ProjectReference Include="..\TableRoom.Interfaces\TableRoom.Interfaces.csproj" />
 	</ItemGroup>
 	<ItemGroup>
