@@ -48,7 +48,7 @@ namespace RoomServer
         public async Task CheckNetUser()
         {
             var nue = GameMainEntry.Instance.SiloClientModule.INetUserEntry;
-            if (! await nue.IsConnected(m_Id))
+            if (!await nue.IsConnected(m_Id))
             {
                 await SetNetUser();
             }
@@ -56,7 +56,7 @@ namespace RoomServer
         public async Task SetNetUser()
         {
             await ClearNetUser();
-            var nue = await GameMainEntry.Instance.SiloClientModule.IMainEntry.GetINetUserEntry();
+            var nue = GameMainEntry.Instance.SiloClientModule.INetUserEntry;
             m_INetUserObserver = await GameMainEntry.Instance.SiloClientModule.IClusterClient.CreateObjectReference<INetUserObserver>(this);
             await nue.CreateNetUser(m_Id, m_INetUserObserver);
         }

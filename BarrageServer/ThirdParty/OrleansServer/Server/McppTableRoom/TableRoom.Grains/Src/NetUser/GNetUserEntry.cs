@@ -49,6 +49,8 @@ namespace TableRoom
 
         public override Task<bool> ShutDown()
         {
+            m_Update_NetUser.Evt_Act -= Update_NetUser;
+            m_Update_NetUser = null;
             var bret = true;
             return Task.FromResult(bret);
         }
@@ -80,5 +82,13 @@ namespace TableRoom
             return Task.CompletedTask;
         }
 
+        public async Task Ping(string id)
+        {
+            var inu = await GetINetUser(id);
+            if(await inu.GetIsConnected())
+            {
+                await inu.Ping();
+            }
+        }
     }
 }

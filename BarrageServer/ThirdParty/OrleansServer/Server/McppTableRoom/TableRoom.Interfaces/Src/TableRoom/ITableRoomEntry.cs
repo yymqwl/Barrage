@@ -9,7 +9,9 @@ namespace TableRoom
     {
         Task<int> Join(TableUser_Data user);
 
-        Task<int> Exit(TableUser_Data user);
+        Task<int> Exit(string id);
 
+
+        Task<TableRoomInfo> GetUserTableRoomInfo(string id);
     }
 }

@@ -15,5 +15,7 @@ namespace TableRoom
 
 
         Task<bool> IsConnected(string id);
+
+        Task Ping(string id);
     }
 }

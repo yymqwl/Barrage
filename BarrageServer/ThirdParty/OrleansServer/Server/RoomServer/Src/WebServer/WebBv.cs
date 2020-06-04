@@ -43,12 +43,14 @@ namespace RoomServer
                 this.Sessions.TryGetSession(ID, out session);
 
 
-                //GameMainEntry.Instance.WebServerModule.Dispather.Dispatch(session, new MessageInfo_Json(id, data));
+                GameMainEntry.Instance.WebServerModule.Dispather.Dispatch(session, new MessageInfo_Json(id, data));
                 
+                /*
                 OneThreadSynchronizationContext.Instance.Post((obj) =>
                 {
                     GameMainEntry.Instance.WebServerModule.Dispather.Dispatch(session, new MessageInfo_Json(id, data));//拉到主线程处理
                 }, null);
+                */
                 
             }
             catch(Exception ex)

@@ -11,7 +11,7 @@ using TableRoom;
 namespace RoomServer
 {
     [GameFrameworkModule]
-    public  class SiloClientModule : GameFrameworkModule
+    public class SiloClientModule : GameFrameworkModule
     {
         protected IClusterClient m_IClusterClient;
         protected IMainEntry m_IMainEntry;
@@ -52,7 +52,7 @@ namespace RoomServer
         public override bool Init()
         {
             var bret = base.Init();
-            
+
             m_IClusterClient = InitialiseClient();
             m_IMainEntry = m_IClusterClient.GetGrain<IMainEntry>(0);
             m_INetUserEntry = m_IMainEntry.GetINetUserEntry().Result;
@@ -69,7 +69,7 @@ namespace RoomServer
             Log.Debug("SiloClientModule:ShutDown");
             return bret;
         }
-        protected  IClusterClient InitialiseClient()
+        protected IClusterClient InitialiseClient()
         {
             var client = new ClientBuilder()
                     .UseLocalhostClustering()

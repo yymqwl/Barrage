@@ -14,7 +14,13 @@ namespace RoomServer
             var enterRoom_Res = new EnterRoom_Res();
             var enterRoom_Req = message.ToObject<EnterRoom_Req>();
 
-
+            enterRoom_Res.Res = GameMainEntry.Instance.SiloClientModule.ITableRoomEntry.Join(enterRoom_Req.TableUser_Data).Result;
+            if(enterRoom_Res.Res>0)//加入房间成功
+            {
+                enterRoom_Res.TableRoomInfo =  GameMainEntry.Instance.SiloClientModule.ITableRoomEntry.GetUserTableRoomInfo(enterRoom_Req.TableUser_Data.Id).Result;
+            }
+            webpy.SendAsync(Msg_Json.Create_Msg_Json(NetOpCode.EnterRoom_Res, enterRoom_Res));
+            /*
             var rpbv= webpy.GetIBehaviour<RoomPlayerBv>();
             if(rpbv == null)
             {
@@ -34,8 +40,8 @@ namespace RoomServer
                 var tr = GameMainEntry.Instance.RoomModule.GetTableRoom(rpbv.RoomId);
                 enterRoom_Res.Ls_RoomPlayer_Data = tr.GetRoomPlayer_Data();
             }
-            webpy.SendAsync(Msg_Json.Create_Msg_Json(NetOpCode.EnterRoom_Res, enterRoom_Res));
-            
+            */
+
 
         }
     }

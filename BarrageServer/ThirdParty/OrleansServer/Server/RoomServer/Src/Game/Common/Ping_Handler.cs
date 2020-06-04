@@ -20,6 +20,7 @@ namespace RoomServer
             if (py != null)
             {
                 py.LastActiveTime = DateTime.Now;
+                GameMainEntry.Instance.SiloClientModule.INetUserEntry.Ping(py.Id).Wait();
             }
         }
     }

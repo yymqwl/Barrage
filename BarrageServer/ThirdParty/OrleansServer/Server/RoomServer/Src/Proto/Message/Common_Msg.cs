@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using TableRoom;
 
 namespace RoomServer
 {
@@ -95,14 +96,16 @@ namespace RoomServer
     [Message((ushort)NetOpCode.EnterRoom_Req)]
     public class EnterRoom_Req:IMessage
     {
-        public RoomPlayer_Data RoomPlayer_Data;
+        public TableUser_Data TableUser_Data;
+        //public RoomPlayer_Data RoomPlayer_Data;
     }
 
     [Message((ushort)NetOpCode.EnterRoom_Res)]
     public class EnterRoom_Res : IMessage
     {
         public int Res;
-        public List<RoomPlayer_Data> Ls_RoomPlayer_Data;
+        public TableRoomInfo TableRoomInfo;
+        //public List<RoomPlayer_Data> Ls_RoomPlayer_Data;
     }
 
     [Message((ushort)NetOpCode.RoomPlayerJoin_Msg)]

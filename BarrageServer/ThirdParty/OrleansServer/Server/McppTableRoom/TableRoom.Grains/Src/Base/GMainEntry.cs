@@ -59,6 +59,7 @@ namespace TableRoom
                 m_BInit = true;
                 await AddIEntry(await GetINetUserEntry());
                 await AddIEntry(await GetIChatRoomEntry());
+                await AddIEntry(await GetITableRoomEntry());
                 bret = await base.Init();
             }
             return  bret;

@@ -20,16 +20,22 @@ namespace TableSiloClient
         {
             Console.Title = "Client";
 
-            RunMainAsync1().Wait();
+            //RunMainAsync1().Wait();
             //Hello1().Wait();
             //DoAsync().Wait();
+            DoAsync().Wait();
         }
 
-         protected static async Task DoAsync()
+         protected static async  Task DoAsync()
          {
-            await Task.Run(() => { Console.WriteLine("DoAsync"); });
-         }
-
+            await  DoAsync2();
+            //return Task.CompletedTask;
+        }
+        protected static  Task DoAsync2()
+        {
+            Console.Write("DoAsync2");
+            return Task.CompletedTask;
+        }
 
         private static async Task RunMainAsync1()
         {

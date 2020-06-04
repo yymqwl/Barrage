@@ -42,9 +42,9 @@ namespace TableRoom
             m_TableRoomInfo.IMaxRoomPlayer = GameConstant.IMaxTableRoomPlayer;
             m_TableRoomInfo.Ls_User.Clear();
             m_TableRoomInfo.Id = this.GetPrimaryKeyString();
+            m_TableRoomInfo.RoomOwnerId = string.Empty;
 
 
-           
             {
                 TableRoomState = ETableRoomState.ERoom_InActive;
                 var tr_idle = new TR_Idle();
@@ -53,11 +53,12 @@ namespace TableRoom
                 var tr_ingame = new TR_InGame();
                 var tr_gameover = new TR_GameOver();
                 var tr_inactive = new TR_InActive();
+                var tr_cleanup = new TR_CleanUp();
                 m_Fsm = new Fsm<GTableRoom>(this.GetType().FullName, this,
-                    tr_inactive, tr_idle, tr_ready, tr_loading, tr_ingame, tr_gameover);
+                    tr_inactive, tr_idle, tr_ready, tr_loading, tr_ingame, tr_gameover , tr_cleanup);
                 m_Fsm.Start<TR_InActive>();
             }
-
+            Log.Debug($"TableRoom Init {m_TableRoomInfo.Id}");
             var bret = true;
             return bret;//Task.FromResult(bret);
         }
@@ -67,6 +68,8 @@ namespace TableRoom
             m_TableRoomInfo.Ls_User.Clear();
             m_TableRoomInfo.TableRoomState = ETableRoomState.ERoom_InActive;
             var bret = true;
+
+            Log.Debug($"TableRoom ShutDown{m_TableRoomInfo.Id}");
             return Task.FromResult(bret);
         }
         public bool HasPlayer(string  id)
@@ -116,7 +119,14 @@ namespace TableRoom
                 return Task.FromResult(iret);
             }
 
+            if(m_TableRoomInfo.RoomOwnerId == string.Empty)
+            {
+                m_TableRoomInfo.RoomOwnerId = user.Id;
+            }
+            user.RoomId = m_TableRoomInfo.Id;
             m_TableRoomInfo.Ls_User.Add(user);
+
+            Log.Debug($"{user.Id}加入房间:{m_TableRoomInfo.Id}");
             return Task.FromResult(iret);
 
         }
@@ -162,6 +172,10 @@ namespace TableRoom
         //检查不再活跃的用户
         public async Task CheckInActivePlayer()
         {
+            if(TableRoomState == ETableRoomState.ERoom_ClearUp)
+            {
+                return ;
+            }
             m_Need_Del.Clear();
             foreach (var tu_data in m_TableRoomInfo.Ls_User )
             {
@@ -175,13 +189,19 @@ namespace TableRoom
             {
                 await Exit(tu_data.Id);
             }
+            
             if(m_TableRoomInfo.Ls_User.Count == 0)
             {
-
+                this.Fsm.ChangeState<TR_CleanUp>();
             }
-
         }
-        
+
+
+        public Task<bool> NeedClearUp()
+        {
+            return Task.FromResult(TableRoomState == ETableRoomState.ERoom_ClearUp);
+        }
+
 
 
         public Task Update(float t)
@@ -191,6 +211,11 @@ namespace TableRoom
                 m_Fsm.Update(t, t);
             }
             return Task.CompletedTask;
+        }
+
+        public Task<TableRoomInfo> GetTableRoomInfo()
+        {
+            return Task.FromResult(m_TableRoomInfo);
         }
     }
 }
