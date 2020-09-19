@@ -123,5 +123,15 @@ namespace GameFramework
 			list[indexOne] = list[indexTwo];
 			list[indexTwo] = temp;
 		}
-	}
+
+        public static T GetRandom<T>(this IList<T> list)
+        {
+            if(list.Count<=0)
+            {
+                throw new GameFrameworkException("GetRandom Error");
+            }
+            return list[RandomHelper.RandomNumber(0, list.Count)];
+        }
+
+    }
 }
