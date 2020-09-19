@@ -35,8 +35,8 @@ namespace GameFramework
             }
             if (m_DateTime <= DateTime.Now)
             {
-                m_Act.InvokeGracefully(m_DateTime,null);
                 TriggerTimes--;
+                m_Act.InvokeGracefully(m_DateTime,null);
             }
         }
     }

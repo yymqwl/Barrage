@@ -5,12 +5,12 @@ namespace GameFramework
 	public static class Log
 	{
 #if SERVER
-        private static readonly ILog globalLog = new ConsoleAdaper();//new NLogAdapter();
+        public static  ILog globalLog = new ConsoleAdaper();//new NLogAdapter();
 #else
-        private static readonly ILog globalLog = new UnityLogAdaper();
+        public static  ILog globalLog = new UnityLogAdaper();
 #endif
 
-        public static void Trace(string message)
+		public static void Trace(string message)
 		{
 			globalLog.Trace(message);
 		}
