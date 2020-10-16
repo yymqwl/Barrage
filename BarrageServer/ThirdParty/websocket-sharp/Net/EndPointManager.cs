@@ -80,50 +80,74 @@ namespace WebSocketSharp.Net
 
     private static void addPrefix (string uriPrefix, HttpListener listener)
     {
-      var pref = new HttpListenerPrefix (uriPrefix);
+      var pref = new HttpListenerPrefix (uriPrefix, listener);
 
       var addr = convertToIPAddress (pref.Host);
-      if (addr == null)
-        throw new HttpListenerException (87, "Includes an invalid host.");
 
-      if (!addr.IsLocal ())
-        throw new HttpListenerException (87, "Includes an invalid host.");
+      if (addr == null) {
+        var msg = "The URI prefix includes an invalid host.";
+
+        throw new HttpListenerException (87, msg);
+      }
+
+      if (!addr.IsLocal ()) {
+        var msg = "The URI prefix includes an invalid host.";
+
+        throw new HttpListenerException (87, msg);
+      }
 
       int port;
-      if (!Int32.TryParse (pref.Port, out port))
-        throw new HttpListenerException (87, "Includes an invalid port.");
 
-      if (!port.IsPortNumber ())
-        throw new HttpListenerException (87, "Includes an invalid port.");
+      if (!Int32.TryParse (pref.Port, out port)) {
+        var msg = "The URI prefix includes an invalid port.";
+
+        throw new HttpListenerException (87, msg);
+      }
+
+      if (!port.IsPortNumber ()) {
+        var msg = "The URI prefix includes an invalid port.";
+
+        throw new HttpListenerException (87, msg);
+      }
 
       var path = pref.Path;
-      if (path.IndexOf ('%') != -1)
-        throw new HttpListenerException (87, "Includes an invalid path.");
 
-      if (path.IndexOf ("//", StringComparison.Ordinal) != -1)
-        throw new HttpListenerException (87, "Includes an invalid path.");
+      if (path.IndexOf ('%') != -1) {
+        var msg = "The URI prefix includes an invalid path.";
+
+        throw new HttpListenerException (87, msg);
+      }
+
+      if (path.IndexOf ("//", StringComparison.Ordinal) != -1) {
+        var msg = "The URI prefix includes an invalid path.";
+
+        throw new HttpListenerException (87, msg);
+      }
 
       var endpoint = new IPEndPoint (addr, port);
 
       EndPointListener lsnr;
+
       if (_endpoints.TryGetValue (endpoint, out lsnr)) {
-        if (lsnr.IsSecure ^ pref.IsSecure)
-          throw new HttpListenerException (87, "Includes an invalid scheme.");
+        if (lsnr.IsSecure ^ pref.IsSecure) {
+          var msg = "The URI prefix includes an invalid scheme.";
+
+          throw new HttpListenerException (87, msg);
+        }
       }
       else {
-        lsnr =
-          new EndPointListener (
-            endpoint,
-            pref.IsSecure,
-            listener.CertificateFolderPath,
-            listener.SslConfiguration,
-            listener.ReuseAddress
-          );
+        lsnr = new EndPointListener (
+                 endpoint,
+                 pref.IsSecure,
+                 listener.CertificateFolderPath,
+                 listener.SslConfiguration,
+                 listener.ReuseAddress
+               );
 
         _endpoints.Add (endpoint, lsnr);
       }
 
-      lsnr.AddPrefix (pref, listener);
+      lsnr.AddPrefix (pref);
     }
 
     private static IPAddress convertToIPAddress (string hostname)
@@ -139,9 +163,10 @@ namespace WebSocketSharp.Net
 
     private static void removePrefix (string uriPrefix, HttpListener listener)
     {
-      var pref = new HttpListenerPrefix (uriPrefix);
+      var pref = new HttpListenerPrefix (uriPrefix, listener);
 
       var addr = convertToIPAddress (pref.Host);
+
       if (addr == null)
         return;
 
@@ -149,6 +174,7 @@ namespace WebSocketSharp.Net
         return;
 
       int port;
+
       if (!Int32.TryParse (pref.Port, out port))
         return;
 
@@ -156,6 +182,7 @@ namespace WebSocketSharp.Net
         return;
 
       var path = pref.Path;
+
       if (path.IndexOf ('%') != -1)
         return;
 
@@ -165,13 +192,14 @@ namespace WebSocketSharp.Net
       var endpoint = new IPEndPoint (addr, port);
 
       EndPointListener lsnr;
+
       if (!_endpoints.TryGetValue (endpoint, out lsnr))
         return;
 
       if (lsnr.IsSecure ^ pref.IsSecure)
         return;
 
-      lsnr.RemovePrefix (pref, listener);
+      lsnr.RemovePrefix (pref);
     }
 
     #endregion
@@ -182,6 +210,7 @@ namespace WebSocketSharp.Net
     {
       lock (((ICollection) _endpoints).SyncRoot) {
         EndPointListener lsnr;
+
         if (!_endpoints.TryGetValue (endpoint, out lsnr))
           return false;
 
@@ -199,6 +228,7 @@ namespace WebSocketSharp.Net
     public static void AddListener (HttpListener listener)
     {
       var added = new List<string> ();
+
       lock (((ICollection) _endpoints).SyncRoot) {
         try {
           foreach (var pref in listener.Prefixes) {

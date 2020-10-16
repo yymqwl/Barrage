@@ -153,12 +153,18 @@ namespace WebSocketSharp.Net
 
     #region Private Methods
 
-    private static void addSpecial (List<HttpListenerPrefix> prefixes, HttpListenerPrefix prefix)
+    private static void addSpecial (
+      List<HttpListenerPrefix> prefixes, HttpListenerPrefix prefix
+    )
     {
       var path = prefix.Path;
+
       foreach (var pref in prefixes) {
-        if (pref.Path == path)
-          throw new HttpListenerException (87, "The prefix is already in use.");
+        if (pref.Path == path) {
+          var msg = "The prefix is already in use.";
+
+          throw new HttpListenerException (87, msg);
+        }
       }
 
       prefixes.Add (prefix);
@@ -268,13 +274,17 @@ namespace WebSocketSharp.Net
       }
     }
 
-    private static bool removeSpecial (List<HttpListenerPrefix> prefixes, HttpListenerPrefix prefix)
+    private static bool removeSpecial (
+      List<HttpListenerPrefix> prefixes, HttpListenerPrefix prefix
+    )
     {
       var path = prefix.Path;
       var cnt = prefixes.Count;
+
       for (var i = 0; i < cnt; i++) {
         if (prefixes[i].Path == path) {
           prefixes.RemoveAt (i);
+
           return true;
         }
       }
@@ -390,9 +400,10 @@ namespace WebSocketSharp.Net
 
     #region Public Methods
 
-    public void AddPrefix (HttpListenerPrefix prefix, HttpListener listener)
+    public void AddPrefix (HttpListenerPrefix prefix)
     {
       List<HttpListenerPrefix> current, future;
+
       if (prefix.Host == "*") {
         do {
           current = _unhandled;
@@ -400,10 +411,11 @@ namespace WebSocketSharp.Net
                    ? new List<HttpListenerPrefix> (current)
                    : new List<HttpListenerPrefix> ();
 
-          prefix.Listener = listener;
           addSpecial (future, prefix);
         }
-        while (Interlocked.CompareExchange (ref _unhandled, future, current) != current);
+        while (
+          Interlocked.CompareExchange (ref _unhandled, future, current) != current
+        );
 
         return;
       }
@@ -415,31 +427,38 @@ namespace WebSocketSharp.Net
                    ? new List<HttpListenerPrefix> (current)
                    : new List<HttpListenerPrefix> ();
 
-          prefix.Listener = listener;
           addSpecial (future, prefix);
         }
-        while (Interlocked.CompareExchange (ref _all, future, current) != current);
+        while (
+          Interlocked.CompareExchange (ref _all, future, current) != current
+        );
 
         return;
       }
 
       Dictionary<HttpListenerPrefix, HttpListener> prefs, prefs2;
+
       do {
         prefs = _prefixes;
+
         if (prefs.ContainsKey (prefix)) {
-          if (prefs[prefix] != listener) {
-            throw new HttpListenerException (
-              87, String.Format ("There's another listener for {0}.", prefix)
-            );
+          if (prefs[prefix] != prefix.Listener) {
+            var msg = String.Format (
+                        "There is another listener for {0}.", prefix
+                      );
+
+            throw new HttpListenerException (87, msg);
           }
 
           return;
         }
 
         prefs2 = new Dictionary<HttpListenerPrefix, HttpListener> (prefs);
-        prefs2[prefix] = listener;
+        prefs2[prefix] = prefix.Listener;
       }
-      while (Interlocked.CompareExchange (ref _prefixes, prefs2, prefs) != prefs);
+      while (
+        Interlocked.CompareExchange (ref _prefixes, prefs2, prefs) != prefs
+      );
     }
 
     public void Close ()
@@ -461,51 +480,66 @@ namespace WebSocketSharp.Net
         conns[i].Close (true);
     }
 
-    public void RemovePrefix (HttpListenerPrefix prefix, HttpListener listener)
+    public void RemovePrefix (HttpListenerPrefix prefix)
     {
       List<HttpListenerPrefix> current, future;
+
       if (prefix.Host == "*") {
         do {
           current = _unhandled;
+
           if (current == null)
             break;
 
           future = new List<HttpListenerPrefix> (current);
+
           if (!removeSpecial (future, prefix))
-            break; // The prefix wasn't found.
+            break;
         }
-        while (Interlocked.CompareExchange (ref _unhandled, future, current) != current);
+        while (
+          Interlocked.CompareExchange (ref _unhandled, future, current) != current
+        );
 
         leaveIfNoPrefix ();
+
         return;
       }
 
       if (prefix.Host == "+") {
         do {
           current = _all;
+
           if (current == null)
             break;
 
           future = new List<HttpListenerPrefix> (current);
+
           if (!removeSpecial (future, prefix))
-            break; // The prefix wasn't found.
+            break;
         }
-        while (Interlocked.CompareExchange (ref _all, future, current) != current);
+        while (
+          Interlocked.CompareExchange (ref _all, future, current) != current
+        );
 
         leaveIfNoPrefix ();
+
         return;
       }
 
       Dictionary<HttpListenerPrefix, HttpListener> prefs, prefs2;
+
       do {
         prefs = _prefixes;
+
         if (!prefs.ContainsKey (prefix))
           break;
 
         prefs2 = new Dictionary<HttpListenerPrefix, HttpListener> (prefs);
         prefs2.Remove (prefix);
       }
-      while (Interlocked.CompareExchange (ref _prefixes, prefs2, prefs) != prefs);
+      while (
+        Interlocked.CompareExchange (ref _prefixes, prefs2, prefs) != prefs
+      );
 
       leaveIfNoPrefix ();
     }
