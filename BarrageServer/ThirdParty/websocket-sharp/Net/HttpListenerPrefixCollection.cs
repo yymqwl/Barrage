@@ -138,20 +138,17 @@ namespace WebSocketSharp.Net
     /// </exception>
     public void Add (string uriPrefix)
     {
-      if (_listener.IsDisposed)
-        throw new ObjectDisposedException (_listener.GetType ().ToString ());
+      _listener.CheckDisposed ();
 
       HttpListenerPrefix.CheckPrefix (uriPrefix);
 
       if (_prefixes.Contains (uriPrefix))
         return;
 
+      if (_listener.IsListening)
+        EndPointManager.AddPrefix (uriPrefix, _listener);
+
       _prefixes.Add (uriPrefix);
-
-      if (!_listener.IsListening)
-        return;
-
-      EndPointManager.AddPrefix (uriPrefix, _listener);
     }
 
     /// <summary>
@@ -163,15 +160,12 @@ namespace WebSocketSharp.Net
     /// </exception>
     public void Clear ()
     {
-      if (_listener.IsDisposed)
-        throw new ObjectDisposedException (_listener.GetType ().ToString ());
+      _listener.CheckDisposed ();
+
+      if (_listener.IsListening)
+        EndPointManager.RemoveListener (_listener);
 
       _prefixes.Clear ();
-
-      if (!_listener.IsListening)
-        return;
-
-      EndPointManager.RemoveListener (_listener);
     }
 
     /// <summary>
@@ -194,8 +188,7 @@ namespace WebSocketSharp.Net
     /// </exception>
     public bool Contains (string uriPrefix)
     {
-      if (_listener.IsDisposed)
-        throw new ObjectDisposedException (_listener.GetType ().ToString ());
+      _listener.CheckDisposed ();
 
       if (uriPrefix == null)
         throw new ArgumentNullException ("uriPrefix");
@@ -230,8 +223,7 @@ namespace WebSocketSharp.Net
     /// </exception>
     public void CopyTo (string[] array, int offset)
     {
-      if (_listener.IsDisposed)
-        throw new ObjectDisposedException (_listener.GetType ().ToString ());
+      _listener.CheckDisposed ();
 
       _prefixes.CopyTo (array, offset);
     }
@@ -267,23 +259,18 @@ namespace WebSocketSharp.Net
     /// </exception>
     public bool Remove (string uriPrefix)
     {
-      if (_listener.IsDisposed)
-        throw new ObjectDisposedException (_listener.GetType ().ToString ());
+      _listener.CheckDisposed ();
 
       if (uriPrefix == null)
         throw new ArgumentNullException ("uriPrefix");
 
-      var ret = _prefixes.Remove (uriPrefix);
+      if (!_prefixes.Contains (uriPrefix))
+        return false;
 
-      if (!ret)
-        return ret;
+      if (_listener.IsListening)
+        EndPointManager.RemovePrefix (uriPrefix, _listener);
 
-      if (!_listener.IsListening)
-        return ret;
-
-      EndPointManager.RemovePrefix (uriPrefix, _listener);
-
-      return ret;
+      return _prefixes.Remove (uriPrefix);
     }
 
     #endregion
