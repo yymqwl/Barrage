@@ -251,17 +251,6 @@ namespace GameFramework
         }
 
 
-        private static string _runtimePath;
-        /// <summary>
-        /// Get runtime path.
-        /// </summary>
-        public static string RuntimePath
-        {
-            get
-            {
-                return _runtimePath ?? (_runtimePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase);
-            }
-        }
 
  
         /// <summary>

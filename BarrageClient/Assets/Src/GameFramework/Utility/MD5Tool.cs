@@ -24,7 +24,7 @@ namespace GameFramework
             }
             catch (FileNotFoundException e)
             {
-                DebugHandler.Log(e.Message);
+                Log.Error(e.Message);
                 return "";
             }
         }
@@ -33,11 +33,11 @@ namespace GameFramework
         {
             if (obj == null)
             {
-                DebugHandler.LogError("obj is Null !");
+                Log.Error("obj is Null !");
                 return "";
             }
 
-            return GetMD5(ByteTool.Object2Bytes(obj));
+            return GetMD5(ByteHelper.Object2Bytes(obj));
         }
 
         public static int GetStringToHash(string content)
