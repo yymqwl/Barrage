@@ -23,6 +23,19 @@ namespace GameFramework
             return new IPEndPoint(IPAddress.Parse(host), port);
         }
 
+        public static string GetIp(string address)
+        {
+            int index = address.LastIndexOf(':');
+            string host = address.Substring(0, index);
+            return host;
+        }
+        public static int GetPort(string address)
+        {
+            int index = address.LastIndexOf(':');
+            string p = address.Substring(index + 1);
+            int port = int.Parse(p);
+            return port;
+        }
         public static IPEndPoint ToIPEndPoint(string address)
         {
             int index = address.LastIndexOf(':');

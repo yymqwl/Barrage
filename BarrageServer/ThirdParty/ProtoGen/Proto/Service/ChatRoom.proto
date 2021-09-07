@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+
+package GameMain.Msg;
+
+
+
+
+
+
+
+
+
+
+
+message EnterRoom_Req
+{
+	int64 Id=1;
+}
+message EnterRoom_Res
+{
+	int32 Result=1;
+}
+message ExitRoom_Req
+{
+	int64 Id=1;
+}
+message ExitRoom_Res
+{
+	int32 Result=1;
+}
+
+
+message Say_Req
+{
+	string Msg=1;
+}
+message Say_Res
+{
+	int32 Result=1;
+}
+

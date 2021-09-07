@@ -177,6 +177,28 @@ namespace GameFramework
 
         private void OnComplete(object sender, SocketAsyncEventArgs e)
         {
+            /*
+#if SERVER
+            switch (e.LastOperation)
+            {
+                case SocketAsyncOperation.Connect:
+                    this.OnConnectComplete(e);
+                    break;
+                case SocketAsyncOperation.Receive:
+                    this.OnRecvComplete(e);
+                    break;
+                case SocketAsyncOperation.Send:
+                    this.OnSendComplete(e);
+                    break;
+                case SocketAsyncOperation.Disconnect:
+                    this.OnDisconnectComplete(e);
+                    break;
+                default:
+                    throw new Exception($"m_Socket error: {e.LastOperation}");
+            }
+#else
+#endif
+*/
             switch (e.LastOperation)
             {
                 case SocketAsyncOperation.Connect:

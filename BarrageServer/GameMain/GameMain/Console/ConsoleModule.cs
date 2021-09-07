@@ -17,12 +17,15 @@ namespace GameMain
         public override bool Init()
         {
             ConsoleEntry();
+
             return base.Init();
         }
         public IGameMainEntry IGameMainEntry
         {
-            get;
-            set;
+            get
+            {
+               return  GameMainEntry.Instance;
+            }
         }
         //public CancellationTokenSource m_CTS;
         public async void ConsoleEntry()
@@ -47,43 +50,25 @@ namespace GameMain
                         console_Command.Params.Add(str_lines[i]);
                     }
                     //Log.Debug($"{console_Command.Params.Count}");
-                    switch (console_Command.CommandType)
-                    {
-                        case "quit":
-                            IGameMainEntry.IsLoop = false;
-                            break;
-                        default: break;
-                    }
+                    Parse(console_Command);
+ 
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
                 }
             }
-            /*
-            while (true)
+        }
+
+        public virtual void Parse(Console_Command cmd)
+        {
+            switch (cmd.CommandType)
             {
-                string str_line = Console.In.ReadLine();
-                string[] str_lines = str_line.Split("/");
-                if (str_lines.Length < 1)
-                {
-                    Log.Error("格式错误"); ;
-                }
-                Console_Command console_Command = new Console_Command();
-                console_Command.CommandType = str_lines[0];
-                for (int i = 1; i < str_lines.Length; ++i)
-                {
-                    console_Command.Params.Add(str_lines[i]);
-                }
-                //Log.Debug($"{console_Command.Params.Count}");
-                switch (console_Command.CommandType)
-                {
-                    case "quit":
-                        TestGameEntry.Instance.IsLoop = false;
-                        break;
-                    default: break;
-                }
-            }*/
+                case "quit":
+                    IGameMainEntry.IsLoop = false;
+                    break;
+                default: break;
+            }
         }
 
         public override void Update()

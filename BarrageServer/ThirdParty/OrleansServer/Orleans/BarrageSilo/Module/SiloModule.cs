@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using GameFramework;
 using Orleans.Hosting;
-using GameMain.Silo;
+using GameMain;
 using Orleans.Configuration;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using Orleans;
 
 namespace BarrageSilo
@@ -15,12 +13,13 @@ namespace BarrageSilo
     public class SiloModule : GameFrameworkModule
     {
 
-        public override int Priority => 0;
+        public override int Priority => 9;
         private ISiloHost m_SiloHost;
         public  override bool Init()
         {
-            Console.WriteLine("输入Silo序号:");
-            int index = Convert.ToInt32(Console.ReadLine());
+            //Console.WriteLine("输入Silo序号:");
+            //int index = Convert.ToInt32(Console.ReadLine());
+            int index = 0;
             RunSilo(11111 + index, 30000 + index);
             return base.Init();
         }
@@ -49,16 +48,31 @@ namespace BarrageSilo
         }
         private   ISiloHost InitialiseSilo(int siloPort, int gatewayPort)
         {
+            var gameconfig = GameModuleManager.Instance.GetModule<ConfigManager>().GameConfig;
             var builder = new SiloHostBuilder()
+                /*
+                .Configure<EndpointOptions>(options =>
+                {
+                    options.AdvertisedIPAddress = IPAddress.Parse(gameconfig.SiloIp);
+                    options.SiloPort = gameconfig.SiloPort;
+                    options.GatewayPort = gameconfig.SiloGatePort;
+                    
+                    options.GatewayListeningEndpoint = new IPEndPoint(IPAddress.Any, 40000);
+                    options.SiloListeningEndpoint = new IPEndPoint(IPAddress.Any, 50000);
+                })*/
+                //.UseLocalhostClustering(gameconfig.SiloPort, gameconfig.SiloGatePort)
+                //.ConfigureEndpoints(gameconfig.SiloIp, gameconfig.SiloPort, gameconfig.SiloGatePort)
+                //.UseLocalhostClustering()
                 .UseAdoNetClustering(options =>
                 {
-                    options.Invariant = GameConstant.DB_Name;
-                    options.ConnectionString = GameConstant.Str_DBConnection;
-                }).ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
+                    options.Invariant = gameconfig.DB_Name;//GameConstant.DB_Name;
+                    options.ConnectionString = gameconfig.Str_DBConnection;//GameConstant.Str_DBConnection;
+                })
+                .ConfigureEndpoints(siloPort: siloPort, gatewayPort: gatewayPort)
                 .Configure<ClusterOptions>(options =>
                 {
-                    options.ClusterId = GameConstant.ClusterId;
-                    options.ServiceId = GameConstant.ServiceId;
+                    options.ClusterId = gameconfig.ClusterId;
+                    options.ServiceId = gameconfig.ServiceId;
                 })
                 .Configure<GrainCollectionOptions>(options =>
                 {
@@ -66,14 +80,13 @@ namespace BarrageSilo
                     options.DeactivationTimeout = TimeSpan.FromSeconds(5);
                     options.CollectionQuantum = TimeSpan.FromSeconds(1);
                 })
-                 .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole());
+                .ConfigureLogging(log => log.SetMinimumLevel(LogLevel.Warning).AddConsole());
 
 
 
             builder.ConfigureApplicationParts(parts =>
             {
-                //parts.AddApplicationPart(typeof(HallGrains.MainEntryGrain).Assembly).WithReferences();
-                //parts.AddApplicationPart(typeof(MysqlGrains.MysqlEntryGrain).Assembly).WithReferences();
+                parts.AddApplicationPart(typeof(HallGrains.GateWayGrain).Assembly).WithReferences();
             });
 
             /*

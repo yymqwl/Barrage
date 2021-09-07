@@ -1,4 +1,4 @@
 KcpLib 1.0
 protobuf-net 2.4
-Google.Protobuf 3.71
+Google.Protobuf 3.8
 NLog 4.6.3

@@ -1,0 +1,17 @@
+{
+    "name": "ChatRoom",
+    "references": [
+        "GUID:00006143ea0704741aed396c5b0bba7e",
+        "GUID:98dea716c7a1ac5469bd3287f1b1a996",
+        "GUID:a60c1dae9bbdcce4f83c20c5c457aa3d"
+    ],
+    "optionalUnityReferences": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
+}

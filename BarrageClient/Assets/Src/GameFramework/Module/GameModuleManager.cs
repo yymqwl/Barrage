@@ -34,17 +34,17 @@ namespace GameFramework
         }
         public void Init()
         {
-            for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
+            for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.First; current != null; current = current.Next)
             {
                 current.Value.BeforeInit();
             }
 
-            for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
+            for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.First; current != null; current = current.Next)
             {
                 current.Value.Init();
             }
 
-            for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.Last; current != null; current = current.Previous)
+            for (LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.First; current != null; current = current.Next)
             {
                 current.Value.AfterInit();
             }
@@ -114,7 +114,7 @@ namespace GameFramework
             LinkedListNode<GameFrameworkModule> current = m_GameFrameworkModules.First;
             while (current != null)
             {
-                if (module.Priority > current.Value.Priority)
+                if (module.Priority <= current.Value.Priority)
                 {
                     break;
                 }

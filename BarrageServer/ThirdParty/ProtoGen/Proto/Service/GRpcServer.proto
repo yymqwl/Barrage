@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+
+package GameMain.Msg;
+
+
+service GRpcServer
+{
+	rpc Handle(GRpcMsg ) returns (GRpcMsg) {}
+}
+
+message GRpcMsg
+{
+	bytes Msg=2;//ÏûÏ¢
+}

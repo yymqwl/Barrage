@@ -13,9 +13,9 @@ namespace GameFramework
     {
         public const int PacketSizeLength2 = 2;
         public const int PacketSizeLength4 = 4;
-        public const int FlagIndex = 0;
-        public const int OpcodeIndex = 1;
-        public const int MessageIndex = 3;
+        public const int MinPacketSize = 2;
+        public const int OpcodeIndex = 0;
+        public const int MessageIndex = 2;
     }
 
     public class PacketParser
@@ -24,7 +24,7 @@ namespace GameFramework
         private int m_PacketSize;
         private ParserState m_State;
         public MemoryStream m_MemoryStream;
-        private bool m_IsOk;
+        private bool m_IsOK;
         private readonly int m_PacketSizeLength;
 
         public PacketParser(int m_PacketSizeLength, CircularBuffer m_Buffer, MemoryStream m_MemoryStream)
@@ -36,7 +36,7 @@ namespace GameFramework
 
         public bool Parse()
         {
-            if (this.m_IsOk)
+            if (this.m_IsOK)
             {
                 return true;
             }
@@ -59,22 +59,21 @@ namespace GameFramework
                             {
                                 case Packet.PacketSizeLength4:
                                     this.m_PacketSize = BitConverter.ToInt32(this.m_MemoryStream.GetBuffer(), 0);
-                                    if (this.m_PacketSize > ushort.MaxValue * 16 || this.m_PacketSize < 3)
+                                    if (this.m_PacketSize > ushort.MaxValue * 16 || this.m_PacketSize < Packet.MinPacketSize)
                                     {
-                                        throw new Exception($"recv packet size error: {this.m_PacketSize}");
+                                        throw new Exception($"recv packet size error, 可能是外网探测端口: {this.m_PacketSize}");
                                     }
                                     break;
                                 case Packet.PacketSizeLength2:
                                     this.m_PacketSize = BitConverter.ToUInt16(this.m_MemoryStream.GetBuffer(), 0);
-                                    if (this.m_PacketSize > ushort.MaxValue || this.m_PacketSize < 3)
+                                    if (this.m_PacketSize > ushort.MaxValue || this.m_PacketSize < Packet.MinPacketSize)
                                     {
-                                        throw new Exception($"recv packet size error: {this.m_PacketSize}");
+                                        throw new Exception($"recv packet size error:, 可能是外网探测端口: {this.m_PacketSize}");
                                     }
                                     break;
                                 default:
                                     throw new Exception("packet size byte count must be 2 or 4!");
                             }
-
                             this.m_State = ParserState.PacketBody;
                         }
                         break;
@@ -89,19 +88,19 @@ namespace GameFramework
                             this.m_MemoryStream.SetLength(this.m_PacketSize);
                             byte[] bytes = this.m_MemoryStream.GetBuffer();
                             this.m_Buffer.Read(bytes, 0, this.m_PacketSize);
-                            this.m_IsOk = true;
+                            this.m_IsOK = true;
                             this.m_State = ParserState.PacketSize;
                             finish = true;
                         }
                         break;
                 }
             }
-            return this.m_IsOk;
+            return this.m_IsOK;
         }
 
         public MemoryStream GetPacket()
         {
-            this.m_IsOk = false;
+            this.m_IsOK = false;
             return this.m_MemoryStream;
         }
     }

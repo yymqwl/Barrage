@@ -29,6 +29,10 @@ namespace GameFramework
             return XmlSerialize(sourceObj, tp);
         }
 
+        public static string XmlSerialize_Str<T>(T sourceObj)
+        {
+            return Encoding.Default.GetString(XmlSerialize(sourceObj));
+        }
         public static T XmlDeserialize<T>(byte[] bufs)
         {
             T result = default(T);

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0"?>
+<ServerConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <NetWorkIp>192.168.0.90:5000</NetWorkIp>
+  <SiloIp>192.168.0.90</SiloIp>
+  <SiloGatePort>30000</SiloGatePort>
+  <SiloPort>11120</SiloPort>
+  <ClusterId>BarrageCluster</ClusterId>
+  <ServiceId>BarrageServer</ServiceId>
+  <DB_Name>MySql.Data.MySqlClient</DB_Name>
+  <Str_DBConnection>server=192.168.0.90;port=3306;database=orleans;user id=root;password=25689328;SslMode=none;</Str_DBConnection>
+</ServerConfig>

@@ -5,7 +5,7 @@ using GameFramework;
 namespace GameMain
 {
 
-    [GameFrameworkModule()]
+    //[GameFrameworkModule()]
     public class TestProtobufMd : GameFrameworkModule
     {
         public override bool Init()

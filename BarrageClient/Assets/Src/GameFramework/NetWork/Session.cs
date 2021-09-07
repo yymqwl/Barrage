@@ -13,7 +13,7 @@ namespace GameFramework
         private AChannel m_AChannel;
 
         //
-        private readonly List<byte[]> m_List_Bytes = new List<byte[]>() { new byte[1], new byte[2] };
+        private readonly byte[] m_OpCode_Bytes = new byte[2];
 
 
         public AChannel AChannel
@@ -85,15 +85,13 @@ namespace GameFramework
         }
         public void OnRead(AChannel ac,MemoryStream memoryStream)
         {
-            byte flag = 0;
             ushort opcode = 0;
             IMessage message = null;
             try
             {
                 memoryStream.Seek(Packet.MessageIndex, SeekOrigin.Begin);
-                flag = memoryStream.GetBuffer()[Packet.FlagIndex];
                 opcode = BitConverter.ToUInt16(memoryStream.GetBuffer(), Packet.OpcodeIndex);
-                message = Network.OpCodeTypeBv.GetInstance(opcode);
+                message = Network.MessagePacker.DeserializeFrom(Network.IOpCodeType.GetType(opcode), memoryStream) as IMessage;
             }
             catch (Exception e)
             {
@@ -103,7 +101,7 @@ namespace GameFramework
                 this.Network.Remove(this.Id);
                 return;
             }
-            Network.MessageDispatherBv.Handle(this, new MessageInfo(opcode, message));
+            Network.IMessageDispatcher.Dispatch(this, new MessageInfo(opcode, message));
             
         }
         public void Send(MemoryStream stream)
@@ -111,18 +109,14 @@ namespace GameFramework
             m_AChannel.Send(stream);
         }
 
+
         public void Send(IMessage message)
         {
-            this.Send(0x00, message);
-        }
-
-        public void Send(byte flag, IMessage message)
-        {
-           ushort opcode = Network.OpCodeTypeBv.GetOpcode(message.GetType());
-           Send(flag,opcode,message);
+           ushort opcode = Network.IOpCodeType.GetOpcode(message.GetType());
+           Send(opcode,message);
 
         }
-        public void Send(byte flag, ushort opcode, object message)
+        public void Send( ushort opcode, IMessage message)
         {
             if(!IsConnected)
             {
@@ -136,15 +130,13 @@ namespace GameFramework
             Network.MessagePacker.SerializeTo(message, stream);
             stream.Seek(0, SeekOrigin.Begin);
 
-            m_List_Bytes[0][0] = flag;
-            m_List_Bytes[1].WriteTo(0, opcode);
-            int index = 0;
-            foreach (var bytes in this.m_List_Bytes)
-            {
-                Array.Copy(bytes, 0, stream.GetBuffer(), index, bytes.Length);
-                index += bytes.Length;
-            }
-            this.Send(stream);
+            m_OpCode_Bytes.WriteTo(0, opcode);
+            Array.Copy(m_OpCode_Bytes, 0, stream.GetBuffer(), 0, m_OpCode_Bytes.Length);
+
+
+
+
+             this.Send(stream);
 
         }
         public override bool Init()

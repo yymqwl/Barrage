@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.8.0" />
+    <PackageReference Include="Grpc" Version="1.21.0" />
+    <PackageReference Include="Grpc.Tools" Version="1.21.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\GameFramework\GameFramework.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="..\..\ProtoGen\Proto\Service\GRpcServer.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\GRpcServer.proto" />
+    <Protobuf Include="..\..\ProtoGen\Proto\Service\ChatRoom.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\ChatRoom.proto" />
+    <Protobuf Include="..\..\ProtoGen\Proto\Service\Hello.proto" OutputDir=".\Service" CompileOutputs="false" Link="Proto\Service\Hello.proto" />
+  </ItemGroup>
+</Project>

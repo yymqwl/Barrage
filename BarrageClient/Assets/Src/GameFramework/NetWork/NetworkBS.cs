@@ -16,32 +16,17 @@ namespace GameFramework
         protected ChannelType m_ChannelType;
         protected string m_StrIpEndPoint;
         
-        protected OpCodeTypeBv m_OpCodeTypeBv;
-        protected MessageDispatherBv m_MessageDispatherBv;
         
         public IMessagePacker MessagePacker { get; set; }
         public NetworkProtocol NetworkProtocol { get { return m_NetworkProtocol; } }
         public string StrIpEndPoint { get { return m_StrIpEndPoint; } } 
-        public OpCodeTypeBv OpCodeTypeBv
+        public IOpCodeType IOpCodeType
         {
-            get
-            {
-                if(m_OpCodeTypeBv == null)
-                {
-                    m_OpCodeTypeBv = GetIBehaviour<OpCodeTypeBv>();
-                }
-                return m_OpCodeTypeBv;
-            }
+            get;set;
         }
-        public MessageDispatherBv MessageDispatherBv {
-            get
-            {
-                if(m_MessageDispatherBv==null)
-                {
-                    m_MessageDispatherBv = GetIBehaviour<MessageDispatherBv>();
-                }
-                return m_MessageDispatherBv;
-            }
+        public IMessageDispatcher IMessageDispatcher
+        {
+            get;set;
         }
         //public IMessageDispatcher MessageDispatcher { get; set; }
         /*
