@@ -8,7 +8,7 @@
  * The MIT License
  *
  * Copyright (c) 2005 Novell, Inc. (http://www.novell.com)
- * Copyright (c) 2012-2016 sta.blockhead
+ * Copyright (c) 2012-2020 sta.blockhead
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -208,17 +208,8 @@ namespace WebSocketSharp.Net
 
     internal static bool RemoveEndPoint (IPEndPoint endpoint)
     {
-      lock (((ICollection) _endpoints).SyncRoot) {
-        EndPointListener lsnr;
-
-        if (!_endpoints.TryGetValue (endpoint, out lsnr))
-          return false;
-
-        _endpoints.Remove (endpoint);
-        lsnr.Close ();
-
-        return true;
-      }
+      lock (((ICollection) _endpoints).SyncRoot)
+        return _endpoints.Remove (endpoint);
     }
 
     #endregion
